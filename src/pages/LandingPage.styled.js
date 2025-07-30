@@ -74,6 +74,7 @@ export const Heading = styled.h1`
   letter-spacing: -0.03em;
   padding: 20px 0;
   line-height: 85px;
+  font-family: sans-serif;
 `;
 
 export const Subtext = styled.p`
@@ -83,6 +84,7 @@ export const Subtext = styled.p`
   color: #4b5563; /* text-gray-600 */
   padding: 8px 0;
   text-align: left;
+  font-family: sans-serif;
 `;
 
 export const RichText = styled.span`
@@ -91,6 +93,7 @@ export const RichText = styled.span`
   line-height: 1.75;
   color: oklch(0.685 0.169 237.323);
   text-align: left;
+  font-family: sans-serif;
 `;
 
 export const PoorText = styled.span`
@@ -102,12 +105,13 @@ export const PoorText = styled.span`
   text-align: left;
   height: 35px;
   align-items: flex-end;
+  font-family: monospace;
 `;
 
 export const AnalyzeButton = styled(Link)`
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: monospace;
   font-size: 14px;
   font-weight: 600;
   line-height: 24px;
