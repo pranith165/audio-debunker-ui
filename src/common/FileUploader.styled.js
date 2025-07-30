@@ -12,7 +12,7 @@ export const Subheadliner = styled.p`
 
 export const FileUploaderWrapper = styled.div`
     text-align: center;
-    margin: 8px 0;
+    margin: 20px 0;
 `;
 
 export const Upload = styled.input`
