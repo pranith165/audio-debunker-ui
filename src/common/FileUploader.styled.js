@@ -23,15 +23,16 @@ export const Upload = styled.input`
 export const UploadIcon = styled(PiUploadSimpleBold)`
   font-size: 53px;
   padding: 7px;
-  color: #000;
+  color: ${({ disabled }) => disabled ? '#ccc' : '#000'};
   margin-right: 8px;
-  cursor: pointer;
-  border: 1px dotted black;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+  border: 1px dotted ${({ disabled }) => disabled ? '#ccc' : 'black'};
   border-radius: 28px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: ${({ disabled }) => disabled ? 0.5 : 1};
 
   &:hover {
-    border-color: oklch(0.685 0.169 237.323);
+    border-color: ${({ disabled }) => disabled ? '#ccc' : 'oklch(0.685 0.169 237.323)'};
   }
 `;
 
@@ -57,10 +58,39 @@ export const ApiButtonWrapper = styled.div`
 
 export const CallButton = styled.button`
     font-size: 14px;
-    color: white;
-    background-color: black;
+    color: ${({ disabled }) => disabled ? '#666' : 'white'};
+    background-color: ${({ disabled }) => disabled ? '#ccc' : 'black'};
     border: none;
-    padding: 12px;
+    padding: 12px 24px;
     border-radius: 20px;
-    cursor: pointer;
+    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+    transition: all 0.3s ease;
+    opacity: ${({ disabled }) => disabled ? 0.7 : 1};
+    position: relative;
+
+    &:hover {
+        background-color: ${({ disabled }) => disabled ? '#ccc' : '#333'};
+        transform: ${({ disabled }) => disabled ? 'none' : 'translateY(-1px)'};
+    }
+
+    ${({ analyzing }) => analyzing && `
+        &::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border: 2px solid transparent;
+            border-top: 2px solid #666;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+    `}
 `;

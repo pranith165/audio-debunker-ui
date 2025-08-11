@@ -13,9 +13,12 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
   const navigate = useNavigate();
 
   // Get file info from Redux
-  const { file, fileName, isUploaded } = useSelector((state) => state.upload);
+  const { file, fileName, isUploaded, isAnalysed } = useSelector((state) => state.upload);
 
   const handleFileChange = (e) => {
+    // Prevent file change during analysis
+    if (isAnalysed) return;
+    
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       // ✅ Correct dispatch
@@ -47,7 +50,7 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
       if (!response.ok) throw new Error('Server error while analyzing.');
 
       const data = await response.json();
-      dispatch(setResults());
+      dispatch(setResults(data));
       console.log('Analysis Result:', data);
 
       onReportReady?.();
@@ -67,15 +70,31 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
         <Subheadliner>Submit a claim, podcast snippet, or voice memo for fact-checking analysis</Subheadliner>
 
         <UploadWrapper>
-          <label htmlFor="input1"><UploadIcon /></label>
-          <Upload id="input1" type="file" accept="audio/*" onChange={handleFileChange} />
-          <UploadDescription>Click to upload or drag and drop</UploadDescription>
+          <label htmlFor="input1" style={{ cursor: isAnalysed ? 'not-allowed' : 'pointer' }}>
+            <UploadIcon disabled={isAnalysed} />
+          </label>
+          <Upload 
+            id="input1" 
+            type="file" 
+            accept="audio/*" 
+            onChange={handleFileChange}
+            disabled={isAnalysed}
+          />
+          <UploadDescription>
+            {isAnalysed ? 'Analyzing audio file...' : 'Click to upload or drag and drop'}
+          </UploadDescription>
 
           {fileName && <FileName>🎧 {fileName}</FileName>}
         </UploadWrapper>
 
         <ApiButtonWrapper>
-          <CallButton onClick={handleOnClick}>Analyze</CallButton>
+          <CallButton 
+            onClick={handleOnClick} 
+            disabled={isAnalysed}
+            analyzing={isAnalysed}
+          >
+            {isAnalysed ? 'Analyzing...' : 'Analyze'}
+          </CallButton>
         </ApiButtonWrapper>
       </FileUploaderWrapper>
 

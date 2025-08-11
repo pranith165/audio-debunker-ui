@@ -5,7 +5,8 @@ const initialState = {
   fileName: '',
   isUploaded: false,
   truthRevealed: false,
-  isAnalysed: false
+  isAnalysed: false,
+  analysisResults: null
 };
 
 const uploadSlice = createSlice({
@@ -23,9 +24,13 @@ const uploadSlice = createSlice({
       state.file = null;
       state.fileName = '';
       state.isUploaded = false;
+      state.isAnalysed = false;
+      state.truthRevealed = false;
+      state.analysisResults = null;
     },
-    setResults(state) {
+    setResults(state, action) {
       state.truthRevealed = true;
+      state.analysisResults = action.payload;
     },
     setAnalyse(state) {
       state.isAnalysed = true;

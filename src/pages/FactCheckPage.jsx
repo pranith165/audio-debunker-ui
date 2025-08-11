@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { resetUpload } from '../redux/uploadSlice';
 import FileUploader from '../common/FileUploader';
 import StepLoader from '../common/StepLoader';
 import {FactCheckWrapper, FactCheckUploadWrapper} from './FactCheckPage.styled';
@@ -7,10 +9,22 @@ import {initialSteps} from '../helpers';
 import Breadcrumb from '../common/Breadcrumb';
 
 function FactCheckPage() {
+  const dispatch = useDispatch();
 
   const [steps, setSteps] = useState(initialSteps);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [analysisKey, setAnalysisKey] = useState(0);
+
+  // Reset upload state when component mounts (when user navigates to fact-check page)
+  useEffect(() => {
+    dispatch(resetUpload());
+    // Also reset the steps state
+    const freshSteps = initialSteps.map(step => ({ ...step, done: false }));
+    setSteps(freshSteps);
+    setCurrentStepIndex(0);
+    setIsLoading(false);
+  }, [dispatch]);
 
   // Simulate progress (you can control this based on backend response)
   useEffect(() => {
@@ -28,9 +42,12 @@ function FactCheckPage() {
 
 
   const startAnalysis = () => {
-    setSteps(initialSteps);
+    // Create a fresh copy of initial steps to ensure state update
+    const freshSteps = initialSteps.map(step => ({ ...step, done: false }));
+    setSteps(freshSteps);
     setCurrentStepIndex(0);
     setIsLoading(true);
+    setAnalysisKey(prev => prev + 1); // Force re-render of StepLoader
   };
 
   const completeReportGeneration = () => {
@@ -55,7 +72,7 @@ function FactCheckPage() {
             onReportReady={completeReportGeneration}
           />
         </FactCheckUploadWrapper>
-        {isLoading && <StepLoader steps={steps} />}
+        {isLoading && <StepLoader key={`analysis-${analysisKey}`} steps={steps} />}
       </div>
       <div>
           <VerticalStripe className="right"> </VerticalStripe>

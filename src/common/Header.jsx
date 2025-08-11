@@ -4,20 +4,17 @@ import { HeaderWrapper, HeaderLogo, NavItems, GitIcon, HeaderLogoLink, NavItem }
 
 function Header() {
   return (
-    <>
-        <HeaderWrapper>
-            <HeaderLogo>
-                <HeaderLogoLink to='/'>debunker</HeaderLogoLink>
-            </HeaderLogo>
-            <NavItems> 
-                <NavItem><GitIcon/></NavItem>
-                <NavItem>Blog</NavItem>
-                <NavItem>Docs</NavItem>
-                <NavItem>Get started</NavItem>
-            </NavItems>
-        </HeaderWrapper>
-        <hr/>
-    </>
+    <HeaderWrapper>
+        <HeaderLogo>
+            <HeaderLogoLink to='/'>debunker</HeaderLogoLink>
+        </HeaderLogo>
+        <NavItems> 
+            <NavItem><GitIcon/></NavItem>
+            <NavItem>Blog</NavItem>
+            <NavItem>Docs</NavItem>
+            <NavItem>Get started</NavItem>
+        </NavItems>
+    </HeaderWrapper>
   );
 }
 
