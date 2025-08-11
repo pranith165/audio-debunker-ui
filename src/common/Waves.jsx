@@ -65,14 +65,15 @@ const Bar = styled.div`
   }
 `;
 
-const Waves = () => {
+const Waves = ({ animation = false }) => {
   useEffect(() => {
     const bars = document.querySelectorAll('.bar');
     bars.forEach((bar) => {
       const duration = Math.random() * (0.7 - 0.2) + 0.2;
       bar.style.animationDuration = `${duration}s`;
+      bar.style.animationPlayState = animation ? 'running' : 'paused';
     });
-  }, []);
+  }, [animation]);
 
   const bars = Array.from({ length: 80 }).map((_, i) => {
     let className = 'bar';

@@ -8,6 +8,12 @@ export const HeaderWrapper = styled.header`
   align-items: center;
   padding: 1rem 2rem;
   color: black;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
 export const HeaderLogo = styled.div`
