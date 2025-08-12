@@ -32,6 +32,18 @@ export const HorizontalStepContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    margin: 1.5rem auto;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    margin: 1rem auto;
+    gap: 0.4rem;
+  }
 `;
 
 export const HorizontalStep = styled.div`
@@ -53,6 +65,20 @@ export const HorizontalStep = styled.div`
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transform: translateX(2px);
   `}
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    min-height: 55px;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.625rem 0.75rem;
+    min-height: 50px;
+    gap: 0.4rem;
+  }
 `;
 
 export const StepTitle = styled.div`

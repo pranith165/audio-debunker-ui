@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFile, markUploaded, setResults, setAnalyse } from '../redux/uploadSlice';
 import { 
   FileUploaderWrapper, Upload, UploadWrapper, UploadIcon, 
   FileName, UploadDescription, Headliner, Subheadliner, 
-  ApiButtonWrapper, CallButton 
+  ApiButtonWrapper, CallButton, ModeToggle, ModeButton 
 } from './FileUploader.styled';
 import Waves from '../common/Waves';
+import AudioRecorder from './AudioRecorder';
 
 function FileUploader({ onStartAnalysis, onReportReady }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [mode, setMode] = useState('upload'); // 'upload' or 'record'
 
   // Get file info from Redux
   const { file, fileName, isUploaded, isAnalysed } = useSelector((state) => state.upload);
@@ -42,7 +45,7 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
 
     dispatch(setAnalyse());
     try {
-      const response = await fetch('http://0.0.0.0:8080/api/analyze-file', {
+      const response = await fetch('https://debunker-production-4920.up.railway.app/api/analyze-file', {
         method: 'POST',
         body: formData,
       });
@@ -69,28 +72,57 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
         <Headliner>Upload or Record Audio</Headliner>
         <Subheadliner>Submit a claim, podcast snippet, or voice memo for fact-checking analysis</Subheadliner>
 
-        <UploadWrapper>
-          <label htmlFor="input1" style={{ cursor: isAnalysed ? 'not-allowed' : 'pointer' }}>
-            <UploadIcon disabled={isAnalysed} />
-          </label>
-          <Upload 
-            id="input1" 
-            type="file" 
-            accept="audio/*" 
-            onChange={handleFileChange}
+        {/* Mode Toggle */}
+        <ModeToggle>
+          <ModeButton 
+            active={mode === 'upload'} 
+            onClick={() => setMode('upload')}
             disabled={isAnalysed}
-          />
-          <UploadDescription>
-            {isAnalysed ? 'Analyzing audio file...' : 'Click to upload or drag and drop'}
-          </UploadDescription>
+          >
+            📁 Upload File
+          </ModeButton>
+          <ModeButton 
+            active={mode === 'record'} 
+            onClick={() => setMode('record')}
+            disabled={isAnalysed}
+          >
+            🎤 Record Audio
+          </ModeButton>
+        </ModeToggle>
 
-          {fileName && <FileName>🎧 {fileName}</FileName>}
-        </UploadWrapper>
+        {/* Upload Mode */}
+        {mode === 'upload' && (
+          <UploadWrapper>
+            <label htmlFor="input1" style={{ cursor: isAnalysed ? 'not-allowed' : 'pointer' }}>
+              <UploadIcon disabled={isAnalysed} />
+            </label>
+            <Upload 
+              id="input1" 
+              type="file" 
+              accept="audio/*" 
+              onChange={handleFileChange}
+              disabled={isAnalysed}
+            />
+            <UploadDescription>
+              {isAnalysed ? 'Analyzing audio file...' : 'Click to upload or drag and drop'}
+            </UploadDescription>
+
+            {fileName && <FileName>🎧 {fileName}</FileName>}
+          </UploadWrapper>
+        )}
+
+        {/* Record Mode */}
+        {mode === 'record' && (
+          <UploadWrapper>
+            <AudioRecorder disabled={isAnalysed} />
+            {fileName && <FileName>🎧 {fileName}</FileName>}
+          </UploadWrapper>
+        )}
 
         <ApiButtonWrapper>
           <CallButton 
             onClick={handleOnClick} 
-            disabled={isAnalysed}
+            disabled={isAnalysed || !file}
             analyzing={isAnalysed}
           >
             {isAnalysed ? 'Analyzing...' : 'Analyze'}

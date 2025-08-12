@@ -11,6 +11,15 @@ export const ResultsWrapper = styled.div`
   overflow: hidden;
   display: grid;
   grid-template-columns: 3% auto 3%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 2% auto 2%;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1% auto 1%;
+    overflow-x: hidden;
+  }
 `;
 
 export const ResultsHeaderWrapper = styled.div`
@@ -82,6 +91,14 @@ export const OverviewCard = styled.div`
     grid-template-columns: 1fr;
     text-align: center;
     padding: 1.5rem;
+    min-height: 180px;
+    max-height: 180px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.25rem;
+    min-height: 160px;
+    max-height: 160px;
   }
 `;
 
@@ -120,6 +137,18 @@ export const OverViewDescription = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: 5.6em; /* 4 lines * 1.4 line-height */
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    -webkit-line-clamp: 3;
+    max-height: 4.2em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+    -webkit-line-clamp: 3;
+    max-height: 3.9em;
+  }
 `;
 
 export const OverViewDetails = styled.div`
@@ -138,12 +167,32 @@ export const DetailedAnalysisWrapper = styled.div`
   border: 1px solid #e5e7eb;
   margin: 2rem 0;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    margin: 1.5rem 0;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 1rem 0;
+    border-radius: 6px;
+  }
 `;
 
 export const TabNavigation = styled.div`
   display: flex;
   border-bottom: 1px solid #e5e7eb;
   background-color: #f9fafb;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 480px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
 `;
 
 export const TabButton = styled.button`
@@ -158,6 +207,18 @@ export const TabButton = styled.button`
   border-bottom: 2px solid ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : 'transparent'};
   font-family: monospace;
   font-size: 14px;
+  min-height: 44px;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.875rem 0.5rem;
+    font-size: 12px;
+    text-align: center;
+  }
 
   &:hover {
     background-color: #f3f4f6;

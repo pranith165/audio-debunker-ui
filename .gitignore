@@ -15,3 +15,4 @@ yarn-error.log*
 # Vite
 .env
 .env.*.local
+.vercel
