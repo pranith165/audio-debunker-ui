@@ -43,7 +43,7 @@ function TrendingClaimsGrid() {
         ...(selectedCategory && { category: selectedCategory })
       });
 
-      const response = await fetch(`http://0.0.0.0:8080/api/trending-claims?${params}`);
+      const response = await fetch(`https://debunker-production-4920.up.railway.app/api/trending-claims?${params}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -87,7 +87,7 @@ function TrendingClaimsGrid() {
   const handleClaimClick = async (claim) => {
     try {
       // Fetch full claim details from backend
-      const response = await fetch(`http://0.0.0.0:8080/api/trending-claims/${claim.id}`);
+      const response = await fetch(`https://debunker-production-4920.up.railway.app/api/trending-claims/${claim.id}`);
       if (response.ok) {
         const fullClaimData = await response.json();
         // Navigate to results page with full claim data
@@ -114,7 +114,7 @@ function TrendingClaimsGrid() {
 
   const handleShare = async (claimId) => {
     try {
-      await fetch(`http://0.0.0.0:8080/api/claims/${claimId}/share`, { 
+      await fetch(`https://debunker-production-4920.up.railway.app/api/claims/${claimId}/share`, { 
         method: 'POST' 
       });
       // Update local share count
