@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ClaimCard from './ClaimCard';
 import CategoryFilter from './CategoryFilter';
+import SortSelector from './SortSelector';
 import { apiService, handleApiError } from '../services/apiService';
 import { 
   GridWrapper, 
@@ -21,6 +22,7 @@ function TrendingClaimsGrid() {
   const [claims, setClaims] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSort, setSelectedSort] = useState('hybrid');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
@@ -29,8 +31,8 @@ function TrendingClaimsGrid() {
   const [allCategories, setAllCategories] = useState([]);
 
   useEffect(() => {
-    fetchTrendingClaims(1, true); // Reset to page 1 when category changes
-  }, [selectedCategory]);
+    fetchTrendingClaims(1, true); // Reset to page 1 when category or sort changes
+  }, [selectedCategory, selectedSort]);
 
   const fetchTrendingClaims = async (pageNum = page, reset = false) => {
     try {
@@ -40,6 +42,7 @@ function TrendingClaimsGrid() {
       const params = {
         page: pageNum.toString(),
         limit: '12',
+        sort: selectedSort,
         ...(selectedCategory && { category: selectedCategory })
       };
 
@@ -70,6 +73,11 @@ function TrendingClaimsGrid() {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+    setPage(1);
+  };
+
+  const handleSortChange = (sort) => {
+    setSelectedSort(sort);
     setPage(1);
   };
 
@@ -176,6 +184,11 @@ function TrendingClaimsGrid() {
           categories={displayCategories}
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange}
+        />
+
+        <SortSelector 
+          selectedSort={selectedSort}
+          onSortChange={handleSortChange}
         />
 
         {error && (

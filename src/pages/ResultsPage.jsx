@@ -209,11 +209,23 @@ function ResultsPage() {
   const formatUrl = (url) => {
     if (!url) return 'N/A';
     try {
-      const domain = new URL(url).hostname;
-      return domain.replace('www.', '');
+      const urlObj = new URL(url);
+      const domain = urlObj.hostname.replace('www.', '');
+      return domain;
     } catch {
       return url;
     }
+  };
+
+  const getFullUrl = (source) => {
+    // Prioritize verification URL over generic URL
+    if (source.verification_url) {
+      return source.verification_url;
+    }
+    if (source.fact_check_url) {
+      return source.fact_check_url;
+    }
+    return source.url;
   };
 
   return (
@@ -511,56 +523,72 @@ function ResultsPage() {
                               These sources were used to verify the claim's accuracy
                             </p>
                             <SourcesGrid>
-                              {factCheckSources.map((source, index) => (
-                                <SourceItem key={index} style={{ 
-                                  border: '2px solid #22c55e', 
-                                  background: '#f0fdf4',
-                                  fontWeight: '600'
-                                }}>
-                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h4 title={source.name} style={{ margin: 0, color: '#166534' }}>
-                                      {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
-                                    </h4>
-                                    {source.reliability && source.reliability > 0.9 && (
-                                      <span style={{ 
-                                        background: '#22c55e', 
-                                        color: 'white', 
-                                        padding: '0.125rem 0.5rem', 
-                                        borderRadius: '0.25rem', 
-                                        fontSize: '0.75rem' 
-                                      }}>
-                                        Highly Reliable
+                              {factCheckSources.map((source, index) => {
+                                const fullUrl = getFullUrl(source);
+                                return (
+                                  <SourceItem key={index} style={{ 
+                                    border: '2px solid #22c55e', 
+                                    background: '#f0fdf4',
+                                    fontWeight: '600'
+                                  }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                      <h4 title={source.name} style={{ margin: 0, color: '#166534' }}>
+                                        {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
+                                      </h4>
+                                      {source.reliability && source.reliability > 0.9 && (
+                                        <span style={{ 
+                                          background: '#22c55e', 
+                                          color: 'white', 
+                                          padding: '0.125rem 0.5rem', 
+                                          borderRadius: '0.25rem', 
+                                          fontSize: '0.75rem' 
+                                        }}>
+                                          Highly Reliable
+                                        </span>
+                                      )}
+                                      {source.reliability && source.reliability > 0.7 && source.reliability <= 0.9 && (
+                                        <span style={{ 
+                                          background: '#eab308', 
+                                          color: 'white', 
+                                          padding: '0.125rem 0.5rem', 
+                                          borderRadius: '0.25rem', 
+                                          fontSize: '0.75rem' 
+                                        }}>
+                                          Reliable
+                                        </span>
+                                      )}
+                                    </div>
+                                    {fullUrl ? (
+                                      <div>
+                                        <a 
+                                          href={fullUrl} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer" 
+                                          title={`Open: ${fullUrl}`}
+                                          style={{ 
+                                            color: '#166534', 
+                                            fontSize: '0.875rem',
+                                            textDecoration: 'underline',
+                                            display: 'block',
+                                            marginBottom: '0.25rem'
+                                          }}
+                                        >
+                                          {formatUrl(fullUrl)} →
+                                        </a>
+                                        <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: 0, fontWeight: 'normal' }}>
+                                          {source.verification_url ? 'Fact-check article' : 
+                                           source.fact_check_url ? 'Verification source' : 
+                                           'Source article'}
+                                        </p>
+                                      </div>
+                                    ) : (
+                                      <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                        Internal Analysis
                                       </span>
                                     )}
-                                    {source.reliability && source.reliability > 0.7 && source.reliability <= 0.9 && (
-                                      <span style={{ 
-                                        background: '#eab308', 
-                                        color: 'white', 
-                                        padding: '0.125rem 0.5rem', 
-                                        borderRadius: '0.25rem', 
-                                        fontSize: '0.75rem' 
-                                      }}>
-                                        Reliable
-                                      </span>
-                                    )}
-                                  </div>
-                                  {source.url ? (
-                                    <a 
-                                      href={source.url} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer" 
-                                title={`Open: ${source.url}`}
-                                onClick={() => console.log('Opening URL:', source.url)}
-                              >
-                                      View Source →
-                                    </a>
-                                  ) : (
-                                    <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
-                                      Internal Analysis
-                                    </span>
-                                  )}
-                                </SourceItem>
-                              ))}
+                                  </SourceItem>
+                                );
+                              })}
                             </SourcesGrid>
                           </OverviewSection>
                         )}
@@ -573,52 +601,63 @@ function ResultsPage() {
                               Where this claim was first reported
                             </p>
                             <SourcesGrid>
-                              {originalSources.map((source, index) => (
-                                <SourceItem key={index} style={{ 
-                                  border: '1px solid #6b7280', 
-                                  background: '#f9fafb',
-                                  fontStyle: 'italic'
-                                }}>
-                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h4 title={source.name} style={{ margin: 0, color: '#374151' }}>
-                                      {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
-                                    </h4>
-                                    <span style={{ 
-                                      background: getSourceTypeColor(source.type), 
-                                      color: 'white', 
-                                      padding: '0.125rem 0.5rem', 
-                                      borderRadius: '0.25rem', 
-                                      fontSize: '0.75rem' 
-                                    }}>
-                                      {getSourceTypeLabel(source.type)}
-                                    </span>
-                                  </div>
-                                  {source.author && (
-                                    <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
-                                      By {source.author}
-                                    </p>
-                                  )}
-                                  {source.published_at && (
-                                    <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
-                                      Published {new Date(source.published_at).toLocaleDateString()}
-                                    </p>
-                                  )}
-                                  {source.url ? (
-                                    <a 
-                                      href={source.url} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer" 
-                                      style={{ color: '#3b82f6', fontWeight: '500' }}
-                                    >
-                                      View Source →
-                                    </a>
-                                  ) : (
-                                    <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
-                                      No URL available
-                                    </span>
-                                  )}
-                                </SourceItem>
-                              ))}
+                              {originalSources.map((source, index) => {
+                                const fullUrl = getFullUrl(source);
+                                return (
+                                  <SourceItem key={index} style={{ 
+                                    border: '1px solid #6b7280', 
+                                    background: '#f9fafb',
+                                    fontStyle: 'italic'
+                                  }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                      <h4 title={source.name} style={{ margin: 0, color: '#374151' }}>
+                                        {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
+                                      </h4>
+                                      <span style={{ 
+                                        background: getSourceTypeColor(source.type), 
+                                        color: 'white', 
+                                        padding: '0.125rem 0.5rem', 
+                                        borderRadius: '0.25rem', 
+                                        fontSize: '0.75rem' 
+                                      }}>
+                                        {getSourceTypeLabel(source.type)}
+                                      </span>
+                                    </div>
+                                    {source.author && (
+                                      <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                        By {source.author}
+                                      </p>
+                                    )}
+                                    {source.published_at && (
+                                      <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                        Published {new Date(source.published_at).toLocaleDateString()}
+                                      </p>
+                                    )}
+                                    {fullUrl ? (
+                                      <div>
+                                        <a 
+                                          href={fullUrl} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer" 
+                                          style={{ 
+                                            color: '#3b82f6', 
+                                            fontWeight: '500',
+                                            fontSize: '0.875rem',
+                                            textDecoration: 'underline',
+                                            display: 'block'
+                                          }}
+                                        >
+                                          {formatUrl(fullUrl)} →
+                                        </a>
+                                      </div>
+                                    ) : (
+                                      <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                        No URL available
+                                      </span>
+                                    )}
+                                  </SourceItem>
+                                );
+                              })}
                             </SourcesGrid>
                           </OverviewSection>
                         )}

@@ -118,6 +118,7 @@ export const apiService = {
       page: '1',
       limit: '12',
       status: 'completed',
+      sort: 'hybrid', // Default to hybrid sort
       ...params
     });
 
