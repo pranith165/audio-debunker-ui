@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { resetUpload } from '../redux/uploadSlice';
 import {
   ResultsHeaderWrapper, 
@@ -39,11 +39,34 @@ import Breadcrumb from '../common/Breadcrumb';
 
 function ResultsPage() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [claimData, setClaimData] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   // Get analysis results from Redux store
   const { analysisResults } = useSelector((state) => state.upload);
+  
+  // Check for claim data from URL parameters
+  useEffect(() => {
+    const dataParam = searchParams.get('data');
+    console.log('URL data param:', dataParam);
+    if (dataParam) {
+      try {
+        // Try parsing directly first, then with decodeURIComponent if that fails
+        let parsedData;
+        try {
+          parsedData = JSON.parse(dataParam);
+        } catch {
+          parsedData = JSON.parse(decodeURIComponent(dataParam));
+        }
+        console.log('Parsed claim data:', parsedData);
+        setClaimData(parsedData);
+      } catch (error) {
+        console.error('Error parsing claim data:', error);
+      }
+    }
+  }, [searchParams]);
 
   const handleNewAnalysis = () => {
     dispatch(resetUpload());
@@ -100,8 +123,58 @@ function ResultsPage() {
     }
   };
 
-  // Use analysis results from Redux or fall back to sample data
-  const analysisData = analysisResults || sampleData;
+  // Use claim data from URL, Redux results, or fall back to sample data
+  console.log('claimData state:', claimData);
+  console.log('analysisResults from Redux:', analysisResults);
+  
+  const analysisData = claimData ? {
+    // Transform claim data to match analysis format
+    transcription: claimData.claim_text,
+    claim: claimData.title,
+    verdict: claimData.verdict,
+    confidence: claimData.confidence,
+    explanation: claimData.explanation,
+    evidence_summary: claimData.evidence_summary,
+    source_type: claimData.source_type,
+    source_url: claimData.source_url,
+    trending_score: claimData.trending_score,
+    controversy_level: claimData.controversy_level,
+    view_count: claimData.view_count,
+    share_count: claimData.share_count,
+    processing_time: claimData.processing_time,
+    discovered_at: claimData.discovered_at,
+    processed_at: claimData.processed_at,
+    tags: claimData.tags,
+    keywords: claimData.keywords,
+    related_entities: claimData.related_entities,
+    category: claimData.category,
+    sources: claimData.sources?.map(source => ({
+      name: source.name || 'Unknown Source',
+      url: source.url,
+      type: source.type || 'web',
+      author: source.author,
+      published_at: source.published_at,
+      reliability: source.reliability
+    })) || [],
+    claim_evaluations: {
+      claim_1: {
+        status: claimData.verdict,
+        evidence: claimData.explanation,
+        evidence_summary: claimData.evidence_summary,
+        sources: claimData.sources?.map(s => s.url) || []
+      }
+    },
+    // Remove audio metrics for text-based claims
+    isTextClaim: true,
+    credibility_metrics: {
+      factual_accuracy: claimData.confidence || 0.5,
+      source_reliability: claimData.sources?.[0]?.reliability || 0.8,
+      controversy_level: claimData.controversy_level || 0.5,
+      processing_quality: claimData.processing_time ? Math.min(1.0, 30 / claimData.processing_time) : 0.8,
+      flags: claimData.verdict === 'False' ? ['Misinformation detected'] : 
+             claimData.verdict === 'Mixed' ? ['Mixed evidence found'] : []
+    }
+  } : (analysisResults || sampleData);
 
   const getVerdictColor = (verdict) => {
     switch(verdict?.toLowerCase()) {
@@ -110,6 +183,26 @@ function ResultsPage() {
       case 'mixed': return '#f59e0b';
       case 'uncertain': return '#6b7280';
       default: return '#6b7280';
+    }
+  };
+
+  const getSourceTypeColor = (type) => {
+    switch(type) {
+      case 'news': return '#6b7280';
+      case 'reddit': return '#ff4500';
+      case 'grok': return '#1da1f2';
+      case 'fact_check_source': return '#22c55e';
+      default: return '#6b7280';
+    }
+  };
+
+  const getSourceTypeLabel = (type) => {
+    switch(type) {
+      case 'news': return 'News';
+      case 'reddit': return 'Reddit';
+      case 'grok': return 'Social Media';
+      case 'fact_check_source': return 'Fact-Check';
+      default: return 'Source';
     }
   };
 
@@ -201,28 +294,91 @@ function ResultsPage() {
               >
                 Sources
               </TabButton>
-              <TabButton 
-                active={activeTab === 'metrics'}
-                onClick={() => setActiveTab('metrics')}
-              >
-                Audio Metrics
-              </TabButton>
+              {!analysisData.isTextClaim && (
+                <TabButton 
+                  active={activeTab === 'metrics'}
+                  onClick={() => setActiveTab('metrics')}
+                >
+                  Audio Metrics
+                </TabButton>
+              )}
             </TabNavigation>
 
             <TabContent>
               {activeTab === 'overview' && (
                 <div>
                   <OverviewSection>
-                    <h3>Transcription</h3>
+                    <h3>{analysisData.isTextClaim ? 'Claim Text' : 'Transcription'}</h3>
                     <TranscriptionBox>
-                      {analysisData.transcription}
+                      {analysisData.transcription || analysisData.claim_text}
                     </TranscriptionBox>
                   </OverviewSection>
                   
                   <OverviewSection>
-                    <h3>Analysis Explanation</h3>
+                    <h3>Fact-Check Analysis</h3>
                     <p>{analysisData.explanation}</p>
+                    {analysisData.evidence_summary && (
+                      <div style={{ marginTop: '1rem' }}>
+                        <h4>Evidence Summary</h4>
+                        <p>{analysisData.evidence_summary}</p>
+                      </div>
+                    )}
                   </OverviewSection>
+
+                  {analysisData.isTextClaim && (
+                    <>
+                      {analysisData.tags && (
+                        <OverviewSection>
+                          <h3>Tags</h3>
+                          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            {analysisData.tags.map((tag, index) => (
+                              <span key={index} style={{ 
+                                background: '#f3f4f6', 
+                                padding: '0.25rem 0.5rem', 
+                                borderRadius: '0.25rem',
+                                fontSize: '0.875rem'
+                              }}>
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </OverviewSection>
+                      )}
+
+                      {analysisData.related_entities && (
+                        <OverviewSection>
+                          <h3>Related Entities</h3>
+                          <p>{analysisData.related_entities.join(', ')}</p>
+                        </OverviewSection>
+                      )}
+
+                      <OverviewSection>
+                        <h3>Discovery Information</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                          <div>
+                            <strong>Source Type:</strong> {analysisData.source_type || 'Unknown'}
+                          </div>
+                          <div>
+                            <strong>Category:</strong> {analysisData.category}
+                          </div>
+                          <div>
+                            <strong>Trending Score:</strong> {analysisData.trending_score ? `${Math.round(analysisData.trending_score * 100)}%` : 'N/A'}
+                          </div>
+                          <div>
+                            <strong>Views:</strong> {analysisData.view_count || 0}
+                          </div>
+                          <div>
+                            <strong>Shares:</strong> {analysisData.share_count || 0}
+                          </div>
+                          {analysisData.processing_time && (
+                            <div>
+                              <strong>Processing Time:</strong> {analysisData.processing_time.toFixed(2)}s
+                            </div>
+                          )}
+                        </div>
+                      </OverviewSection>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -231,42 +387,107 @@ function ResultsPage() {
                   <OverviewSection>
                     <h3>Primary Claims Identified</h3>
                     <ClaimsGrid>
-                      {analysisData.evidence?.primary_claims?.map((claim, index) => (
-                        <ClaimItem key={index}>
-                          <ClaimStatus status="false">False</ClaimStatus>
-                          <p>{claim}</p>
+                      {analysisData.isTextClaim ? (
+                        // For trending claims, show the main claim
+                        <ClaimItem>
+                          <ClaimStatus status={analysisData.verdict?.toLowerCase()}>
+                            {analysisData.verdict}
+                          </ClaimStatus>
+                          <p>{analysisData.claim || analysisData.transcription}</p>
                         </ClaimItem>
-                      )) || <p>No primary claims identified.</p>}
+                      ) : (
+                        // For audio analysis, use original logic
+                        analysisData.evidence?.primary_claims?.map((claim, index) => (
+                          <ClaimItem key={index}>
+                            <ClaimStatus status="false">False</ClaimStatus>
+                            <p>{claim}</p>
+                          </ClaimItem>
+                        )) || <p>No primary claims identified.</p>
+                      )}
                     </ClaimsGrid>
                   </OverviewSection>
 
                   <OverviewSection>
                     <h3>Detailed Evaluations</h3>
-                    {analysisData.evidence?.claim_evaluations ? (
-                      Object.entries(analysisData.evidence.claim_evaluations).map(([key, evaluation]) => (
-                        <div key={key} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                            <ClaimStatus status={evaluation.status?.toLowerCase()}>
-                              {evaluation.status}
-                            </ClaimStatus>
-                            <h4>{key.replace('_', ' ').toUpperCase()}</h4>
-                          </div>
-                          <p style={{ marginBottom: '1rem', color: '#4b5563' }}>{evaluation.evidence}</p>
-                          {evaluation.sources && (
-                            <div>
-                              <span style={{ fontWeight: '500', color: '#6b7280' }}>Sources:</span>
-                              {evaluation.sources.map((source, idx) => (
-                                <a key={idx} href={source} target="_blank" rel="noopener noreferrer" 
-                                   style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
-                                  {formatUrl(source)}
-                                </a>
-                              ))}
-                            </div>
+                    {analysisData.isTextClaim ? (
+                      // For trending claims, show the fact-check evaluation
+                      <div style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                          <ClaimStatus status={analysisData.verdict?.toLowerCase()}>
+                            {analysisData.verdict}
+                          </ClaimStatus>
+                          <h4>FACT-CHECK ANALYSIS</h4>
+                          {analysisData.confidence && (
+                            <span style={{ background: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.875rem' }}>
+                              {Math.round(analysisData.confidence * 100)}% Confidence
+                            </span>
                           )}
                         </div>
-                      ))
+                        <p style={{ marginBottom: '1rem', color: '#4b5563' }}>
+                          {analysisData.explanation}
+                        </p>
+                        {analysisData.evidence_summary && (
+                          <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#f9fafb', borderRadius: '6px' }}>
+                            <span style={{ fontWeight: '500', color: '#374151' }}>Evidence Summary:</span>
+                            <p style={{ margin: '0.5rem 0 0 0', color: '#6b7280' }}>{analysisData.evidence_summary}</p>
+                          </div>
+                        )}
+                        {analysisData.source_url && (
+                          <div>
+                            <span style={{ fontWeight: '500', color: '#6b7280' }}>Original Source:</span>
+                            <a href={analysisData.source_url} target="_blank" rel="noopener noreferrer" 
+                               style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
+                              {formatUrl(analysisData.source_url)}
+                            </a>
+                          </div>
+                        )}
+                        {analysisData.keywords && (
+                          <div style={{ marginTop: '1rem' }}>
+                            <span style={{ fontWeight: '500', color: '#6b7280' }}>Keywords:</span>
+                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                              {analysisData.keywords.map((keyword, idx) => (
+                                <span key={idx} style={{ 
+                                  background: '#dbeafe', 
+                                  color: '#1e40af',
+                                  padding: '0.25rem 0.5rem', 
+                                  borderRadius: '0.25rem',
+                                  fontSize: '0.875rem'
+                                }}>
+                                  {keyword}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     ) : (
-                      <p>No detailed evaluations available.</p>
+                      // For audio analysis, use original logic
+                      analysisData.evidence?.claim_evaluations ? (
+                        Object.entries(analysisData.evidence.claim_evaluations).map(([key, evaluation]) => (
+                          <div key={key} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                              <ClaimStatus status={evaluation.status?.toLowerCase()}>
+                                {evaluation.status}
+                              </ClaimStatus>
+                              <h4>{key.replace('_', ' ').toUpperCase()}</h4>
+                            </div>
+                            <p style={{ marginBottom: '1rem', color: '#4b5563' }}>{evaluation.evidence}</p>
+                            {evaluation.sources && (
+                              <div>
+                                <span style={{ fontWeight: '500', color: '#6b7280' }}>Sources:</span>
+                                {evaluation.sources.map((source, idx) => (
+                                  <a key={idx} href={source} target="_blank" rel="noopener noreferrer" 
+                                     style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
+                                    {formatUrl(source)}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <p>No detailed evaluations available.</p>
+                      )
                     )}
                   </OverviewSection>
                 </div>
@@ -274,40 +495,144 @@ function ResultsPage() {
 
               {activeTab === 'sources' && (
                 <div>
-                  <OverviewSection>
-                    <h3>All Sources Consulted ({analysisData.sources?.length || 0})</h3>
-                    <SourcesGrid>
-                      {analysisData.sources ? (
-                        analysisData.sources.map((source, index) => (
-                          <SourceItem key={index}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                              <h4 title={source.name}>
-                                {source.name.length > 50 ? `${source.name.substring(0, 50)}...` : source.name}
-                              </h4>
-                              <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>{source.type}</span>
-                            </div>
-                            {source.url ? (
-                              <a 
-                                href={source.url} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                  {/* Separate sources by type */}
+                  {(() => {
+                    const factCheckSources = analysisData.sources?.filter(s => s.type === 'fact_check_source') || [];
+                    const originalSources = analysisData.sources?.filter(s => s.type !== 'fact_check_source') || [];
+                    const totalSources = (analysisData.sources?.length || 0);
+
+                    return (
+                      <>
+                        {/* PRIMARY: Fact-checking sources */}
+                        {factCheckSources.length > 0 && (
+                          <OverviewSection>
+                            <h3>🔍 Verified By ({factCheckSources.length})</h3>
+                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+                              These sources were used to verify the claim's accuracy
+                            </p>
+                            <SourcesGrid>
+                              {factCheckSources.map((source, index) => (
+                                <SourceItem key={index} style={{ 
+                                  border: '2px solid #22c55e', 
+                                  background: '#f0fdf4',
+                                  fontWeight: '600'
+                                }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                    <h4 title={source.name} style={{ margin: 0, color: '#166534' }}>
+                                      {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
+                                    </h4>
+                                    {source.reliability && source.reliability > 0.9 && (
+                                      <span style={{ 
+                                        background: '#22c55e', 
+                                        color: 'white', 
+                                        padding: '0.125rem 0.5rem', 
+                                        borderRadius: '0.25rem', 
+                                        fontSize: '0.75rem' 
+                                      }}>
+                                        Highly Reliable
+                                      </span>
+                                    )}
+                                    {source.reliability && source.reliability > 0.7 && source.reliability <= 0.9 && (
+                                      <span style={{ 
+                                        background: '#eab308', 
+                                        color: 'white', 
+                                        padding: '0.125rem 0.5rem', 
+                                        borderRadius: '0.25rem', 
+                                        fontSize: '0.75rem' 
+                                      }}>
+                                        Reliable
+                                      </span>
+                                    )}
+                                  </div>
+                                  {source.url ? (
+                                    <a 
+                                      href={source.url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer" 
                                 title={`Open: ${source.url}`}
                                 onClick={() => console.log('Opening URL:', source.url)}
                               >
-                                View Source →
-                              </a>
-                            ) : (
-                              <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
-                                Internal Analysis
-                              </span>
-                            )}
-                          </SourceItem>
-                        ))
-                      ) : (
-                        <p>No sources available.</p>
-                      )}
-                    </SourcesGrid>
-                  </OverviewSection>
+                                      View Source →
+                                    </a>
+                                  ) : (
+                                    <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                      Internal Analysis
+                                    </span>
+                                  )}
+                                </SourceItem>
+                              ))}
+                            </SourcesGrid>
+                          </OverviewSection>
+                        )}
+
+                        {/* SECONDARY: Original article source */}
+                        {originalSources.length > 0 && (
+                          <OverviewSection>
+                            <h3>📰 Original Article ({originalSources.length})</h3>
+                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+                              Where this claim was first reported
+                            </p>
+                            <SourcesGrid>
+                              {originalSources.map((source, index) => (
+                                <SourceItem key={index} style={{ 
+                                  border: '1px solid #6b7280', 
+                                  background: '#f9fafb',
+                                  fontStyle: 'italic'
+                                }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                    <h4 title={source.name} style={{ margin: 0, color: '#374151' }}>
+                                      {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
+                                    </h4>
+                                    <span style={{ 
+                                      background: getSourceTypeColor(source.type), 
+                                      color: 'white', 
+                                      padding: '0.125rem 0.5rem', 
+                                      borderRadius: '0.25rem', 
+                                      fontSize: '0.75rem' 
+                                    }}>
+                                      {getSourceTypeLabel(source.type)}
+                                    </span>
+                                  </div>
+                                  {source.author && (
+                                    <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                      By {source.author}
+                                    </p>
+                                  )}
+                                  {source.published_at && (
+                                    <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                      Published {new Date(source.published_at).toLocaleDateString()}
+                                    </p>
+                                  )}
+                                  {source.url ? (
+                                    <a 
+                                      href={source.url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer" 
+                                      style={{ color: '#3b82f6', fontWeight: '500' }}
+                                    >
+                                      View Source →
+                                    </a>
+                                  ) : (
+                                    <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                      No URL available
+                                    </span>
+                                  )}
+                                </SourceItem>
+                              ))}
+                            </SourcesGrid>
+                          </OverviewSection>
+                        )}
+
+                        {/* Empty state */}
+                        {factCheckSources.length === 0 && originalSources.length === 0 && (
+                          <OverviewSection>
+                            <h3>Sources</h3>
+                            <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No sources available for this claim.</p>
+                          </OverviewSection>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               )}
 

@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 
 export const LandingPageWrapper = styled.div`
   background-color: #f9f9f9;
-  min-height: 100vh;
   position: relative;
   overflow: hidden;
   display: grid;
   grid-template-columns: 3% auto 3%;
+  margin-bottom: 0;
 
   @media (max-width: 768px) {
     grid-template-columns: 2% auto 2%;

@@ -45,7 +45,7 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
 
     dispatch(setAnalyse());
     try {
-      const response = await fetch('https://debunker-production-4920.up.railway.app/api/analyze-file', {
+      const response = await fetch('http://0.0.0.0:8080/api/analyze-file', {
         method: 'POST',
         body: formData,
       });

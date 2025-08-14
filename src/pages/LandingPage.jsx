@@ -1,4 +1,5 @@
 import { Wrapper, DecorativeLineWrapper, Heading, Subtext, RichText, VerticalStripe, LandingPageWrapper, PoorText, AnalyzeButton, ButtonWrapper } from './LandingPage.styled';
+import TrendingClaimsGrid from '../components/TrendingClaimsGrid';
 
 function LandingPage() {
   return (
@@ -34,8 +35,8 @@ function LandingPage() {
                 <VerticalStripe className="right"> </VerticalStripe>
             </div>
         </LandingPageWrapper>
+        <TrendingClaimsGrid />
     </>
-
   );
 }
 
