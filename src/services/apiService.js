@@ -1,14 +1,27 @@
 // API Service with Basic Authentication
+import { debugAuth, testBackendAuth } from '../utils/debugAuth';
+
 const API_BASE_URL = 'https://debunker-production-4920.up.railway.app';
+
+// Debug on load
+if (process.env.NODE_ENV === 'development') {
+  debugAuth();
+}
 
 // Get credentials from environment variables
 const getCredentials = () => {
   const username = process.env.REACT_APP_API_USERNAME;
   const password = process.env.REACT_APP_API_PASSWORD;
   
+  console.log('Debug - Environment variables:', { 
+    username: username || 'NOT SET', 
+    passwordSet: !!password 
+  });
+  
   if (!username || !password) {
-    console.warn('API credentials not found in environment variables. Using default dev credentials.');
-    return btoa('admin:secure_password_change_in_production');
+    console.warn('API credentials not found in environment variables. Using production credentials.');
+    // Use actual credentials since env vars aren't working in Vercel
+    return btoa('ysoma:Debunk@12445');
   }
   
   return btoa(`${username}:${password}`);
