@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ClaimCard from './ClaimCard';
 import CategoryFilter from './CategoryFilter';
+import { apiService, handleApiError } from '../services/apiService';
 import { 
   GridWrapper, 
   GridSideStripe,
@@ -36,20 +37,13 @@ function TrendingClaimsGrid() {
       setLoading(true);
       setError(null);
 
-      const params = new URLSearchParams({
+      const params = {
         page: pageNum.toString(),
         limit: '12',
-        status: 'completed',
         ...(selectedCategory && { category: selectedCategory })
-      });
+      };
 
-      const response = await fetch(`https://debunker-production-4920.up.railway.app/api/trending-claims?${params}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await apiService.getTrendingClaims(params);
       
       if (reset) {
         setClaims(data.claims || []);
@@ -68,6 +62,7 @@ function TrendingClaimsGrid() {
     } catch (error) {
       console.error('Error fetching trending claims:', error);
       setError('Failed to load trending claims. Please try again.');
+      handleApiError(error);
     } finally {
       setLoading(false);
     }
@@ -86,37 +81,31 @@ function TrendingClaimsGrid() {
 
   const handleClaimClick = async (claim) => {
     try {
-      // Fetch full claim details from backend
-      const response = await fetch(`https://debunker-production-4920.up.railway.app/api/trending-claims/${claim.id}`);
-      if (response.ok) {
-        const fullClaimData = await response.json();
-        // Navigate to results page with full claim data
-        window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(fullClaimData))}`;
-      } else {
-        // Fallback to basic claim data if detailed fetch fails
-        const basicData = {
-          id: claim.id,
-          verdict: claim.verdict,
-          confidence: claim.confidence,
-          explanation: claim.explanation,
-          claim_text: claim.claim_text,
-          title: claim.title,
-          category: claim.category
-        };
-        window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(basicData))}`;
-      }
+      // Fetch full claim details from backend (public endpoint)
+      const fullClaimData = await apiService.getClaimDetails(claim.id);
+      // Navigate to results page with full claim data
+      window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(fullClaimData))}`;
     } catch (error) {
       console.error('Error fetching claim details:', error);
-      // Fallback navigation
-      window.location.href = `/results?claimId=${claim.id}`;
+      handleApiError(error);
+      
+      // Fallback to basic claim data if detailed fetch fails
+      const basicData = {
+        id: claim.id,
+        verdict: claim.verdict,
+        confidence: claim.confidence,
+        explanation: claim.explanation,
+        claim_text: claim.claim_text,
+        title: claim.title,
+        category: claim.category
+      };
+      window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(basicData))}`;
     }
   };
 
   const handleShare = async (claimId) => {
     try {
-      await fetch(`https://debunker-production-4920.up.railway.app/api/claims/${claimId}/share`, { 
-        method: 'POST' 
-      });
+      await apiService.shareClaim(claimId);
       // Update local share count
       setClaims(prev => prev.map(claim => 
         claim.id === claimId 
@@ -125,6 +114,7 @@ function TrendingClaimsGrid() {
       ));
     } catch (error) {
       console.error('Error updating share count:', error);
+      handleApiError(error);
     }
   };
 

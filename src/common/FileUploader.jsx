@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFile, markUploaded, setResults, setAnalyse } from '../redux/uploadSlice';
+import { apiService, handleApiError } from '../services/apiService';
 import { 
   FileUploaderWrapper, Upload, UploadWrapper, UploadIcon, 
   FileName, UploadDescription, Headliner, Subheadliner, 
@@ -39,20 +40,13 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
 
     onStartAnalysis?.();
 
-    console.log('Sending file to backend...');
+    console.log('Sending file to backend with authentication...');
     const formData = new FormData();
     formData.append('audio_file', file);
 
     dispatch(setAnalyse());
     try {
-      const response = await fetch('https://debunker-production-4920.up.railway.app/api/analyze-file', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error('Server error while analyzing.');
-
-      const data = await response.json();
+      const data = await apiService.analyzeFile(formData);
       dispatch(setResults(data));
       console.log('Analysis Result:', data);
 
@@ -62,7 +56,7 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
       navigate('/results');
     } catch (error) {
       console.error('Upload error:', error);
-      alert('There was an error uploading the file.');
+      handleApiError(error);
     }
   };
 
