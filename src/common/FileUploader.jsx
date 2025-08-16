@@ -14,7 +14,7 @@ import AudioRecorder from './AudioRecorder';
 function FileUploader({ onStartAnalysis, onReportReady }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [mode, setMode] = useState('upload'); // 'upload' or 'record'
+  const [mode, setMode] = useState('record'); // 'upload' or 'record' - default to record
 
   // Get file info from Redux
   const { file, fileName, isUploaded, isAnalysed } = useSelector((state) => state.upload);
