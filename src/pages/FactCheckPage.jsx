@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetUpload } from '../redux/uploadSlice';
 import FileUploader from '../common/FileUploader';
@@ -10,6 +10,7 @@ import Breadcrumb from '../common/Breadcrumb';
 
 function FactCheckPage() {
   const dispatch = useDispatch();
+  const stepLoaderRef = useRef(null);
 
   const [steps, setSteps] = useState(initialSteps);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -48,6 +49,16 @@ function FactCheckPage() {
     setCurrentStepIndex(0);
     setIsLoading(true);
     setAnalysisKey(prev => prev + 1); // Force re-render of StepLoader
+    
+    // Auto scroll to the progress indicator
+    setTimeout(() => {
+      if (stepLoaderRef.current) {
+        stepLoaderRef.current.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }
+    }, 100); // Small delay to ensure the StepLoader is rendered
   };
 
   const completeReportGeneration = () => {
@@ -72,7 +83,11 @@ function FactCheckPage() {
             onReportReady={completeReportGeneration}
           />
         </FactCheckUploadWrapper>
-        {isLoading && <StepLoader key={`analysis-${analysisKey}`} steps={steps} />}
+        {isLoading && (
+          <div ref={stepLoaderRef}>
+            <StepLoader key={`analysis-${analysisKey}`} steps={steps} />
+          </div>
+        )}
       </div>
       <div>
           <VerticalStripe className="right"> </VerticalStripe>
