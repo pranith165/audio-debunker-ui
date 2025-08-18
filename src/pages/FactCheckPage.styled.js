@@ -28,24 +28,21 @@ export const FactCheckUploadWrapper = styled.div`
     box-sizing: border-box;
     max-width: 100%;
 
-    @media (max-width: 768px) {
-        width: 85%;
+    @media (max-width: 1024px) {
+        width: 60%;
         margin: 30px auto;
         padding: 18px;
     }
 
-    @media (max-width: 480px) {
-        width: 95%;
-        margin: 20px auto;
-        padding: 16px;
-        border-radius: 8px;
-        margin-left: auto;
-        margin-right: auto;
+    @media (max-width: 820px) {
+        width: 60%;
+        margin: 30px auto;
+        padding: 18px;
     }
 
-    @media (max-width: 375px) {
-        width: 98%;
-        margin: 15px auto;
+    @media (max-width: 600px) {
+        width: 100%;
+        margin: 0;
         padding: 12px;
     }
 `;
