@@ -118,7 +118,7 @@ export const apiService = {
       page: params.page || '1',
       limit: params.limit || '12',
       status: 'completed',
-      sort: params.sort || 'hybrid',
+      sort: params.sort || 'recent',
       ...(params.category && { category: params.category })
     });
 
