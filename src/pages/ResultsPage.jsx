@@ -35,7 +35,6 @@ import {
   SecondaryButton
 } from './ResultsPage.styled';
 import { VerticalStripe, DecorativeLineWrapper } from './LandingPage.styled';
-import Breadcrumb from '../common/Breadcrumb';
 
 function ResultsPage() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -240,7 +239,6 @@ function ResultsPage() {
           <VerticalStripe className="left"> </VerticalStripe>
         </div>
         <div>
-          <Breadcrumb />
           
           <ResultsHeaderWrapper>
             <ResultHeadliner>Analysis Complete: Truth Revealed</ResultHeadliner>
