@@ -115,11 +115,11 @@ export const apiService = {
   // Get trending claims (public)
   async getTrendingClaims(params = {}) {
     const queryParams = new URLSearchParams({
-      page: '1',
-      limit: '12',
+      page: params.page || '1',
+      limit: params.limit || '12',
       status: 'completed',
-      sort: 'hybrid', // Default to hybrid sort
-      ...params
+      sort: params.sort || 'hybrid',
+      ...(params.category && { category: params.category })
     });
 
     const response = await publicFetch(`${API_BASE_URL}/api/trending-claims?${queryParams}`);
