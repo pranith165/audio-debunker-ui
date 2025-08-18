@@ -89,3 +89,27 @@ export const HeaderLogoLink = styled(Link)`
   text-decoration: none;
   color: black;
 `;
+
+export const NavItemLink = styled(Link)`
+  color: #838282;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    min-height: 40px;
+  }
+`;

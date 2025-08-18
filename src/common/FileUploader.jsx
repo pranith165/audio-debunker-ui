@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFile, markUploaded, setResults, setAnalyse } from '../redux/uploadSlice';
-import { apiService, handleApiError } from '../services/apiService';
+import { setFile, markUploaded, setResults, setAnalyse, resetUpload } from '../redux/uploadSlice';
+import { apiService } from '../services/apiService';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 import { 
   FileUploaderWrapper, Upload, UploadWrapper, UploadIcon, 
   FileName, UploadDescription, Headliner, Subheadliner, 
@@ -10,11 +11,13 @@ import {
 } from './FileUploader.styled';
 import Waves from '../common/Waves';
 import AudioRecorder from './AudioRecorder';
+import ErrorNotification from './ErrorNotification';
 
 function FileUploader({ onStartAnalysis, onReportReady }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mode, setMode] = useState('record'); // 'upload' or 'record' - default to record
+  const { error, handleError, clearError, retryOperation } = useErrorHandler();
 
   // Get file info from Redux
   const { file, fileName, isUploaded, isAnalysed } = useSelector((state) => state.upload);
@@ -32,31 +35,44 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
     }
   };
 
-  const handleOnClick = async () => {
-    if (!file) {
-      alert('Please upload a file before analyzing.');
-      return;
-    }
-
-    onStartAnalysis?.();
-
+  const performAnalysis = async () => {
     console.log('Sending file to backend with authentication...');
     const formData = new FormData();
     formData.append('audio_file', file);
 
     dispatch(setAnalyse());
+    
+    const data = await apiService.analyzeFile(formData);
+    dispatch(setResults(data));
+    console.log('Analysis Result:', data);
+
+    onReportReady?.();
+
+    // Navigate to Results page
+    navigate('/results');
+  };
+
+  const handleOnClick = async () => {
+    if (!file) {
+      handleError(new Error('Please upload a file before analyzing.'), { autoRedirect: false });
+      return;
+    }
+
+    onStartAnalysis?.();
+
     try {
-      const data = await apiService.analyzeFile(formData);
-      dispatch(setResults(data));
-      console.log('Analysis Result:', data);
-
-      onReportReady?.();
-
-      // Navigate to Results page
-      navigate('/results');
+      await performAnalysis();
     } catch (error) {
       console.error('Upload error:', error);
-      handleApiError(error);
+      // Reset the upload state on error
+      dispatch(resetUpload());
+      handleError(error);
+    }
+  };
+
+  const handleRetry = () => {
+    if (file) {
+      retryOperation(performAnalysis);
     }
   };
 
@@ -125,6 +141,15 @@ function FileUploader({ onStartAnalysis, onReportReady }) {
       </FileUploaderWrapper>
 
       <Waves animation={isUploaded} />
+      
+      {error && (
+        <ErrorNotification
+          error={error}
+          onRetry={handleRetry}
+          onClose={clearError}
+          showRetry={!!file}
+        />
+      )}
     </>
   );
 }

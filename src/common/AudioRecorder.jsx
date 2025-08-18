@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setFile, markUploaded } from '../redux/uploadSlice';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 import {
   RecorderWrapper,
   RecordButton,
@@ -15,13 +16,14 @@ import {
 
 function AudioRecorder({ disabled = false }) {
   const dispatch = useDispatch();
+  const { handleError } = useErrorHandler();
   const [isRecording, setIsRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
-  const [error, setError] = useState(null);
+  const [localError, setLocalError] = useState(null);
   
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -32,11 +34,11 @@ function AudioRecorder({ disabled = false }) {
   useEffect(() => {
     const checkSupport = () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        setError('Media recording not supported in this browser');
+        setLocalError('Media recording not supported in this browser');
         return false;
       }
       if (!window.MediaRecorder) {
-        setError('MediaRecorder not supported in this browser');
+        setLocalError('MediaRecorder not supported in this browser');
         return false;
       }
       return true;
@@ -58,11 +60,13 @@ function AudioRecorder({ disabled = false }) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setPermissionGranted(true);
-      setError(null);
+      setLocalError(null);
       return stream;
     } catch (error) {
       console.error('Microphone permission denied:', error);
-      setError('Microphone access denied. Please allow microphone access and try again.');
+      const errorMsg = 'Microphone access denied. Please allow microphone access and try again.';
+      setLocalError(errorMsg);
+      handleError(new Error(errorMsg), { autoRedirect: false });
       return null;
     }
   };
@@ -126,7 +130,9 @@ function AudioRecorder({ disabled = false }) {
 
     } catch (error) {
       console.error('Recording error:', error);
-      setError('Failed to start recording. Please try again.');
+      const errorMsg = 'Failed to start recording. Please try again.';
+      setLocalError(errorMsg);
+      handleError(new Error(errorMsg), { autoRedirect: false });
     }
   };
 
@@ -180,11 +186,11 @@ function AudioRecorder({ disabled = false }) {
   };
 
   // Early return for unsupported browsers
-  if (!isSupported || error) {
+  if (!isSupported || localError) {
     return (
       <RecorderWrapper>
         <div style={{ padding: '2rem', textAlign: 'center', color: '#ef4444' }}>
-          ⚠️ {error || 'Recording not supported'}<br/>
+          ⚠️ {localError || 'Recording not supported'}<br/>
           <small style={{ color: '#6b7280' }}>Please use file upload instead.</small>
         </div>
       </RecorderWrapper>

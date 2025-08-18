@@ -4,14 +4,14 @@ import { debugAuth, testBackendAuth } from '../utils/debugAuth';
 const API_BASE_URL = 'https://debunker-production-4920.up.railway.app';
 
 // Debug on load
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
   debugAuth();
 }
 
 // Get credentials from environment variables
 const getCredentials = () => {
-  const username = process.env.REACT_APP_API_USERNAME;
-  const password = process.env.REACT_APP_API_PASSWORD;
+  const username = import.meta.env.VITE_API_USERNAME;
+  const password = import.meta.env.VITE_API_PASSWORD;
   
   console.log('Debug - Environment variables:', { 
     username: username || 'NOT SET', 

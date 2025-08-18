@@ -1,4 +1,4 @@
-import { HeaderWrapper, HeaderLogo, NavItems, GitIcon, HeaderLogoLink, NavItem } from "./Header.styled";
+import { HeaderWrapper, HeaderLogo, NavItems, GitIcon, HeaderLogoLink, NavItem, NavItemLink } from "./Header.styled";
 
 
 
@@ -10,9 +10,10 @@ function Header() {
         </HeaderLogo>
         <NavItems> 
             <NavItem><GitIcon/></NavItem>
+            <NavItemLink to="/about">About</NavItemLink>
             <NavItem>Blog</NavItem>
             <NavItem>Docs</NavItem>
-            <NavItem>Get started</NavItem>
+            <NavItemLink to="/fact-check">Get started</NavItemLink>
         </NavItems>
     </HeaderWrapper>
   );
