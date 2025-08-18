@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import ClaimCard from './ClaimCard';
 import CategoryFilter from './CategoryFilter';
 import SortSelector from './SortSelector';
-import { apiService, handleApiError } from '../services/apiService';
+import { apiService } from '../services/apiService';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import ErrorNotification from '../common/ErrorNotification';
 import { 
   GridWrapper, 
   GridSideStripe,
@@ -29,6 +31,7 @@ function TrendingClaimsGrid() {
   const [hasMore, setHasMore] = useState(true);
   const [totalClaims, setTotalClaims] = useState(0);
   const [allCategories, setAllCategories] = useState([]);
+  const { error: errorHandler, handleError, clearError } = useErrorHandler();
 
   useEffect(() => {
     fetchTrendingClaims(1, true); // Reset to page 1 when category or sort changes
@@ -65,7 +68,7 @@ function TrendingClaimsGrid() {
     } catch (error) {
       console.error('Error fetching trending claims:', error);
       setError('Failed to load trending claims. Please try again.');
-      handleApiError(error);
+      handleError(error);
     } finally {
       setLoading(false);
     }
@@ -95,7 +98,7 @@ function TrendingClaimsGrid() {
       window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(fullClaimData))}`;
     } catch (error) {
       console.error('Error fetching claim details:', error);
-      handleApiError(error);
+      handleError(error);
       
       // Fallback to basic claim data if detailed fetch fails
       const basicData = {
@@ -122,7 +125,7 @@ function TrendingClaimsGrid() {
       ));
     } catch (error) {
       console.error('Error updating share count:', error);
-      handleApiError(error);
+      handleError(error);
     }
   };
 
@@ -228,6 +231,14 @@ function TrendingClaimsGrid() {
         )}
       </GridContent>
       <GridSideStripe className="right"> </GridSideStripe>
+      
+      {errorHandler && (
+        <ErrorNotification
+          error={errorHandler}
+          onClose={clearError}
+          autoRedirect={false}
+        />
+      )}
     </GridWrapper>
   );
 }

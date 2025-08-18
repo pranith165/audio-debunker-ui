@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { apiService, handleApiError } from '../services/apiService';
+import { apiService } from '../services/apiService';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import ErrorNotification from '../common/ErrorNotification';
 import styled from 'styled-components';
 
 const AdminWrapper = styled.div`
@@ -62,6 +64,7 @@ function AdminPanel() {
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { error: errorHandler, handleError, clearError } = useErrorHandler();
 
   const triggerAggregation = async () => {
     setLoading(true);
@@ -74,7 +77,7 @@ function AdminPanel() {
       setStatus(`Success: ${result.message || 'Aggregation completed'}`);
     } catch (err) {
       setError(`Failed: ${err.message}`);
-      handleApiError(err);
+      handleError(err);
     } finally {
       setLoading(false);
     }
@@ -139,6 +142,14 @@ function AdminPanel() {
         <p>• News aggregation requires authentication (protected endpoint)</p>
         <p>• Health check and scheduler status are public endpoints</p>
       </div>
+      
+      {errorHandler && (
+        <ErrorNotification
+          error={errorHandler}
+          onClose={clearError}
+          autoRedirect={false}
+        />
+      )}
     </AdminWrapper>
   );
 }

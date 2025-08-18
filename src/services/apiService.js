@@ -166,22 +166,22 @@ export const apiService = {
   }
 };
 
-// Error handler for components
+// Error handler for components - now only logs errors, no alerts
 export const handleApiError = (error) => {
   console.error('API Error:', error);
   
   if (error.message.includes('Authentication failed')) {
-    alert('Authentication failed. Please check your credentials.');
+    console.error('Authentication failed. Please check your credentials.');
     return;
   }
   
   if (error.message.includes('Access denied')) {
-    alert('Access denied. You do not have permission for this action.');
+    console.error('Access denied. You do not have permission for this action.');
     return;
   }
   
   // Generic error
-  alert(`Error: ${error.message}`);
+  console.error(`Error: ${error.message}`);
 };
 
 export default apiService;
