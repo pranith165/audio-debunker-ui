@@ -47,6 +47,11 @@ function ResultsPage() {
   // Get analysis results from Redux store
   const { analysisResults } = useSelector((state) => state.upload);
   
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Check for claim data from URL parameters
   useEffect(() => {
     const dataParam = searchParams.get('data');
