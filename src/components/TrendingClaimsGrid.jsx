@@ -24,7 +24,7 @@ function TrendingClaimsGrid() {
   const [claims, setClaims] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSort, setSelectedSort] = useState('hybrid');
+  const [selectedSort, setSelectedSort] = useState('recent');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
