@@ -1,4 +1,4 @@
-import { HeaderWrapper, HeaderLogo, NavItems, GitIcon, HeaderLogoLink, NavItem, NavItemLink } from "./Header.styled";
+import { HeaderWrapper, HeaderLogo, NavItems, HeaderLogoLink, NavItem, NavItemLink } from "./Header.styled";
 
 
 
@@ -9,7 +9,6 @@ function Header() {
             <HeaderLogoLink to='/'>debunker</HeaderLogoLink>
         </HeaderLogo>
         <NavItems> 
-            <NavItem><GitIcon/></NavItem>
             <NavItemLink to="/about">About</NavItemLink>
             <NavItem>Blog</NavItem>
             <NavItem>Docs</NavItem>

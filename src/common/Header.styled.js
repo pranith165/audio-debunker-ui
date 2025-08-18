@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IoLogoGithub } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 export const HeaderWrapper = styled.header`
@@ -75,14 +74,6 @@ export const NavItem = styled.a`
     font-size: 12px;
     min-height: 40px;
   }
-`;
-
-export const GitIcon = styled(IoLogoGithub)`
-  font-size: 20px;
-  color: #838282;
-  margin-right: 8px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
 `;
 
 export const HeaderLogoLink = styled(Link)`
