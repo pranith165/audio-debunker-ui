@@ -133,6 +133,86 @@ export const ContentBlock = styled.div`
   }
 `;
 
+export const AcknowledgmentSection = styled.section`
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+
+  @media (max-width: 768px) {
+    padding: 2.5rem 1rem;
+  }
+`;
+
+export const ClaudeCodeSection = styled.div`
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+export const ClaudeCodeTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #f0f0f0;
+  margin-bottom: 2rem;
+  font-family: monospace;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+`;
+
+export const PixelText = styled.div`
+  font-family: 'Courier New', monospace;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff6b5a;
+  text-shadow: 
+    2px 2px 0px #d45544,
+    4px 4px 0px #b33e2e,
+    6px 6px 0px #922818;
+  letter-spacing: 0.5rem;
+  margin: 2rem 0;
+  line-height: 1;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    letter-spacing: 0.3rem;
+    text-shadow: 
+      1px 1px 0px #d45544,
+      2px 2px 0px #b33e2e,
+      3px 3px 0px #922818;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+    text-shadow: 
+      1px 1px 0px #d45544,
+      2px 2px 0px #b33e2e;
+  }
+`;
+
+export const ClaudeCodeText = styled.p`
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #d0d0d0;
+  margin-top: 2rem;
+  font-family: monospace;
+  font-style: italic;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
+`;
+
 export const FoundersSection = styled.section`
   padding: 4rem 2rem;
   border-top: 1px solid #eee;
@@ -162,14 +242,25 @@ export const SectionTitle = styled.h2`
 
 export const FoundersGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 4rem;
   max-width: 1000px;
   margin: 0 auto;
+  justify-items: center;
+
+  /* Third card (Claude Code) spans both columns and centers itself */
+  & > div:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 3rem;
+    
+    & > div:nth-child(3) {
+      grid-column: 1;
+    }
   }
 `;
 

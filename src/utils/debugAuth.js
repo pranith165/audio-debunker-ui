@@ -2,11 +2,11 @@
 export const debugAuth = () => {
   console.log('=== AUTH DEBUG INFO ===');
   console.log('Environment Variables:');
-  console.log('REACT_APP_API_USERNAME:', process.env.REACT_APP_API_USERNAME);
-  console.log('REACT_APP_API_PASSWORD:', process.env.REACT_APP_API_PASSWORD ? 'SET' : 'NOT SET');
+  // console.log('REACT_APP_API_USERNAME:', process.env.REACT_APP_API_USERNAME);
+  // console.log('REACT_APP_API_PASSWORD:', process.env.REACT_APP_API_PASSWORD ? 'SET' : 'NOT SET');
   
-  const username = process.env.REACT_APP_API_USERNAME;
-  const password = process.env.REACT_APP_API_PASSWORD;
+  const username = '';
+  const password = '';
   
   if (username && password) {
     const credentials = btoa(`${username}:${password}`);

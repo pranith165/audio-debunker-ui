@@ -22,6 +22,7 @@ import {
 // Import founder images
 import yeshwanthImage from '../assets/images/ys.jpeg';
 import pranithImage from '../assets/images/pm.jpeg';
+import claudeCodeImage from '../assets/images/claude-code-circular.png';
 
 function AboutPage() {
   return (
@@ -94,6 +95,22 @@ function AboutPage() {
                 <FounderTitle>Software Engineer II</FounderTitle>
                 <FounderBio>
                   Pranith co-founded this platform after realizing how hard it is to trust what we hear in a world of misinformation. With a background in software engineering, he helped pioneer audio verification as the first step toward solving that challenge. Today, he is focused on scaling fact-checking technology that makes truth easier to access.
+                </FounderBio>
+              </FounderInfo>
+            </FounderCard>
+            
+            <FounderCard>
+              <FounderImageContainer>
+                <FounderImage src={claudeCodeImage} alt="Claude Code" />
+              </FounderImageContainer>
+              <FounderInfo>
+                <FounderName>Claude Code</FounderName>
+                <FounderTitle>Honorary Team Member</FounderTitle>
+                <FounderBio>
+                  Meet our unofficial third team member! While Yeshwanth and Pranith did the heavy lifting, 
+                  Claude Code was there for the late-night coding sessions, helping debug those mysterious 
+                  UI errors and suggesting "maybe try turning it off and on again?" We can't pay it in 
+                  salary, but we can pay it in gratitude. Thanks for being our digital rubber duck!
                 </FounderBio>
               </FounderInfo>
             </FounderCard>
