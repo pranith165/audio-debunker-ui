@@ -3,10 +3,14 @@ import { HeaderWrapper, HeaderLogo, NavItems, HeaderLogoLink, NavItem, NavItemLi
 
 
 function Header() {
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <HeaderWrapper>
         <HeaderLogo>
-            <HeaderLogoLink to='/'>debunker</HeaderLogoLink>
+            <HeaderLogoLink to='/' onClick={handleLogoClick}>debunker</HeaderLogoLink>
         </HeaderLogo>
         <NavItems> 
             <NavItemLink to="/about">About</NavItemLink>
