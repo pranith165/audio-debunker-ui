@@ -51,11 +51,28 @@ function TrendingClaimsGrid() {
 
       const data = await apiService.getTrendingClaims(params);
       
+      // Remove duplicates based on title and claim_text
+      const removeDuplicates = (claims) => {
+        const seen = new Set();
+        return claims.filter(claim => {
+          const key = `${claim.title}-${claim.claim_text}`;
+          if (seen.has(key)) {
+            return false;
+          }
+          seen.add(key);
+          return true;
+        });
+      };
+      
+      const uniqueClaims = removeDuplicates(data.claims || []);
+      
       if (reset) {
-        setClaims(data.claims || []);
+        setClaims(uniqueClaims);
         setPage(1);
       } else {
-        setClaims(prev => [...prev, ...(data.claims || [])]);
+        // Also deduplicate when combining with existing claims
+        const allClaims = [...claims, ...uniqueClaims];
+        setClaims(removeDuplicates(allClaims));
       }
       
       // Handle categories from API response
