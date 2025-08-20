@@ -51,11 +51,11 @@ function TrendingClaimsGrid() {
 
       const data = await apiService.getTrendingClaims(params);
       
-      // Remove duplicates based on title and claim_text
+      // Remove duplicates based on title only
       const removeDuplicates = (claims) => {
         const seen = new Set();
         return claims.filter(claim => {
-          const key = `${claim.title}-${claim.claim_text}`;
+          const key = claim.title;
           if (seen.has(key)) {
             return false;
           }
