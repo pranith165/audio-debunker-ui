@@ -20,6 +20,9 @@ function FactCheckPage() {
 
   // Reset upload state when component mounts (when user navigates to fact-check page)
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     dispatch(resetUpload());
     // Also reset the steps state
     const freshSteps = initialSteps.map(step => ({ ...step, done: false }));

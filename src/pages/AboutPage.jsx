@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { 
   AboutWrapper,
   VerticalStripe,
@@ -25,6 +26,10 @@ import pranithImage from '../assets/images/pm.jpeg';
 import claudeCodeImage from '../assets/images/claude-code-circular.png';
 
 function AboutPage() {
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   return (
     <AboutWrapper>
       <VerticalStripe className="left" />
