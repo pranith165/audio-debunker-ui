@@ -1,10 +1,25 @@
 import { HeaderWrapper, HeaderLogo, NavItems, HeaderLogoLink, NavItem, NavItemLink } from "./Header.styled";
-
-
+import { analytics } from '../utils/analytics';
 
 function Header() {
   const handleLogoClick = () => {
+    analytics.trackButtonClick('logo', 'header');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGetStartedClick = () => {
+    analytics.trackButtonClick('get_started', 'header');
+  };
+
+  const handleAboutClick = () => {
+    analytics.trackButtonClick('about', 'header');
+  };
+
+  const handleBlogClick = () => {
+    analytics.trackExternalLink(
+      'https://medium.com/@pranith165/how-we-built-an-ai-that-fact-checks-viral-audio-in-real-time-746d63522101',
+      'Blog - Medium Article'
+    );
   };
 
   return (
@@ -13,17 +28,18 @@ function Header() {
             <HeaderLogoLink to='/' onClick={handleLogoClick}>debunker</HeaderLogoLink>
         </HeaderLogo>
         <NavItems> 
-            <NavItemLink to="/about">About</NavItemLink>
+            <NavItemLink to="/about" onClick={handleAboutClick}>About</NavItemLink>
             <NavItem>
               <a href="https://medium.com/@pranith165/how-we-built-an-ai-that-fact-checks-viral-audio-in-real-time-746d63522101" 
                  target="_blank" 
                  rel="noopener noreferrer"
-                 style={{ textDecoration: 'none', color: 'inherit' }}>
+                 style={{ textDecoration: 'none', color: 'inherit' }}
+                 onClick={handleBlogClick}>
                 Blog
               </a>
             </NavItem>
             <NavItem>Docs</NavItem>
-            <NavItemLink to="/fact-check">Get started</NavItemLink>
+            <NavItemLink to="/fact-check" onClick={handleGetStartedClick}>Get started</NavItemLink>
         </NavItems>
     </HeaderWrapper>
   );

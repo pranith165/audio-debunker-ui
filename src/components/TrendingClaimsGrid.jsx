@@ -5,6 +5,7 @@ import SortSelector from './SortSelector';
 import { apiService } from '../services/apiService';
 import { useErrorHandler } from '../hooks/useErrorHandler';
 import ErrorNotification from '../common/ErrorNotification';
+import { analytics } from '../utils/analytics';
 import { 
   GridWrapper, 
   GridSideStripe,
@@ -92,22 +93,66 @@ function TrendingClaimsGrid() {
   };
 
   const handleCategoryChange = (category) => {
+    // Track category filter usage
+    analytics.trackEvent('category_filter_used', {
+      category: 'trending_claims',
+      label: category || 'all_categories',
+      filter_type: 'category',
+      selected_category: category || 'all'
+    });
+
     setSelectedCategory(category);
     setPage(1);
   };
 
   const handleSortChange = (sort) => {
+    // Track sorting filter usage
+    analytics.trackEvent('sort_filter_used', {
+      category: 'trending_claims',
+      label: sort,
+      filter_type: 'sort',
+      selected_sort: sort
+    });
+
     setSelectedSort(sort);
     setPage(1);
   };
 
   const handleLoadMore = () => {
+    // Track load more usage
+    analytics.trackEvent('load_more_claims', {
+      category: 'engagement',
+      label: `page_${page + 1}`,
+      current_page: page,
+      next_page: page + 1,
+      current_filters: {
+        category: selectedCategory || 'all',
+        sort: selectedSort
+      },
+      claims_loaded: claims.length
+    });
+
     const nextPage = page + 1;
     setPage(nextPage);
     fetchTrendingClaims(nextPage, false);
   };
 
   const handleClaimClick = async (claim) => {
+    // Track claim interaction
+    analytics.trackEvent('trending_claim_clicked', {
+      category: 'engagement',
+      label: claim.category,
+      claim_id: claim.id,
+      claim_category: claim.category,
+      claim_verdict: claim.verdict,
+      confidence_score: Math.round((claim.confidence || 0) * 100),
+      view_count: claim.view_count || 0,
+      current_filters: {
+        category: selectedCategory || 'all',
+        sort: selectedSort
+      }
+    });
+
     try {
       // Fetch full claim details from backend (public endpoint)
       const fullClaimData = await apiService.getClaimDetails(claim.id);
@@ -132,6 +177,22 @@ function TrendingClaimsGrid() {
   };
 
   const handleShare = async (claimId) => {
+    // Find the claim being shared for analytics
+    const sharedClaim = claims.find(claim => claim.id === claimId);
+    
+    // Track share action
+    analytics.trackEvent('trending_claim_shared', {
+      category: 'engagement',
+      label: sharedClaim?.category || 'unknown',
+      claim_id: claimId,
+      claim_category: sharedClaim?.category,
+      claim_verdict: sharedClaim?.verdict,
+      current_filters: {
+        category: selectedCategory || 'all',
+        sort: selectedSort
+      }
+    });
+
     try {
       await apiService.shareClaim(claimId);
       // Update local share count

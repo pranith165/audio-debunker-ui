@@ -7,6 +7,7 @@ import {FactCheckWrapper, FactCheckUploadWrapper} from './FactCheckPage.styled';
 import { VerticalStripe } from './LandingPage.styled';
 import {initialSteps} from '../helpers';
 import Breadcrumb from '../common/Breadcrumb';
+import { analytics } from '../utils/analytics';
 
 function FactCheckPage() {
   const dispatch = useDispatch();
@@ -43,6 +44,12 @@ function FactCheckPage() {
 
 
   const startAnalysis = () => {
+    // Track analysis start
+    analytics.trackEvent('analysis_started', {
+      category: 'fact_check',
+      label: 'user_initiated'
+    });
+
     // Create a fresh copy of initial steps to ensure state update
     const freshSteps = initialSteps.map(step => ({ ...step, done: false }));
     setSteps(freshSteps);
