@@ -52,6 +52,11 @@ export const analytics = {
     pageview(url, title);
   },
 
+  // Generic event tracking
+  trackEvent: (eventName, parameters = {}) => {
+    trackEvent(eventName, parameters);
+  },
+
   // Fact-checking related events
   trackFileUpload: (fileType, fileSize) => {
     trackEvent('file_upload', {
