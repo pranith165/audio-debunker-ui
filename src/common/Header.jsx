@@ -8,7 +8,7 @@ function Header() {
   };
 
   const handleGetStartedClick = () => {
-    analytics.trackButtonClick('get_started', 'header');
+    analytics.trackButtonClick('bust_myths', 'header');
   };
 
   const handleAboutClick = () => {
@@ -39,7 +39,7 @@ function Header() {
               </a>
             </NavItem>
             <NavItem>Docs</NavItem>
-            <NavItemLink to="/fact-check" onClick={handleGetStartedClick}>Get started</NavItemLink>
+            <NavItemLink to="/fact-check" onClick={handleGetStartedClick}>Bust Myths</NavItemLink>
         </NavItems>
     </HeaderWrapper>
   );

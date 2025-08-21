@@ -26,7 +26,7 @@ function LandingPage() {
                     </DecorativeLineWrapper>
                     <DecorativeLineWrapper>
                         <ButtonWrapper>
-                            <AnalyzeButton to='/fact-check'>Get Started</AnalyzeButton>
+                            <AnalyzeButton to='/fact-check'>Let's Bust the Myths</AnalyzeButton>
                         </ButtonWrapper>
                     </DecorativeLineWrapper>
                 </Wrapper>
