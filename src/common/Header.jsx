@@ -23,7 +23,7 @@ function Header() {
               </a>
             </NavItem>
             <NavItem>Docs</NavItem>
-            <NavItemLink to="/fact-check">Get started</NavItemLink>
+            <NavItemLink to="/fact-check">Bust Myths</NavItemLink>
         </NavItems>
     </HeaderWrapper>
   );
