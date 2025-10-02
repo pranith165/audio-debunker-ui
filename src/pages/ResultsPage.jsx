@@ -405,16 +405,12 @@ function ResultsPage() {
                       {analysisData.isTextClaim ? (
                         // For trending claims, show the main claim
                         <ClaimItem>
-                          <ClaimStatus status={analysisData.verdict?.toLowerCase()}>
-                            {analysisData.verdict}
-                          </ClaimStatus>
                           <p>{analysisData.claim || analysisData.transcription}</p>
                         </ClaimItem>
                       ) : (
                         // For audio analysis, use original logic
                         analysisData.evidence?.primary_claims?.map((claim, index) => (
                           <ClaimItem key={index}>
-                            <ClaimStatus status="false">False</ClaimStatus>
                             <p>{claim}</p>
                           </ClaimItem>
                         )) || <p>No primary claims identified.</p>
