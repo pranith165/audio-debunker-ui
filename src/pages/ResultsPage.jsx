@@ -189,13 +189,33 @@ function ResultsPage() {
   const agreement = analysisData?.source_agreement ?? 'single';
   const agreementCfg = agreementConfig[agreement] ?? agreementConfig.single;
 
+  const isClassified = ['opinion', 'not a claim'].includes(analysisData.verdict?.toLowerCase());
+
   const getVerdictColor = (verdict) => {
     switch(verdict?.toLowerCase()) {
       case 'true': return '#10b981';
-      case 'false': return '#ef4444'; 
+      case 'false': return '#ef4444';
       case 'mixed': return '#f59e0b';
       case 'uncertain': return '#6b7280';
+      case 'opinion': return '#6b21a8';
+      case 'not a claim': return '#374151';
       default: return '#6b7280';
+    }
+  };
+
+  const getVerdictPillStyle = (verdict) => {
+    switch(verdict?.toLowerCase()) {
+      case 'opinion': return { backgroundColor: '#e9d5ff', color: '#6b21a8', padding: '1px 8px', borderRadius: '9999px' };
+      case 'not a claim': return { backgroundColor: '#f3f4f6', color: '#374151', padding: '1px 8px', borderRadius: '9999px' };
+      default: return {};
+    }
+  };
+
+  const getVerdictLabel = (verdict) => {
+    switch(verdict?.toLowerCase()) {
+      case 'opinion': return '💬 Opinion';
+      case 'not a claim': return '❓ Not a Claim';
+      default: return verdict;
     }
   };
 
@@ -275,22 +295,27 @@ function ResultsPage() {
                   <OverViewDetails>
                     <OverViewTitle highlighted>VERDICT & CONFIDENCE</OverViewTitle>
                     <OverViewDescription>
-                      Result: <span style={{ color: getVerdictColor(analysisData.verdict) }}>
-                        {analysisData.verdict}
-                      </span> (Confidence: {Math.round(analysisData.confidence * 100)}%). 
-                      The claim is unsupported by scientific evidence.
+                      Result: <span style={{ color: getVerdictColor(analysisData.verdict), ...getVerdictPillStyle(analysisData.verdict) }}>
+                        {getVerdictLabel(analysisData.verdict)}
+                      </span>{' '}
+                      {isClassified
+                        ? <span style={{ color: '#6b7280' }}>(Confidence: N/A)</span>
+                        : `(Confidence: ${Math.round(analysisData.confidence * 100)}%). The claim is unsupported by scientific evidence.`
+                      }
                     </OverViewDescription>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      padding: '2px 10px',
-                      borderRadius: '9999px',
-                      backgroundColor: agreementCfg.bg,
-                      color: agreementCfg.color,
-                      display: 'inline-block',
-                      marginTop: '6px',
-                    }}>
-                      {agreementCfg.label}
-                    </span>
+                    {!isClassified && (
+                      <span style={{
+                        fontSize: '0.75rem',
+                        padding: '2px 10px',
+                        borderRadius: '9999px',
+                        backgroundColor: agreementCfg.bg,
+                        color: agreementCfg.color,
+                        display: 'inline-block',
+                        marginTop: '6px',
+                      }}>
+                        {agreementCfg.label}
+                      </span>
+                    )}
                   </OverViewDetails>
                 </OverviewCard>
                 <OverviewCard hoverBg='oklch(0.685 0.169 237.323 / 0.09)' hoverColor='oklch(0.685 0.169 237.323)'>
@@ -317,20 +342,24 @@ function ResultsPage() {
               >
                 Overview
               </TabButton>
-              <TabButton 
-                active={activeTab === 'claims'}
-                onClick={() => setActiveTab('claims')}
-              >
-                Claim Analysis
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'sources'}
-                onClick={() => setActiveTab('sources')}
-              >
-                Sources
-              </TabButton>
-              {!analysisData.isTextClaim && (
-                <TabButton 
+              {!isClassified && (
+                <TabButton
+                  active={activeTab === 'claims'}
+                  onClick={() => setActiveTab('claims')}
+                >
+                  Claim Analysis
+                </TabButton>
+              )}
+              {!isClassified && (
+                <TabButton
+                  active={activeTab === 'sources'}
+                  onClick={() => setActiveTab('sources')}
+                >
+                  Sources
+                </TabButton>
+              )}
+              {!isClassified && !analysisData.isTextClaim && (
+                <TabButton
                   active={activeTab === 'metrics'}
                   onClick={() => setActiveTab('metrics')}
                 >
@@ -373,13 +402,28 @@ function ResultsPage() {
                   </OverviewSection>
                   
                   <OverviewSection>
-                    <h3>Fact-Check Analysis</h3>
-                    <p>{analysisData.explanation}</p>
-                    {analysisData.evidence_summary && (
-                      <div style={{ marginTop: '1rem' }}>
-                        <h4>Evidence Summary</h4>
-                        <p>{analysisData.evidence_summary}</p>
+                    <h3>{isClassified ? 'Classification Result' : 'Fact-Check Analysis'}</h3>
+                    {isClassified ? (
+                      <div style={{
+                        backgroundColor: analysisData.verdict?.toLowerCase() === 'opinion' ? '#faf5ff' : '#f9fafb',
+                        border: `1px solid ${analysisData.verdict?.toLowerCase() === 'opinion' ? '#e9d5ff' : '#e5e7eb'}`,
+                        borderRadius: '8px',
+                        padding: '16px 20px',
+                      }}>
+                        <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.6', color: '#374151' }}>
+                          {analysisData.explanation}
+                        </p>
                       </div>
+                    ) : (
+                      <>
+                        <p>{analysisData.explanation}</p>
+                        {analysisData.evidence_summary && (
+                          <div style={{ marginTop: '1rem' }}>
+                            <h4>Evidence Summary</h4>
+                            <p>{analysisData.evidence_summary}</p>
+                          </div>
+                        )}
+                      </>
                     )}
                   </OverviewSection>
 
