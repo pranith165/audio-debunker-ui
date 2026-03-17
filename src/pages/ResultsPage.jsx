@@ -180,6 +180,15 @@ function ResultsPage() {
     }
   } : (analysisResults || sampleData);
 
+  const agreementConfig = {
+    agree:   { label: '✓ All sources agree',          bg: '#dcfce7', color: '#15803d' },
+    partial: { label: '~ Sources partially disagree', bg: '#fef9c3', color: '#a16207' },
+    conflict:{ label: '⚠ Sources conflict',           bg: '#fee2e2', color: '#b91c1c' },
+    single:  { label: '— Single source',              bg: '#f3f4f6', color: '#6b7280' },
+  };
+  const agreement = analysisData?.source_agreement ?? 'single';
+  const agreementCfg = agreementConfig[agreement] ?? agreementConfig.single;
+
   const getVerdictColor = (verdict) => {
     switch(verdict?.toLowerCase()) {
       case 'true': return '#10b981';
@@ -271,6 +280,17 @@ function ResultsPage() {
                       </span> (Confidence: {Math.round(analysisData.confidence * 100)}%). 
                       The claim is unsupported by scientific evidence.
                     </OverViewDescription>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      padding: '2px 10px',
+                      borderRadius: '9999px',
+                      backgroundColor: agreementCfg.bg,
+                      color: agreementCfg.color,
+                      display: 'inline-block',
+                      marginTop: '6px',
+                    }}>
+                      {agreementCfg.label}
+                    </span>
                   </OverViewDetails>
                 </OverviewCard>
                 <OverviewCard hoverBg='oklch(0.685 0.169 237.323 / 0.09)' hoverColor='oklch(0.685 0.169 237.323)'>
@@ -322,6 +342,29 @@ function ResultsPage() {
             <TabContent>
               {activeTab === 'overview' && (
                 <div>
+                  {analysisData?.source_agreement === 'conflict' && (
+                    <div style={{
+                      backgroundColor: '#fff7ed',
+                      border: '1px solid #fed7aa',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      marginBottom: '16px',
+                      display: 'flex',
+                      gap: '10px',
+                      alignItems: 'flex-start',
+                    }}>
+                      <span style={{ fontSize: '1.1rem' }}>⚠️</span>
+                      <div>
+                        <strong style={{ color: '#9a3412', display: 'block', marginBottom: '4px' }}>
+                          Sources conflict on this claim
+                        </strong>
+                        <span style={{ color: '#7c3c1b', fontSize: '0.875rem' }}>
+                          Different fact-checking sources reached opposite verdicts.
+                          Confidence has been reduced. Review the explanation carefully.
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   <OverviewSection>
                     <h3>{analysisData.isTextClaim ? 'Claim Text' : 'Transcription'}</h3>
                     <TranscriptionBox>
@@ -408,7 +451,7 @@ function ResultsPage() {
                           <p>{analysisData.claim || analysisData.transcription}</p>
                         </ClaimItem>
                       ) : (
-                        // For audio analysis, use original logic
+                        // For audio analysis, use original logic without status labels
                         analysisData.evidence?.primary_claims?.map((claim, index) => (
                           <ClaimItem key={index}>
                             <p>{claim}</p>
@@ -474,13 +517,19 @@ function ResultsPage() {
                     ) : (
                       // For audio analysis, use original logic
                       analysisData.evidence?.claim_evaluations ? (
-                        Object.entries(analysisData.evidence.claim_evaluations).map(([key, evaluation]) => (
+                        <>
+                          <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '12px' }}>
+                            {Object.keys(analysisData.evidence.claim_evaluations).length} sub-claim{Object.keys(analysisData.evidence.claim_evaluations).length !== 1 ? 's' : ''} evaluated
+                          </p>
+                        {Object.entries(analysisData.evidence.claim_evaluations).map(([key, evaluation]) => (
                           <div key={key} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                               <ClaimStatus status={evaluation.status?.toLowerCase()}>
                                 {evaluation.status}
                               </ClaimStatus>
-                              <h4>{key.replace('_', ' ').toUpperCase()}</h4>
+                              <h4 title={key}>
+                                {key.length > 120 ? key.slice(0, 120) + '…' : key.replace('_', ' ').toUpperCase()}
+                              </h4>
                             </div>
                             <p style={{ marginBottom: '1rem', color: '#4b5563' }}>{evaluation.evidence}</p>
                             {evaluation.sources && (
@@ -495,7 +544,8 @@ function ResultsPage() {
                               </div>
                             )}
                           </div>
-                        ))
+                        ))}
+                        </>
                       ) : (
                         <p>No detailed evaluations available.</p>
                       )
