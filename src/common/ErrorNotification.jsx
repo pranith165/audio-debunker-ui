@@ -7,7 +7,8 @@ import {
   ErrorTitle,
   ErrorSubtitle,
   ErrorButton,
-  CountdownText
+  CountdownText,
+  SmallNote
 } from './ErrorNotification.styled';
 import errorImg from '../assets/images/errorImg.png';
 
@@ -57,12 +58,22 @@ function ErrorNotification({
     <ErrorWrapper>
       <ErrorContainer>
         <ErrorImage src={errorImg} alt="Server Error" />
-        <ErrorTitle>Uh-oh!</ErrorTitle>
-        <ErrorSubtitle>Our server is in therapy Mode</ErrorSubtitle>
+        {error?.code === 'RATE_LIMITED' ? (
+          <>
+            <ErrorTitle>Daily Limit Reached</ErrorTitle>
+            <ErrorSubtitle>{error.message}</ErrorSubtitle>
+            <SmallNote>Debunker is in beta — limits help us keep it free for everyone.</SmallNote>
+          </>
+        ) : (
+          <>
+            <ErrorTitle>Uh-oh!</ErrorTitle>
+            <ErrorSubtitle>Our server is in therapy Mode</ErrorSubtitle>
+          </>
+        )}
         <ErrorButton onClick={handleGoBack}>
-          Go back
+          {error?.code === 'RATE_LIMITED' ? 'Got it' : 'Go back'}
         </ErrorButton>
-        {autoRedirect && countdown > 0 && (
+        {autoRedirect && countdown > 0 && error?.code !== 'RATE_LIMITED' && (
           <CountdownText>
             Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
           </CountdownText>

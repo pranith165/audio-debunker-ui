@@ -28,6 +28,9 @@ export const useErrorHandler = () => {
     } else if (err?.status === 415) {
       errorObj.message = 'Unsupported file format. Please upload a valid audio file.';
       errorObj.code = 'INVALID_FORMAT';
+    } else if (err?.status === 429) {
+      errorObj.message = err.message || "You've used your 3 free checks for today. Come back tomorrow!";
+      errorObj.code = 'RATE_LIMITED';
     } else if (err?.status >= 500) {
       errorObj.message = 'Server error. Our team has been notified. Please try again later.';
       errorObj.code = 'SERVER_ERROR';
@@ -39,9 +42,9 @@ export const useErrorHandler = () => {
     setError(errorObj);
 
     // Optional: Auto-redirect to home after delay to show trending data
-    if (options.autoRedirect !== false) {
+    if (options.autoRedirect !== false && errorObj.code !== 'RATE_LIMITED') {
       setTimeout(() => {
-        navigate('/', { 
+        navigate('/', {
           replace: true,
           state: { fromError: true, message: 'Check out trending claims while we fix the issue!' }
         });

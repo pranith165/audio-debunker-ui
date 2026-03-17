@@ -139,6 +139,14 @@ export const ErrorButton = styled.button`
   }
 `;
 
+export const SmallNote = styled.p`
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0 0 1.5rem;
+  font-family: sans-serif;
+  font-weight: 400;
+`;
+
 export const CountdownText = styled.p`
   font-size: 0.875rem;
   color: #6b7280;

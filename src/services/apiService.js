@@ -47,6 +47,13 @@ const authenticatedFetch = async (url, options = {}) => {
     throw new Error('Access denied - insufficient permissions');
   }
 
+  if (response.status === 429) {
+    const body = await response.json().catch(() => ({}));
+    const err = new Error(body.detail || "You've reached your daily limit. Come back tomorrow!");
+    err.status = 429;
+    throw err;
+  }
+
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);
   }
