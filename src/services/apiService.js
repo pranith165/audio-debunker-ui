@@ -22,7 +22,7 @@ const authenticatedFetch = async (url, options = {}) => {
     headers['Authorization'] = `Basic ${credentials}`;
   }
 
-  const response = await fetch(url, { ...options, headers });
+  const response = await fetch(url, { ...options, headers, credentials: 'include' });
 
   if (response.status === 401) {
     throw new Error('Authentication failed - invalid credentials');
@@ -48,7 +48,7 @@ const authenticatedFetch = async (url, options = {}) => {
 
 // Helper function for public requests (no auth needed)
 const publicFetch = async (url, options = {}) => {
-  const response = await fetch(url, options);
+  const response = await fetch(url, { ...options, credentials: 'include' });
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);
