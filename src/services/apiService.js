@@ -1,29 +1,11 @@
-// API Service with Basic Authentication
-import { debugAuth, testBackendAuth } from '../utils/debugAuth';
-
+// API Service
 const API_BASE_URL = 'https://debunker-production-4920.up.railway.app';
 
-// Debug on load
-if (import.meta.env.DEV) {
-  debugAuth();
-}
-
-// Get credentials from environment variables
+// Returns a Basic Auth token only when env vars are set — never falls back to hardcoded values
 const getCredentials = () => {
   const username = import.meta.env.VITE_API_USERNAME;
   const password = import.meta.env.VITE_API_PASSWORD;
-  
-  console.log('Debug - Environment variables:', { 
-    username: username || 'NOT SET', 
-    passwordSet: !!password 
-  });
-  
-  if (!username || !password) {
-    console.warn('API credentials not found in environment variables. Using production credentials.');
-    // Use actual credentials since env vars aren't working in Vercel
-    return btoa('ysoma:Debunk@12445');
-  }
-  
+  if (!username || !password) return null;
   return btoa(`${username}:${password}`);
 };
 
@@ -31,13 +13,12 @@ const API_CREDENTIALS = getCredentials();
 
 // Helper function for authenticated requests
 const authenticatedFetch = async (url, options = {}) => {
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      'Authorization': `Basic ${API_CREDENTIALS}`
-    }
-  });
+  const headers = { ...options.headers };
+  if (API_CREDENTIALS) {
+    headers['Authorization'] = `Basic ${API_CREDENTIALS}`;
+  }
+
+  const response = await fetch(url, { ...options, headers });
 
   if (response.status === 401) {
     throw new Error('Authentication failed - invalid credentials');
