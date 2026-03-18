@@ -1,21 +1,25 @@
 // API Service
 const API_BASE_URL = 'https://debunker-production-4920.up.railway.app';
 
-// Returns a Basic Auth token only when env vars are set — never falls back to hardcoded values
+// Returns a Basic Auth token — sessionStorage (admin login) takes priority,
+// then env vars, then null (anonymous).
 const getCredentials = () => {
+  const session = sessionStorage.getItem('admin_credentials');
+  if (session) return session;
+
   const username = import.meta.env.VITE_API_USERNAME;
   const password = import.meta.env.VITE_API_PASSWORD;
-  if (!username || !password) return null;
-  return btoa(`${username}:${password}`);
-};
+  if (username && password) return btoa(`${username}:${password}`);
 
-const API_CREDENTIALS = getCredentials();
+  return null;
+};
 
 // Helper function for authenticated requests
 const authenticatedFetch = async (url, options = {}) => {
+  const credentials = getCredentials();
   const headers = { ...options.headers };
-  if (API_CREDENTIALS) {
-    headers['Authorization'] = `Basic ${API_CREDENTIALS}`;
+  if (credentials) {
+    headers['Authorization'] = `Basic ${credentials}`;
   }
 
   const response = await fetch(url, { ...options, headers });
