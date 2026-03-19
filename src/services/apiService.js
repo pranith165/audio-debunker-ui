@@ -1,6 +1,17 @@
 // API Service
 const API_BASE_URL = 'https://debunker-production-4920.up.railway.app';
 
+// Get or create a persistent device ID — stored in localStorage so it survives
+// incognito sessions (where third-party cookies are blocked).
+const getDeviceId = () => {
+  let id = localStorage.getItem('debunker_id');
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem('debunker_id', id);
+  }
+  return id;
+};
+
 // Returns a Basic Auth token — sessionStorage (admin login) takes priority,
 // then env vars, then null (anonymous).
 const getCredentials = () => {
@@ -17,7 +28,7 @@ const getCredentials = () => {
 // Helper function for authenticated requests
 const authenticatedFetch = async (url, options = {}) => {
   const credentials = getCredentials();
-  const headers = { ...options.headers };
+  const headers = { ...options.headers, 'X-Device-ID': getDeviceId() };
   if (credentials) {
     headers['Authorization'] = `Basic ${credentials}`;
   }
@@ -48,7 +59,8 @@ const authenticatedFetch = async (url, options = {}) => {
 
 // Helper function for public requests (no auth needed)
 const publicFetch = async (url, options = {}) => {
-  const response = await fetch(url, { ...options, credentials: 'include' });
+  const headers = { ...options.headers, 'X-Device-ID': getDeviceId() };
+  const response = await fetch(url, { ...options, headers, credentials: 'include' });
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);
