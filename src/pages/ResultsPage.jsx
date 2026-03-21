@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { resetUpload } from '../redux/uploadSlice';
 import {
   ResultsHeaderWrapper, 
@@ -36,11 +36,15 @@ import {
 } from './ResultsPage.styled';
 import { VerticalStripe, DecorativeLineWrapper } from './LandingPage.styled';
 
+const safeUrl = (url) =>
+  typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://')) ? url : null;
+
 function ResultsPage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [claimData, setClaimData] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   
   // Get analysis results from Redux store
@@ -51,26 +55,12 @@ function ResultsPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Check for claim data from URL parameters
+  // Check for claim data from React Router state (set by TrendingClaimsGrid)
   useEffect(() => {
-    const dataParam = searchParams.get('data');
-    console.log('URL data param:', dataParam);
-    if (dataParam) {
-      try {
-        // Try parsing directly first, then with decodeURIComponent if that fails
-        let parsedData;
-        try {
-          parsedData = JSON.parse(dataParam);
-        } catch {
-          parsedData = JSON.parse(decodeURIComponent(dataParam));
-        }
-        console.log('Parsed claim data:', parsedData);
-        setClaimData(parsedData);
-      } catch (error) {
-        console.error('Error parsing claim data:', error);
-      }
+    if (location.state?.claimData) {
+      setClaimData(location.state.claimData);
     }
-  }, [searchParams]);
+  }, [location.state]);
 
   const handleNewAnalysis = () => {
     dispatch(resetUpload());
@@ -530,10 +520,10 @@ function ResultsPage() {
                             <p style={{ margin: '0.5rem 0 0 0', color: '#6b7280' }}>{analysisData.evidence_summary}</p>
                           </div>
                         )}
-                        {analysisData.source_url && (
+                        {safeUrl(analysisData.source_url) && (
                           <div>
                             <span style={{ fontWeight: '500', color: '#6b7280' }}>Original Source:</span>
-                            <a href={analysisData.source_url} target="_blank" rel="noopener noreferrer" 
+                            <a href={safeUrl(analysisData.source_url)} target="_blank" rel="noopener noreferrer"
                                style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
                               {formatUrl(analysisData.source_url)}
                             </a>
@@ -579,12 +569,12 @@ function ResultsPage() {
                             {evaluation.sources && (
                               <div>
                                 <span style={{ fontWeight: '500', color: '#6b7280' }}>Sources:</span>
-                                {evaluation.sources.map((source, idx) => (
-                                  <a key={idx} href={source} target="_blank" rel="noopener noreferrer" 
+                                {evaluation.sources.map((source, idx) => safeUrl(source) ? (
+                                  <a key={idx} href={safeUrl(source)} target="_blank" rel="noopener noreferrer"
                                      style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
                                     {formatUrl(source)}
                                   </a>
-                                ))}
+                                ) : null)}
                               </div>
                             )}
                           </div>

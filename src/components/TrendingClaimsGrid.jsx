@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ClaimCard from './ClaimCard';
 import CategoryFilter from './CategoryFilter';
 import SortSelector from './SortSelector';
@@ -22,6 +23,7 @@ import {
 } from './TrendingClaimsGrid.styled';
 
 function TrendingClaimsGrid() {
+  const navigate = useNavigate();
   const [claims, setClaims] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -156,12 +158,11 @@ function TrendingClaimsGrid() {
     try {
       // Fetch full claim details from backend (public endpoint)
       const fullClaimData = await apiService.getClaimDetails(claim.id);
-      // Navigate to results page with full claim data
-      window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(fullClaimData))}`;
+      navigate(`/results?claimId=${claim.id}`, { state: { claimData: fullClaimData } });
     } catch (error) {
       console.error('Error fetching claim details:', error);
       handleError(error);
-      
+
       // Fallback to basic claim data if detailed fetch fails
       const basicData = {
         id: claim.id,
@@ -172,7 +173,7 @@ function TrendingClaimsGrid() {
         title: claim.title,
         category: claim.category
       };
-      window.location.href = `/results?claimId=${claim.id}&data=${encodeURIComponent(JSON.stringify(basicData))}`;
+      navigate(`/results?claimId=${claim.id}`, { state: { claimData: basicData } });
     }
   };
 

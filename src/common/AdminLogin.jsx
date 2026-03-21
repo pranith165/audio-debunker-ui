@@ -96,12 +96,6 @@ export function AdminLogin({ onClose }) {
 
     // Verify credentials against the backend before storing
     try {
-      const res = await fetch('https://debunker-production-4920.up.railway.app/health', {
-        headers: { 'Authorization': `Basic ${btoa(`${username}:${password}`)}` }
-      });
-
-      // Health is public — use /api/status which requires auth? Actually verify
-      // by hitting analyze with a tiny payload
       const verifyRes = await fetch('https://debunker-production-4920.up.railway.app/api/analyze', {
         method: 'POST',
         headers: {
