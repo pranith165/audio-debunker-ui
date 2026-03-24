@@ -47,7 +47,7 @@ function TrendingClaimsGrid() {
 
       const params = {
         page: pageNum.toString(),
-        limit: '12',
+        limit: '6',
         sort: selectedSort,
         ...(selectedCategory && { category: selectedCategory })
       };
@@ -83,7 +83,7 @@ function TrendingClaimsGrid() {
         setAllCategories(data.categories);
       }
       setTotalClaims(data.total || 0);
-      setHasMore(data.claims && data.claims.length === 12);
+      setHasMore(data.claims && data.claims.length === 6);
       
     } catch (error) {
       console.error('Error fetching trending claims:', error);
