@@ -1,6 +1,8 @@
-import { Wrapper, DecorativeLineWrapper, Heading, Subtext, RichText, VerticalStripe, LandingPageWrapper, PoorText, AnalyzeButton, ButtonWrapper } from './LandingPage.styled';
+import { Wrapper, DecorativeLineWrapper, Heading, Subtext, RichText, VerticalStripe, LandingPageWrapper, PoorText, AnalyzeButton, ButtonWrapper, TrustBar, TrustItem } from './LandingPage.styled';
 import TrendingClaimsGrid from '../components/TrendingClaimsGrid';
 import VisionSection from '../components/VisionSection';
+import FeatureDemoSection from '../components/FeatureDemoSection';
+import StatsSection from '../components/StatsSection';
 
 function LandingPage() {
   return (
@@ -30,12 +32,19 @@ function LandingPage() {
                             <AnalyzeButton to='/fact-check'>Let's Bust the Myths</AnalyzeButton>
                         </ButtonWrapper>
                     </DecorativeLineWrapper>
+                    <TrustBar>
+                        <TrustItem>5,000+ claims verified</TrustItem>
+                        <TrustItem>Free to use</TrustItem>
+                        <TrustItem>No signup required</TrustItem>
+                    </TrustBar>
                 </Wrapper>
             </div>
             <div>
                 <VerticalStripe className="right"> </VerticalStripe>
             </div>
         </LandingPageWrapper>
+        <StatsSection />
+        <FeatureDemoSection />
         <TrendingClaimsGrid />
         <VisionSection />
     </>
