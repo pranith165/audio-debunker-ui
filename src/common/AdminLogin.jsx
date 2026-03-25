@@ -96,7 +96,8 @@ export function AdminLogin({ onClose }) {
 
     // Verify credentials against the backend before storing
     try {
-      const verifyRes = await fetch('https://debunker-production-4920.up.railway.app/api/analyze', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+      const verifyRes = await fetch(`${API_BASE_URL}/api/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ export function AdminLogin({ onClose }) {
         return;
       }
 
-      sessionStorage.setItem('admin_credentials', btoa(`${username}:${password}`));
+      localStorage.setItem('admin_credentials', btoa(`${username}:${password}`));
       onClose(true);
     } catch {
       setError('Could not reach the server. Try again.');
@@ -118,11 +119,11 @@ export function AdminLogin({ onClose }) {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('admin_credentials');
+    localStorage.removeItem('admin_credentials');
     onClose(false);
   };
 
-  const isLoggedIn = !!sessionStorage.getItem('admin_credentials');
+  const isLoggedIn = !!localStorage.getItem('admin_credentials');
 
   return (
     <Overlay onClick={(e) => e.target === e.currentTarget && onClose(isLoggedIn)}>

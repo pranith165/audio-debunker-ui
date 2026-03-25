@@ -15,7 +15,7 @@ const getDeviceId = () => {
 // Returns a Basic Auth token — sessionStorage (admin login) takes priority,
 // then env vars, then null (anonymous).
 const getCredentials = () => {
-  const session = sessionStorage.getItem('admin_credentials');
+  const session = localStorage.getItem('admin_credentials');
   if (session) return session;
 
   const username = import.meta.env.VITE_API_USERNAME;
