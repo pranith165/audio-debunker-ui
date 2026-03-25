@@ -7,19 +7,22 @@ import { apiService } from '../services/apiService';
 import { useErrorHandler } from '../hooks/useErrorHandler';
 import ErrorNotification from '../common/ErrorNotification';
 import { analytics } from '../utils/analytics';
-import { 
-  GridWrapper, 
+import {
+  GridWrapper,
   GridSideStripe,
   GridContent,
-  GridHeader, 
-  GridTitle, 
+  GridHeader,
+  GridTitle,
   GridSubtitle,
-  ClaimsContainer, 
+  ClaimsContainer,
   LoadingSpinner,
   ErrorMessage,
   LoadMoreButton,
   StatsBar,
-  AnalyzeOwnButton
+  AnalyzeOwnButton,
+  SkeletonGrid,
+  SkeletonCard,
+  SkeletonLine,
 } from './TrendingClaimsGrid.styled';
 
 function TrendingClaimsGrid() {
@@ -283,7 +286,17 @@ function TrendingClaimsGrid() {
         )}
 
         {loading && page === 1 ? (
-          <LoadingSpinner>Loading trending claims...</LoadingSpinner>
+          <SkeletonGrid>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i}>
+                <SkeletonLine $h="20px" $w="60%" />
+                <SkeletonLine $h="14px" $w="90%" />
+                <SkeletonLine $h="14px" $w="80%" />
+                <SkeletonLine $h="14px" $w="70%" />
+                <SkeletonLine $h="14px" $w="50%" style={{ marginTop: 'auto' }} />
+              </SkeletonCard>
+            ))}
+          </SkeletonGrid>
         ) : (
           <>
             <ClaimsContainer>

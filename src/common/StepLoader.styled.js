@@ -1,153 +1,207 @@
 import styled, { keyframes, css } from 'styled-components';
 
-const blockDrop = keyframes`
-  0% {
-    transform: translateY(-10px) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0px) rotate(180deg);
-    opacity: 1;
+// ── Animations ───────────────────────────────────────────────────────────────
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+`;
+
+const pulseRing = keyframes`
+  0%   { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3); }
+  70%  { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+`;
+
+const checkPop = keyframes`
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+`;
+
+const fadeSlideIn = keyframes`
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
+
+// ── Container ─────────────────────────────────────────────────────────────────
+
+export const StepContainer = styled.div`
+  max-width: 560px;
+  margin: 0 auto 3rem;
+  padding: 2rem 2rem 1.75rem;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+
+  @media (max-width: 600px) {
+    border-radius: 12px;
+    padding: 1.5rem 1.25rem;
   }
 `;
 
-const blockShuffle = keyframes`
-  0%, 100% { transform: translateX(0px); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
+// ── Header ────────────────────────────────────────────────────────────────────
+
+export const StepHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
 `;
 
-const pulse = keyframes`
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
+export const StepOverallLabel = styled.span`
+  font-family: sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #111;
 `;
 
-export const HorizontalStepContainer = styled.div`
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
+export const StepCount = styled.span`
+  font-family: monospace;
+  font-size: 12px;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+`;
+
+// ── Timeline ──────────────────────────────────────────────────────────────────
+
+export const Timeline = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+`;
 
-  @media (max-width: 768px) {
-    padding: 0.75rem;
-    margin: 1.5rem auto;
-    gap: 0.5rem;
-  }
+export const StepRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  min-height: 48px;
+`;
 
-  @media (max-width: 480px) {
-    padding: 0.5rem;
-    margin: 1rem auto;
-    gap: 0.4rem;
+// ── Icon column (dot + connector line) ───────────────────────────────────────
+
+export const IconCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 24px;
+`;
+
+export const StepDot = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  z-index: 1;
+
+  ${({ $completed }) => $completed && css`
+    background-color: #111;
+    border: 2px solid #111;
+    color: #fff;
+    > svg { animation: ${checkPop} 0.35s ease forwards; }
+  `}
+
+  ${({ $active }) => $active && css`
+    background-color: #111;
+    border: 2px solid #111;
+    animation: ${pulseRing} 1.8s ease-out infinite;
+  `}
+
+  ${({ $pending }) => $pending && css`
+    background-color: transparent;
+    border: 2px solid #d1d5db;
+  `}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 
-export const HorizontalStep = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  border-left: 3px solid ${({ $completed, $active }) => 
-    $completed ? '#000' : $active ? '#333' : '#ccc'
-  };
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  opacity: ${({ $pending }) => $pending ? 0.4 : 1};
-  min-height: 60px;
+export const SpinnerRing = styled.div`
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.8);
+  animation: ${spin} 0.7s linear infinite;
 
-  ${({ $active }) => $active && css`
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transform: translateX(2px);
-  `}
-
-  @media (max-width: 768px) {
-    padding: 0.75rem 1rem;
-    min-height: 55px;
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
+`;
 
-  @media (max-width: 480px) {
-    padding: 0.625rem 0.75rem;
-    min-height: 50px;
-    gap: 0.4rem;
-  }
+export const ConnectorLine = styled.div`
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  margin: 3px 0;
+  background: ${({ $completed }) => $completed ? '#111' : '#e5e7eb'};
+  transition: background-color 0.5s ease;
+`;
+
+// ── Step content ──────────────────────────────────────────────────────────────
+
+export const StepContent = styled.div`
+  flex: 1;
+  padding: 2px 0 1.25rem;
 `;
 
 export const StepTitle = styled.div`
-  font-weight: 600;
-  margin: 0;
-  font-size: 1rem;
-  color: ${({ $completed, $active }) => 
-    $completed ? '#000' : $active ? '#333' : '#666'
+  font-family: sans-serif;
+  font-size: 0.9375rem;
+  font-weight: ${({ $active }) => $active ? 600 : 500};
+  color: ${({ $completed, $active }) =>
+    $completed ? '#9ca3af' :
+    $active    ? '#111' :
+                 '#9ca3af'
   };
-  font-family: monospace;
-  
-  .checkmark {
-    margin-left: 0.5rem;
-    color: #000;
-    font-weight: bold;
-  }
-
-  ${({ $active }) => $active && css`
-    animation: ${pulse} 2s infinite;
-  `}
-`;
-
-export const TetrisLoader = styled.div`
-  display: flex;
-  gap: 3px;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid ${({ $completed, $active }) => 
-    $completed ? '#000' : $active ? '#333' : '#ddd'
-  };
-`;
-
-export const TetrisBlock = styled.div`
-  width: 8px;
-  height: 8px;
-  background-color: ${({ $completed, $active }) => 
-    $completed ? '#000' : $active ? '#333' : '#ccc'
-  };
-  border-radius: 1px;
-  opacity: ${({ $active, $completed }) => $completed ? 1 : $active ? 0.8 : 0.4};
-  
-  ${({ $active, $delay }) => $active && css`
-    animation: ${blockDrop} 0.5s ease-out ${$delay}s both,
-               ${blockShuffle} 1.5s ease-in-out ${$delay + 0.5}s infinite;
-  `}
+  transition: color 0.3s ease;
+  line-height: 1.4;
 
   ${({ $completed }) => $completed && css`
-    animation: none;
-    transform: scale(1);
+    text-decoration: line-through;
+    text-decoration-color: #d1d5db;
   `}
+`;
 
-  /* Create different tetris shapes with nth-child */
-  &:nth-child(1), &:nth-child(2) {
-    height: 12px; /* Taller block */
+export const StepSubtitle = styled.p`
+  font-family: sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0.3rem 0 0;
+  animation: ${fadeSlideIn} 0.3s ease forwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
-  
-  &:nth-child(3), &:nth-child(4), &:nth-child(5) {
-    width: 6px;
-    height: 10px;
-  }
-  
-  &:nth-child(6), &:nth-child(7) {
-    height: 14px; /* Extra tall */
-  }
-  
-  &:nth-child(8) {
-    width: 10px;
-    height: 6px; /* Wide block */
-  }
+`;
+
+// ── Status badge ──────────────────────────────────────────────────────────────
+
+export const StepStatus = styled.span`
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 4px;
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: right;
+
+  color: ${({ $completed, $active }) =>
+    $completed ? '#22c55e' :
+    $active    ? '#111' :
+                 'transparent'
+  };
+  font-weight: ${({ $active }) => $active ? 600 : 400};
 `;

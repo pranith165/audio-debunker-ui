@@ -8,7 +8,7 @@ const Breadcrumb = () => {
         <>  
           <BreadcrumbWrapper>
             <StageWrapper>
-                <BreadcrumbStage enable={isUploaded}>{ isUploaded ? `uploaded` : `upload`}</BreadcrumbStage>
+                <BreadcrumbStage enable={isUploaded}>{ isUploaded ? `Uploaded` : `Upload`}</BreadcrumbStage>
                 <BreadcrumbLine path={true}> </BreadcrumbLine>
             </StageWrapper>
              <StageWrapper>

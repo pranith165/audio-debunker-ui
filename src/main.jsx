@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import FactCheckPage from './pages/FactCheckPage';
@@ -21,6 +22,7 @@ const App = () => {
   }, []);
 
   return (
+    <HelmetProvider>
     <Provider store={store}>
       <BrowserRouter>
         <AnalyticsTracker />
@@ -34,6 +36,7 @@ const App = () => {
         <Footer />
       </BrowserRouter>
     </Provider>
+    </HelmetProvider>
   );
 };
 

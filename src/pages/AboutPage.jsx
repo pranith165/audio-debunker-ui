@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { 
   AboutWrapper,
   VerticalStripe,
@@ -32,6 +33,14 @@ function AboutPage() {
   }, []);
   return (
     <AboutWrapper>
+      <Helmet>
+        <title>About Us — De-Bunker</title>
+        <meta name="description" content="De-Bunker was built to fight audio misinformation. Meet the team behind the AI-powered fact-checking platform." />
+        <link rel="canonical" href="https://www.de-bunker.com/about" />
+        <meta property="og:title" content="About Us — De-Bunker" />
+        <meta property="og:description" content="De-Bunker was built to fight audio misinformation. Meet the team behind the AI-powered fact-checking platform." />
+        <meta property="og:url" content="https://www.de-bunker.com/about" />
+      </Helmet>
       <VerticalStripe className="left" />
       <AboutContainer>
         <HeroSection>

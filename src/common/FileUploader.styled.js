@@ -2,29 +2,17 @@ import styled from 'styled-components';
 import { PiUploadSimpleBold } from 'react-icons/pi';
 
 export const Headliner = styled.h2`
-    display: block;
-    text-align: center;
+  display: none;
 `;
 
 export const Subheadliner = styled.p`
-    text-align: center;
+  display: none;
 `;
 
 export const FileUploaderWrapper = styled.div`
-    text-align: center;
-    margin: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
-
-    @media (max-width: 768px) {
-        margin: 15px 0;
-        padding: 0 0.5rem;
-    }
-
-    @media (max-width: 480px) {
-        margin: 10px 0;
-        padding: 0 0.25rem;
-    }
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const Upload = styled.input`
@@ -73,119 +61,203 @@ export const UploadDescription = styled.p`
 
 
 export const UploadWrapper = styled.div`
-    margin: 15px 0;
+  margin: 0 0 0.5rem;
+  text-align: center;
 `;
 export const ApiButtonWrapper = styled.div`
-
+  margin-top: 1rem;
 `;
 
 export const CallButton = styled.button`
-    font-size: 14px;
-    color: ${({ disabled }) => disabled ? '#666' : 'white'};
-    background-color: ${({ disabled }) => disabled ? '#ccc' : 'black'};
-    border: none;
-    padding: 12px 24px;
-    border-radius: 20px;
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    transition: all 0.3s ease;
-    opacity: ${({ disabled }) => disabled ? 0.7 : 1};
-    position: relative;
-    min-height: 44px;
+  width: 100%;
+  font-size: 14px;
+  font-family: monospace;
+  font-weight: 600;
+  color: ${({ disabled }) => disabled ? '#999' : 'white'};
+  background-color: ${({ disabled }) => disabled ? '#e5e7eb' : '#111'};
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 48px;
+  position: relative;
 
-    &:hover {
-        background-color: ${({ disabled }) => disabled ? '#ccc' : '#333'};
-        transform: ${({ disabled }) => disabled ? 'none' : 'translateY(-1px)'};
+  &:hover {
+    background-color: ${({ disabled }) => disabled ? '#e5e7eb' : '#333'};
+    box-shadow: ${({ disabled }) => disabled ? 'none' : '0 4px 14px rgba(0,0,0,0.2)'};
+  }
+
+  ${({ analyzing }) => analyzing && `
+    &::after {
+      content: '';
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border: 2px solid transparent;
+      border-top: 2px solid #999;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
 
-    @media (max-width: 768px) {
-        font-size: 16px;
-        padding: 14px 28px;
-        min-height: 48px;
+    @keyframes spin {
+      0%   { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
     }
+  `}
+`;
 
-    @media (max-width: 480px) {
-        width: 100%;
-        max-width: 280px;
-        font-size: 16px;
-        padding: 16px 32px;
-        margin: 0 auto;
-        display: block;
-    }
+export const UrlInput = styled.textarea`
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: sans-serif;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  background: ${({ disabled }) => disabled ? '#f9fafb' : '#fff'};
+  color: ${({ disabled }) => disabled ? '#9ca3af' : '#111'};
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'text'};
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  line-height: 1.6;
 
-    ${({ analyzing }) => analyzing && `
-        &::after {
-            content: '';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            border: 2px solid transparent;
-            border-top: 2px solid #666;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+  &:focus {
+    border-color: #111;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+  }
 
-        @keyframes spin {
-            0% { transform: translateY(-50%) rotate(0deg); }
-            100% { transform: translateY(-50%) rotate(360deg); }
-        }
-    `}
+  &::placeholder {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+`;
+
+export const IOSBanner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 1rem;
+  font-size: 13px;
+  font-family: sans-serif;
+  color: #374151;
+  text-align: left;
+`;
+
+export const IOSBannerText = styled.span`
+  flex: 1;
+  line-height: 1.4;
+
+  strong {
+    color: #111;
+    font-weight: 600;
+  }
+`;
+
+export const IOSBannerActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+`;
+
+export const IOSInstallButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #111;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: sans-serif;
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 7px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #333;
+    color: white;
+  }
+`;
+
+export const IOSBannerDismiss = styled.button`
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 16px;
+  line-height: 1;
+  border-radius: 4px;
+  min-height: unset;
+
+  &:hover {
+    color: #6b7280;
+    background: #e5e7eb;
+  }
 `;
 
 export const ModeToggle = styled.div`
-    display: flex;
-    background-color: #f3f4f6;
-    border-radius: 12px;
-    padding: 4px;
-    margin: 20px 0;
-    gap: 4px;
-    width: 100%;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-
-    @media (max-width: 480px) {
-        max-width: 100%;
-        margin: 15px 0;
-    }
+  display: flex;
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  gap: 3px;
+  width: 100%;
+  margin-bottom: 1.25rem;
 `;
 
 export const ModeButton = styled.button`
-    flex: 1;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    transition: all 0.3s ease;
-    background-color: ${({ active }) => active ? 'white' : 'transparent'};
-    color: ${({ active, disabled }) => 
-        disabled ? '#ccc' : 
-        active ? '#000' : '#6b7280'
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: sans-serif;
+  font-variant: normal;
+  text-transform: none;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  background-color: ${({ active }) => active ? 'white' : 'transparent'};
+  color: ${({ active, disabled }) =>
+    disabled ? '#ccc' :
+    active ? '#111' : '#6b7280'
+  };
+  box-shadow: ${({ active }) => active ? '0 1px 4px rgba(0,0,0,0.1)' : 'none'};
+  opacity: ${({ disabled }) => disabled ? 0.5 : 1};
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  &:hover {
+    background-color: ${({ disabled, active }) =>
+      disabled ? 'transparent' :
+      active ? 'white' : 'rgba(255,255,255,0.6)'
     };
-    box-shadow: ${({ active }) => active ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'};
-    opacity: ${({ disabled }) => disabled ? 0.5 : 1};
-    min-height: 44px;
+  }
 
-    &:hover {
-        background-color: ${({ disabled, active }) => 
-            disabled ? 'transparent' :
-            active ? 'white' : 'rgba(255,255,255,0.5)'
-        };
-    }
-
-    @media (max-width: 768px) {
-        font-size: 15px;
-        padding: 14px 18px;
-        min-height: 48px;
-    }
-
-    @media (max-width: 480px) {
-        font-size: 14px;
-        padding: 12px 16px;
-        min-height: 44px;
-    }
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 10px 12px;
+    gap: 0.3rem;
+  }
 `;

@@ -14,9 +14,8 @@ export const ClaimCardWrapper = styled.div`
   gap: 0.75rem;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: #d1d5db;
-    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-color: #111;
   }
 
   @media (max-width: 768px) {

@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     
     <!-- SEO Meta Tags -->
-    <title>Audio Debunker - AI-Powered Fact Checking | Verify Audio Claims Instantly</title>
-    <meta name="description" content="Advanced AI-powered fact-checking tool for audio content. Upload audio files or enter text claims to get instant, comprehensive verification with credible sources and detailed analysis." />
+    <title>De-Bunker — AI Fact Checking for Audio & Viral Claims</title>
+    <meta name="description" content="Upload audio or paste a claim — our AI fact-checks it against credible sources in seconds. Free, no signup required." />
     <meta name="keywords" content="fact checking, audio analysis, AI verification, misinformation detection, claim verification, audio fact checker, deepfake detection, truth verification, media literacy, audio authenticity" />
     <meta name="author" content="Audio Debunker Team" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -36,13 +37,13 @@
     <meta name="twitter:image" content="https://www.de-bunker.com/og-image.png" />
     
     <!-- Additional Meta Tags -->
-    <meta name="application-name" content="Audio Debunker" />
-    <meta name="theme-color" content="#007bff" />
-    <meta name="msapplication-TileColor" content="#007bff" />
+    <meta name="application-name" content="Debunker" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="msapplication-TileColor" content="#000000" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Audio Debunker" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Debunker" />
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -74,6 +75,11 @@
     }
     </script>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-W8E7715ETQ"></script>
     <script>
@@ -90,5 +96,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

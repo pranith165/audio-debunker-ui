@@ -113,15 +113,15 @@ export const DecorativeLineWrapper = styled.div`
 
 export const Heading = styled.h1`
   font-size: clamp(2.5rem, 6vw, 6rem);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.03em;
   padding: 20px 0;
-  line-height: 85px;
+  line-height: 1.05;
   font-family: sans-serif;
 
   @media (max-width: 768px) {
     font-size: clamp(2rem, 8vw, 3.5rem);
-    line-height: 1.2;
+    line-height: 1.1;
     padding: 15px 0;
   }
 
@@ -182,21 +182,27 @@ export const AnalyzeButton = styled(Link)`
   font-family: monospace;
   font-size: 14px;
   font-weight: 600;
-  line-height: 24px;
-  padding: 8px 16px;
-  height: 40px;
+  padding: 14px 32px;
+  height: 52px;
   border: none;
-  border-radius: 32px;
+  border-radius: 8px;
   cursor: pointer;
   box-sizing: border-box;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   text-align: center;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background-color: #222;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
 
   @media (max-width: 768px) {
-    font-size: 16px;
-    padding: 12px 24px;
-    height: 48px;
+    font-size: 15px;
+    padding: 14px 28px;
+    height: 52px;
     min-height: 44px;
   }
 
@@ -204,7 +210,39 @@ export const AnalyzeButton = styled(Link)`
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
-    display: block;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const TrustBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 12px 0;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    justify-content: center;
+    gap: 1rem;
+  }
+`;
+
+export const TrustItem = styled.span`
+  font-family: monospace;
+  font-size: 12px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #22c55e;
   }
 `;
 

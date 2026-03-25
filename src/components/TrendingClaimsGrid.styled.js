@@ -264,30 +264,75 @@ export const LoadMoreButton = styled.button`
   display: block;
   margin: 0 auto;
   background-color: transparent;
-  color: #374151;
-  border: 1px solid #d1d5db;
-  padding: 12px 24px;
+  color: #111;
+  border: 1.5px solid #111;
+  padding: 12px 32px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
   font-family: monospace;
 
   &:hover {
-    background-color: #f9fafb;
-    border-color: #9ca3af;
+    background-color: #111;
+    color: #fff;
   }
 
   @media (max-width: 768px) {
-    padding: 10px 20px;
+    padding: 10px 24px;
     font-size: 0.85rem;
   }
 
   @media (max-width: 480px) {
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 0.8rem;
     width: 100%;
     max-width: 200px;
+  }
+`;
+
+export const SkeletonGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+`;
+
+export const SkeletonCard = styled.div`
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: white;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+export const SkeletonLine = styled.div`
+  height: ${p => p.$h || '14px'};
+  width: ${p => p.$w || '100%'};
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background: #f3f4f6;
   }
 `;
