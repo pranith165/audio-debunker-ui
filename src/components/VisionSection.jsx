@@ -25,11 +25,14 @@ import {
   ClosingCTAWrapper,
   ClosingCTAText,
   ClosingCTAButton,
+  ShortcutLink,
 } from './VisionSection.styled';
 
 import step1 from '../assets/images/vision-step1.jpg';
-import step2 from '../assets/images/vision-step2.jpg';
+import step2 from '../assets/images/vision-step2-share.png';
 import step3 from '../assets/images/vision-step3.jpg';
+
+const IOS_SHORTCUT_URL = 'https://www.icloud.com/shortcuts/c4244ff555e34b07bbec25297e0c1f13';
 
 const steps = [
   {
@@ -47,6 +50,7 @@ const steps = [
       "No copy-pasting. No switching apps. Just hit the share button on any Instagram or TikTok reel and select debunker — right from your phone's share sheet.",
     image: step2,
     alt: 'iOS share sheet with debunker as an option',
+    shortcut: true,
   },
   {
     number: '03',
@@ -111,6 +115,11 @@ function VisionSection() {
                 <StepNum>{step.number}</StepNum>
                 <StepHeading>{step.heading}</StepHeading>
                 <StepDescription>{step.description}</StepDescription>
+                {step.shortcut && (
+                  <ShortcutLink href={IOS_SHORTCUT_URL} target="_blank" rel="noopener noreferrer">
+                    ↑ Get the shortcut
+                  </ShortcutLink>
+                )}
 
                 {/* Image shown inline on mobile only */}
                 <MobileImg src={step.image} alt={step.alt} loading="lazy" />

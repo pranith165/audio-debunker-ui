@@ -290,6 +290,26 @@ export const ClosingCTAText = styled.p`
   margin-bottom: 1.25rem;
 `;
 
+export const ShortcutLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #111;
+  text-decoration: none;
+  border-bottom: 1px solid #111;
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
 export const ClosingCTAButton = styled(Link)`
   display: inline-flex;
   align-items: center;
