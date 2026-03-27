@@ -261,12 +261,7 @@ export const ImageSlide = styled.div`
   opacity: ${p => p.$visible ? 1 : 0};
   transition: opacity 0.45s ease;
   pointer-events: none;
-  display: ${p => p.$portrait ? 'flex' : 'block'};
-  align-items: center;
-  justify-content: center;
-  padding: ${p => p.$portrait ? '1rem' : '0'};
-  background: ${p => p.$portrait ? '#111' : 'transparent'};
-  min-height: ${p => p.$portrait ? '380px' : 'auto'};
+  overflow: hidden;
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -275,18 +270,14 @@ export const ImageSlide = styled.div`
 
 export const StepImg = styled.img`
   display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: ${p => p.$position || 'center'};
 
-  ${p => p.$portrait ? `
-    width: auto;
-    height: 420px;
-    max-height: 100%;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  ` : `
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    object-position: ${p.$position || 'center'};
+  ${p => p.$zoom && `
+    transform: scale(${p.$zoom});
+    transform-origin: ${p.$zoomOrigin || 'center center'};
   `}
 `;
 
