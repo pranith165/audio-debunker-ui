@@ -278,7 +278,7 @@ export const StepImg = styled.img`
 
   ${p => p.$portrait ? `
     width: auto;
-    height: 340px;
+    height: 420px;
     max-height: 100%;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
