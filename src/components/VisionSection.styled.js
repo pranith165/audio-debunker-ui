@@ -274,11 +274,6 @@ export const StepImg = styled.img`
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: ${p => p.$position || 'center'};
-
-  ${p => p.$zoom && `
-    transform: scale(${p.$zoom});
-    transform-origin: ${p.$zoomOrigin || 'center center'};
-  `}
 `;
 
 // ── Closing CTA ───────────────────────────────────────────────────────────────
