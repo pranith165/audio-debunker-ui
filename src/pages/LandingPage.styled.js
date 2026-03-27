@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 // LandingPage.styled.js
 
 export const LandingPageWrapper = styled.div`
-  background-color: #f9f9f9;
+  background-color: var(--bg-page);
   position: relative;
   overflow: hidden;
   display: grid;
@@ -25,37 +25,37 @@ export const VerticalStripe = styled.div`
   height: 100%;
   background: repeating-linear-gradient(
     45deg,
-    #f8fafc,
-    #f8fafc 10px,
-    rgba(0, 0, 0, 0.05) 10px,
-    rgba(0, 0, 0, 0.05) 11px
+    var(--stripe-bg),
+    var(--stripe-bg) 10px,
+    var(--stripe-line) 10px,
+    var(--stripe-line) 11px
   );
 
   &.left {
-    border-right: 1px solid rgba(0, 0, 0, 0.05); /* faint right edge */
+    border-right: 1px solid var(--stripe-line); /* faint right edge */
   }
 
   &.right {
-    border-left: 1px solid rgba(0, 0, 0, 0.05); /* faint left edge */
+    border-left: 1px solid var(--stripe-line); /* faint left edge */
   }
 
   @media (max-width: 768px) {
     background: repeating-linear-gradient(
       45deg,
-      #f8fafc,
-      #f8fafc 8px,
-      rgba(0, 0, 0, 0.08) 8px,
-      rgba(0, 0, 0, 0.08) 9px
+      var(--stripe-bg),
+      var(--stripe-bg) 8px,
+      var(--stripe-line) 8px,
+      var(--stripe-line) 9px
     );
   }
 
   @media (max-width: 480px) {
     background: repeating-linear-gradient(
       45deg,
-      #f8fafc,
-      #f8fafc 6px,
-      rgba(0, 0, 0, 0.1) 6px,
-      rgba(0, 0, 0, 0.1) 7px
+      var(--stripe-bg),
+      var(--stripe-bg) 6px,
+      var(--stripe-line) 6px,
+      var(--stripe-line) 7px
     );
   }
 `;
@@ -137,7 +137,7 @@ export const Subtext = styled.p`
   max-width: 720px;
   font-size: 1.125rem;
   line-height: 1.75;
-  color: #4b5563; /* text-gray-600 */
+  color: var(--text-secondary); /* text-gray-600 */
   padding: 8px 0;
   text-align: left;
   font-family: sans-serif;
@@ -177,8 +177,8 @@ export const PoorText = styled.span`
 `;
 
 export const AnalyzeButton = styled(Link)`
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
+  background-color: var(--text);
+  color: var(--bg);
   font-family: monospace;
   font-size: 14px;
   font-weight: 600;
@@ -231,7 +231,7 @@ export const TrustBar = styled.div`
 export const TrustItem = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   display: flex;
   align-items: center;
   gap: 0.4rem;

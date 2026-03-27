@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
 export const ClaimCardWrapper = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: white;
+  background: var(--bg-surface);
   min-height: 280px;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 
   &:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    border-color: #111;
+    box-shadow: 0 8px 24px var(--shadow-md);
+    border-color: var(--text);
   }
 
   @media (max-width: 768px) {
@@ -61,7 +61,7 @@ export const VerdictBadge = styled.div`
 export const ClaimTitle = styled.h3`
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-heading);
   margin: 0;
   line-height: 1.4;
   margin-top: 2rem; /* Space for badge */
@@ -80,7 +80,7 @@ export const ClaimTitle = styled.h3`
 
 export const ClaimText = styled.p`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
   line-height: 1.5;
   margin: 0;
   flex: 1;
@@ -160,8 +160,8 @@ export const ClaimStats = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 11px;
-  color: #9ca3af;
-  border-top: 1px solid #f3f4f6;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border-subtle);
   padding-top: 0.75rem;
   font-family: monospace;
 
@@ -174,7 +174,7 @@ export const ClaimStats = styled.div`
   .share-btn {
     background: none;
     border: none;
-    color: #9ca3af;
+    color: var(--text-faint);
     cursor: pointer;
     font-size: 11px;
     padding: 4px 8px;
@@ -183,8 +183,8 @@ export const ClaimStats = styled.div`
     font-family: monospace;
 
     &:hover {
-      background-color: #f3f4f6;
-      color: #6b7280;
+      background-color: var(--bg-secondary);
+      color: var(--text-muted);
     }
   }
 

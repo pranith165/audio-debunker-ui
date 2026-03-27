@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const FooterWrapper = styled.footer`
-  background-color: #1f2937;
-  color: #d1d5db;
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
   margin-top: auto;
 `;
 
@@ -19,6 +19,6 @@ export const FooterContainer = styled.div`
 
 export const FooterCopyright = styled.p`
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--text-faint);
   margin: 0;
 `;

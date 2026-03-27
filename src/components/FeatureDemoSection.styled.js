@@ -30,9 +30,9 @@ const fadeIn = keyframes`
 // ── Section Shell ────────────────────────────────────────────────────────────
 
 export const SectionOuter = styled.section`
-  background-color: #fafafa;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--bg-tertiary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 `;
 
 export const SectionWrapper = styled.div`
@@ -61,7 +61,7 @@ export const SectionHeader = styled.div`
 export const SectionEyebrow = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 `;
@@ -71,7 +71,7 @@ export const SectionTitle = styled.h2`
   font-weight: 800;
   font-family: sans-serif;
   letter-spacing: -0.04em;
-  color: #111;
+  color: var(--text-heading);
   line-height: 1.05;
   margin: 0;
 
@@ -83,7 +83,7 @@ export const SectionTitle = styled.h2`
 export const SectionSubtitle = styled.p`
   font-size: 1rem;
   line-height: 1.7;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-family: sans-serif;
   max-width: 440px;
   margin: 0;
@@ -118,11 +118,11 @@ export const FeatureItem = styled.div`
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  border-left: 2.5px solid ${p => p.$active ? '#111' : 'transparent'};
-  background-color: ${p => p.$active ? '#f3f4f6' : 'transparent'};
+  border-left: 2.5px solid ${p => p.$active ? 'var(--text)' : 'transparent'};
+  background-color: ${p => p.$active ? 'var(--bg-secondary)' : 'transparent'};
 
   &:hover {
-    background-color: ${p => p.$active ? '#f3f4f6' : '#f9fafb'};
+    background-color: ${p => p.$active ? 'var(--bg-secondary)' : 'var(--bg-tertiary)'};
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -134,8 +134,8 @@ export const FeatureIconWrap = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background-color: ${p => p.$active ? '#111' : '#e5e7eb'};
-  color: ${p => p.$active ? '#fff' : '#6b7280'};
+  background-color: ${p => p.$active ? 'var(--text)' : 'var(--border)'};
+  color: ${p => p.$active ? 'var(--bg)' : 'var(--text-muted)'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,14 +153,14 @@ export const FeatureItemTitle = styled.h3`
   font-size: 0.9375rem;
   font-weight: 600;
   font-family: sans-serif;
-  color: #111;
+  color: var(--text);
   margin: 0;
 `;
 
 export const FeatureItemDesc = styled.p`
   font-size: 0.8125rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: var(--text-muted);
   font-family: sans-serif;
   margin: 0;
   max-height: ${p => p.$active ? '80px' : '0'};
@@ -182,20 +182,20 @@ export const MockupPanel = styled.div`
 `;
 
 export const MockupWindow = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 60px var(--shadow-md), 0 4px 16px var(--shadow-sm);
   overflow: hidden;
 `;
 
 export const MockupBar = styled.div`
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 `;
 
 export const MockupDot = styled.div`
@@ -248,7 +248,7 @@ export const AudioHeader = styled.div`
 export const AudioLabel = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.05em;
 `;
 
@@ -263,7 +263,7 @@ export const AudioWaveform = styled.div`
 export const AudioBar = styled.div`
   width: 4px;
   height: ${p => p.$height}px;
-  background: #111;
+  background: var(--text);
   border-radius: 2px;
   transform-origin: bottom;
   animation: ${wave} ${p => 0.8 + (p.$delay % 300) / 300}s ease-in-out ${p => p.$delay}ms infinite;
@@ -277,7 +277,7 @@ export const AudioBar = styled.div`
 export const AudioProgress = styled.div`
   width: 100%;
   height: 3px;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 0.75rem;
@@ -285,7 +285,7 @@ export const AudioProgress = styled.div`
 
 export const AudioProgressFill = styled.div`
   height: 100%;
-  background: #111;
+  background: var(--text);
   border-radius: 2px;
   width: 0%;
   animation: ${fillProgress} 3.5s ease-in-out infinite;
@@ -299,7 +299,7 @@ export const AudioProgressFill = styled.div`
 export const AudioStatus = styled.p`
   font-family: monospace;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-faint);
   margin: 0;
   line-height: 1.5;
   font-style: italic;
@@ -310,7 +310,7 @@ export const AudioStatus = styled.p`
 export const SourceHeader = styled.p`
   font-family: monospace;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0 0 1rem;
@@ -327,7 +327,7 @@ export const SourceItem = styled.div`
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 0.875rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
   animation: ${slideIn} 0.35s ease forwards;
   animation-delay: ${p => p.$delay}ms;
@@ -349,15 +349,15 @@ export const SourceIcon = styled.div`
 export const SourceName = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #111;
+  color: var(--text);
   flex: 1;
 `;
 
 export const SourceBadge = styled.span`
   font-family: monospace;
   font-size: 10px;
-  color: #9ca3af;
-  background: #f3f4f6;
+  color: var(--text-faint);
+  background: var(--bg-secondary);
   padding: 2px 6px;
   border-radius: 4px;
 `;
@@ -367,7 +367,7 @@ export const SourceBadge = styled.span`
 export const VerdictHeader = styled.p`
   font-family: monospace;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0 0 0.875rem;
@@ -399,7 +399,7 @@ export const VerdictMeta = styled.div`
 export const VerdictConfidence = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-weight: 600;
 `;
 
@@ -407,7 +407,7 @@ export const VerdictExcerpt = styled.p`
   font-family: sans-serif;
   font-size: 0.8125rem;
   line-height: 1.65;
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 0;
   animation: ${slideIn} 0.4s ease 0.15s forwards;
   opacity: 0;
@@ -418,7 +418,7 @@ export const VerdictExcerpt = styled.p`
 export const EvidenceHeader = styled.p`
   font-family: monospace;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0 0 1rem;
@@ -432,7 +432,7 @@ export const EvidenceList = styled.div`
 
 export const EvidenceCard = styled.div`
   padding: 0.65rem 0.875rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
   animation: ${slideIn} 0.35s ease forwards;
   animation-delay: ${p => p.$delay}ms;
@@ -451,7 +451,7 @@ export const EvidenceUrl = styled.p`
 export const EvidenceLine = styled.div`
   height: 7px;
   width: ${p => p.$w}%;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border-radius: 3px;
   margin-bottom: 0.3rem;
 

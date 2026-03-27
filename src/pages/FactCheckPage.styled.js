@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const FactCheckWrapper = styled.div`
-  background-color: #f9f9f9;
+  background-color: var(--bg-page);
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -30,7 +30,7 @@ export const PageHeader = styled.div`
 export const PageEyebrow = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 `;
@@ -40,7 +40,7 @@ export const PageTitle = styled.h1`
   font-weight: 800;
   font-family: sans-serif;
   letter-spacing: -0.04em;
-  color: #111;
+  color: var(--text-heading);
   line-height: 1.05;
   margin: 0;
 `;
@@ -48,17 +48,17 @@ export const PageTitle = styled.h1`
 export const PageSubtitle = styled.p`
   font-size: 1rem;
   line-height: 1.7;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-family: sans-serif;
   margin: 0;
   max-width: 420px;
 `;
 
 export const FactCheckUploadWrapper = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 24px var(--shadow-sm), 0 1px 4px rgba(0, 0, 0, 0.04);
   width: 100%;
   max-width: 560px;
   margin: 0 auto 3rem;

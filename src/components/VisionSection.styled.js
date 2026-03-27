@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 // ── Section shell ────────────────────────────────────────────────────────────
 
 export const VisionOuter = styled.section`
-  background-color: #fff;
-  border-top: 1px solid #e5e7eb;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border);
 `;
 
 export const VisionWrapper = styled.div`
@@ -35,7 +35,7 @@ export const VisionHeader = styled.div`
 export const VisionEyebrow = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 `;
@@ -45,7 +45,7 @@ export const VisionTitle = styled.h2`
   font-weight: 800;
   font-family: sans-serif;
   letter-spacing: -0.04em;
-  color: #111;
+  color: var(--text-heading);
   line-height: 0.95;
   margin: 0;
 
@@ -56,7 +56,7 @@ export const VisionTitle = styled.h2`
 
 export const VisionSubtitle = styled.p`
   font-size: 1rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-family: sans-serif;
   margin: 0;
   max-width: 400px;
@@ -102,7 +102,7 @@ export const ProgressTrack = styled.div`
     top: 6px;
     width: 1px;
     bottom: 6px;
-    background: #e5e7eb;
+    background: var(--border);
   }
 
   @media (max-width: 900px) {
@@ -114,8 +114,8 @@ export const ProgressDot = styled.div`
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: ${p => p.$active ? '#111' : '#e5e7eb'};
-  border: 2px solid ${p => p.$active ? '#111' : '#e5e7eb'};
+  background: ${p => p.$active ? 'var(--text)' : 'var(--border)'};
+  border: 2px solid ${p => p.$active ? 'var(--text)' : 'var(--border)'};
   position: relative;
   z-index: 1;
   transition: background 0.3s ease, border-color 0.3s ease;
@@ -154,7 +154,7 @@ export const StepItem = styled.div`
 export const StepNum = styled.div`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 1rem;
@@ -181,7 +181,7 @@ export const StepHeading = styled.h3`
   font-weight: 700;
   font-family: sans-serif;
   letter-spacing: -0.03em;
-  color: #111;
+  color: var(--text-heading);
   margin: 0 0 0.875rem;
   line-height: 1.2;
 `;
@@ -189,7 +189,7 @@ export const StepHeading = styled.h3`
 export const StepDescription = styled.p`
   font-size: 1rem;
   line-height: 1.8;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-family: sans-serif;
   margin: 0;
   max-width: 420px;
@@ -223,8 +223,8 @@ export const VisualColumn = styled.div`
 `;
 
 export const BrowserFrame = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -232,8 +232,8 @@ export const BrowserFrame = styled.div`
 `;
 
 export const BrowserBar = styled.div`
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
@@ -252,7 +252,7 @@ export const BrowserUrl = styled.span`
   margin-left: 0.75rem;
   font-family: monospace;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-faint);
 `;
 
 export const ImageSlide = styled.div`
@@ -281,13 +281,13 @@ export const StepImg = styled.img`
 export const ClosingCTAWrapper = styled.div`
   text-align: center;
   padding: 4.5rem 0 5.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
 `;
 
 export const ClosingCTAText = styled.p`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
@@ -302,9 +302,9 @@ export const ShortcutLink = styled.a`
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: #111;
+  color: var(--text);
   text-decoration: none;
-  border-bottom: 1px solid #111;
+  border-bottom: 1px solid var(--text);
   padding-bottom: 1px;
   transition: opacity 0.2s ease;
 
@@ -317,8 +317,8 @@ export const ClosingCTAButton = styled(Link)`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #111;
-  color: #fff;
+  background-color: var(--text);
+  color: var(--bg);
   font-family: monospace;
   font-size: 14px;
   font-weight: 600;

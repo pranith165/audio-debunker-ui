@@ -73,8 +73,8 @@ export const CallButton = styled.button`
   font-size: 14px;
   font-family: monospace;
   font-weight: 600;
-  color: ${({ disabled }) => disabled ? '#999' : 'white'};
-  background-color: ${({ disabled }) => disabled ? '#e5e7eb' : '#111'};
+  color: ${({ disabled }) => disabled ? 'var(--text-faint)' : 'var(--bg)'};
+  background-color: ${({ disabled }) => disabled ? 'var(--border)' : 'var(--text)'};
   border: none;
   padding: 14px 24px;
   border-radius: 8px;
@@ -84,8 +84,8 @@ export const CallButton = styled.button`
   position: relative;
 
   &:hover {
-    background-color: ${({ disabled }) => disabled ? '#e5e7eb' : '#333'};
-    box-shadow: ${({ disabled }) => disabled ? 'none' : '0 4px 14px rgba(0,0,0,0.2)'};
+    background-color: ${({ disabled }) => disabled ? 'var(--border)' : 'var(--text-secondary)'};
+    box-shadow: ${({ disabled }) => disabled ? 'none' : '0 4px 14px var(--shadow-md)'};
   }
 
   ${({ analyzing }) => analyzing && `
@@ -116,24 +116,24 @@ export const UrlInput = styled.textarea`
   padding: 12px 14px;
   font-size: 14px;
   font-family: sans-serif;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 10px;
   resize: vertical;
   outline: none;
   box-sizing: border-box;
-  background: ${({ disabled }) => disabled ? '#f9fafb' : '#fff'};
-  color: ${({ disabled }) => disabled ? '#9ca3af' : '#111'};
+  background: ${({ disabled }) => disabled ? 'var(--bg-secondary)' : 'var(--bg-surface)'};
+  color: ${({ disabled }) => disabled ? 'var(--text-faint)' : 'var(--text)'};
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'text'};
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   line-height: 1.6;
 
   &:focus {
-    border-color: #111;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px var(--shadow-sm);
   }
 
   &::placeholder {
-    color: #9ca3af;
+    color: var(--text-faint);
     font-size: 13px;
   }
 
@@ -147,14 +147,14 @@ export const IOSBanner = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 1rem;
   font-size: 13px;
   font-family: sans-serif;
-  color: #374151;
+  color: var(--text-secondary);
   text-align: left;
 `;
 
@@ -163,7 +163,7 @@ export const IOSBannerText = styled.span`
   line-height: 1.4;
 
   strong {
-    color: #111;
+    color: var(--text);
     font-weight: 600;
   }
 `;
@@ -179,8 +179,8 @@ export const IOSInstallButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: #111;
-  color: white;
+  background: var(--text);
+  color: var(--bg);
   font-size: 12px;
   font-weight: 600;
   font-family: sans-serif;
@@ -191,8 +191,8 @@ export const IOSInstallButton = styled.a`
   transition: background 0.2s ease;
 
   &:hover {
-    background: #333;
-    color: white;
+    background: var(--text-secondary);
+    color: var(--bg);
   }
 `;
 
@@ -201,21 +201,21 @@ export const IOSBannerDismiss = styled.button`
   border: none;
   padding: 2px 4px;
   cursor: pointer;
-  color: #9ca3af;
+  color: var(--text-faint);
   font-size: 16px;
   line-height: 1;
   border-radius: 4px;
   min-height: unset;
 
   &:hover {
-    color: #6b7280;
-    background: #e5e7eb;
+    color: var(--text-muted);
+    background: var(--border);
   }
 `;
 
 export const ModeToggle = styled.div`
   display: flex;
-  background-color: #f3f4f6;
+  background-color: var(--bg-secondary);
   border-radius: 10px;
   padding: 4px;
   gap: 3px;
@@ -235,12 +235,12 @@ export const ModeButton = styled.button`
   text-transform: none;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  background-color: ${({ active }) => active ? 'white' : 'transparent'};
+  background-color: ${({ active }) => active ? 'var(--bg-surface)' : 'transparent'};
   color: ${({ active, disabled }) =>
-    disabled ? '#ccc' :
-    active ? '#111' : '#6b7280'
+    disabled ? 'var(--text-faint)' :
+    active ? 'var(--text)' : 'var(--text-muted)'
   };
-  box-shadow: ${({ active }) => active ? '0 1px 4px rgba(0,0,0,0.1)' : 'none'};
+  box-shadow: ${({ active }) => active ? '0 1px 4px var(--shadow-md)' : 'none'};
   opacity: ${({ disabled }) => disabled ? 0.5 : 1};
   min-height: 40px;
   display: flex;
@@ -251,7 +251,7 @@ export const ModeButton = styled.button`
   &:hover {
     background-color: ${({ disabled, active }) =>
       disabled ? 'transparent' :
-      active ? 'white' : 'rgba(255,255,255,0.6)'
+      active ? 'var(--bg-surface)' : 'var(--bg-tertiary)'
     };
   }
 

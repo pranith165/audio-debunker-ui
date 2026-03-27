@@ -31,10 +31,10 @@ export const StepContainer = styled.div`
   margin: 0 auto 3rem;
   padding: 2rem 2rem 1.75rem;
   box-sizing: border-box;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 24px var(--shadow-sm), 0 1px 4px rgba(0, 0, 0, 0.04);
 
   @media (max-width: 600px) {
     border-radius: 12px;
@@ -50,20 +50,20 @@ export const StepHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 1.75rem;
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 `;
 
 export const StepOverallLabel = styled.span`
   font-family: sans-serif;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #111;
+  color: var(--text);
 `;
 
 export const StepCount = styled.span`
   font-family: monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-faint);
   letter-spacing: 0.05em;
 `;
 
@@ -104,21 +104,21 @@ export const StepDot = styled.div`
   z-index: 1;
 
   ${({ $completed }) => $completed && css`
-    background-color: #111;
-    border: 2px solid #111;
-    color: #fff;
+    background-color: var(--text);
+    border: 2px solid var(--text);
+    color: var(--bg);
     > svg { animation: ${checkPop} 0.35s ease forwards; }
   `}
 
   ${({ $active }) => $active && css`
-    background-color: #111;
-    border: 2px solid #111;
+    background-color: var(--text);
+    border: 2px solid var(--text);
     animation: ${pulseRing} 1.8s ease-out infinite;
   `}
 
   ${({ $pending }) => $pending && css`
     background-color: transparent;
-    border: 2px solid #d1d5db;
+    border: 2px solid var(--border);
   `}
 
   @media (prefers-reduced-motion: reduce) {
@@ -144,7 +144,7 @@ export const ConnectorLine = styled.div`
   flex: 1;
   min-height: 20px;
   margin: 3px 0;
-  background: ${({ $completed }) => $completed ? '#111' : '#e5e7eb'};
+  background: ${({ $completed }) => $completed ? 'var(--text)' : 'var(--border)'};
   transition: background-color 0.5s ease;
 `;
 
@@ -160,16 +160,16 @@ export const StepTitle = styled.div`
   font-size: 0.9375rem;
   font-weight: ${({ $active }) => $active ? 600 : 500};
   color: ${({ $completed, $active }) =>
-    $completed ? '#9ca3af' :
-    $active    ? '#111' :
-                 '#9ca3af'
+    $completed ? 'var(--text-faint)' :
+    $active    ? 'var(--text)' :
+                 'var(--text-faint)'
   };
   transition: color 0.3s ease;
   line-height: 1.4;
 
   ${({ $completed }) => $completed && css`
     text-decoration: line-through;
-    text-decoration-color: #d1d5db;
+    text-decoration-color: var(--border);
   `}
 `;
 
@@ -177,7 +177,7 @@ export const StepSubtitle = styled.p`
   font-family: sans-serif;
   font-size: 0.8125rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 0.3rem 0 0;
   animation: ${fadeSlideIn} 0.3s ease forwards;
 
@@ -200,7 +200,7 @@ export const StepStatus = styled.span`
 
   color: ${({ $completed, $active }) =>
     $completed ? '#22c55e' :
-    $active    ? '#111' :
+    $active    ? 'var(--text)' :
                  'transparent'
   };
   font-weight: ${({ $active }) => $active ? 600 : 400};

@@ -6,13 +6,13 @@ export const HeaderWrapper = styled.header`
   justify-content: space-between; /* Logo left, items right */
   align-items: center;
   padding: 1rem 2rem;
-  color: black;
+  color: var(--text);
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 3px var(--shadow-md);
 
   @media (max-width: 768px) {
     padding: 0.75rem 1rem;
@@ -78,7 +78,7 @@ export const NavItem = styled.a`
 
 export const HeaderLogoLink = styled(Link)`
   text-decoration: none;
-  color: black;
+  color: var(--text);
 `;
 
 export const NavItemLink = styled(Link)`
@@ -102,5 +102,24 @@ export const NavItemLink = styled(Link)`
   @media (max-width: 480px) {
     font-size: 12px;
     min-height: 40px;
+  }
+`;
+
+export const ThemeToggle = styled.button`
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text);
   }
 `;
