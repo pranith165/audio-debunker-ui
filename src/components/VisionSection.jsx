@@ -25,7 +25,6 @@ import {
   ClosingCTAWrapper,
   ClosingCTAText,
   ClosingCTAButton,
-  ComingSoonBadge,
 } from './VisionSection.styled';
 
 import step1 from '../assets/images/vision-step1.jpg';
@@ -43,21 +42,19 @@ const steps = [
   },
   {
     number: '02',
-    heading: "You'll hit share. You'll pick debunker.",
+    heading: 'Hit share. Pick debunker.',
     description:
-      "No copy-pasting. No switching apps. Once debunker launches on mobile, you'll just hit the share button on any reel and select debunker — right from your phone's share sheet.",
+      "No copy-pasting. No switching apps. Just hit the share button on any Instagram or TikTok reel and select debunker — right from your phone's share sheet.",
     image: step2,
     alt: 'iOS share sheet with debunker as an option',
-    comingSoon: true,
   },
   {
     number: '03',
     heading: 'An instant verdict. Evidence. Sources.',
     description:
-      'Debunker will analyze the claim, cross-reference it against credible sources, and deliver a verdict in seconds — so you\'ll always know what to believe.',
+      "Debunker analyzes the claim, cross-references it against credible sources, and delivers a verdict in seconds — so you always know what to believe.",
     image: step3,
     alt: 'Debunker showing a fact-check verdict with evidence',
-    comingSoon: true,
   },
 ];
 
@@ -88,10 +85,10 @@ function VisionSection() {
     <VisionOuter>
       <VisionWrapper>
         <VisionHeader>
-          <VisionEyebrow>What we're building</VisionEyebrow>
+          <VisionEyebrow>How it works</VisionEyebrow>
           <VisionTitle>Truth at the<br />speed of scroll.</VisionTitle>
           <VisionSubtitle>
-            Debunker isn't on your share sheet yet — but here's exactly what we're building toward.
+            See a reel. Hit share. Get a verdict. Debunker works directly from Instagram and TikTok — no copy-pasting required.
           </VisionSubtitle>
         </VisionHeader>
 
@@ -111,10 +108,7 @@ function VisionSection() {
                 data-index={index}
                 ref={el => stepRefs.current[index] = el}
               >
-                <StepNum>
-                  {step.number}
-                  {step.comingSoon && <ComingSoonBadge>Coming soon</ComingSoonBadge>}
-                </StepNum>
+                <StepNum>{step.number}</StepNum>
                 <StepHeading>{step.heading}</StepHeading>
                 <StepDescription>{step.description}</StepDescription>
 
@@ -144,7 +138,7 @@ function VisionSection() {
         </StickyLayout>
 
         <ClosingCTAWrapper>
-          <ClosingCTAText>The web version is live — try it now.</ClosingCTAText>
+          <ClosingCTAText>Works on web too — paste any URL or claim and get a verdict instantly.</ClosingCTAText>
           <ClosingCTAButton to="/fact-check">Try debunker →</ClosingCTAButton>
         </ClosingCTAWrapper>
       </VisionWrapper>
