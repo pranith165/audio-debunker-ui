@@ -201,6 +201,7 @@ export const MobileImg = styled.img`
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  object-position: ${p => p.$position || 'center'};
   border-radius: 12px;
   margin-top: 1.5rem;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -270,6 +271,7 @@ export const StepImg = styled.img`
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  object-position: ${p => p.$position || 'center'};
   display: block;
 `;
 

@@ -34,6 +34,10 @@ import step3 from '../assets/images/vision-step3.jpg';
 
 const IOS_SHORTCUT_URL = 'https://www.icloud.com/shortcuts/c4244ff555e34b07bbec25297e0c1f13';
 
+const isIOS = () =>
+  /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 const steps = [
   {
     number: '01',
@@ -50,6 +54,7 @@ const steps = [
       "No copy-pasting. No switching apps. Just hit the share button on any Instagram or TikTok reel and select debunker — right from your phone's share sheet.",
     image: step2,
     alt: 'iOS share sheet with debunker as an option',
+    imagePosition: 'center 70%',
     shortcut: true,
   },
   {
@@ -64,6 +69,7 @@ const steps = [
 
 function VisionSection() {
   const [activeStep, setActiveStep] = useState(0);
+  const onIOS = isIOS();
   const stepRefs = useRef([]);
 
   useEffect(() => {
@@ -115,14 +121,14 @@ function VisionSection() {
                 <StepNum>{step.number}</StepNum>
                 <StepHeading>{step.heading}</StepHeading>
                 <StepDescription>{step.description}</StepDescription>
-                {step.shortcut && (
+                {step.shortcut && onIOS && (
                   <ShortcutLink href={IOS_SHORTCUT_URL} target="_blank" rel="noopener noreferrer">
                     ↑ Get the shortcut
                   </ShortcutLink>
                 )}
 
                 {/* Image shown inline on mobile only */}
-                <MobileImg src={step.image} alt={step.alt} loading="lazy" />
+                <MobileImg src={step.image} alt={step.alt} loading="lazy" $position={step.imagePosition} />
               </StepItem>
             ))}
           </StepsColumn>
@@ -139,7 +145,7 @@ function VisionSection() {
 
               {steps.map((step, index) => (
                 <ImageSlide key={step.number} $visible={activeStep === index}>
-                  <StepImg src={step.image} alt={step.alt} loading="lazy" />
+                  <StepImg src={step.image} alt={step.alt} loading="lazy" $position={step.imagePosition} />
                 </ImageSlide>
               ))}
             </BrowserFrame>
