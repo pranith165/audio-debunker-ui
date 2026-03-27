@@ -24,9 +24,9 @@ export const RecordButton = styled.button`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 3px solid ${({ $isRecording }) => $isRecording ? '#ef4444' : '#000'};
-  background-color: ${({ $isRecording }) => $isRecording ? '#ef4444' : 'white'};
-  color: ${({ $isRecording }) => $isRecording ? 'white' : '#000'};
+  border: 3px solid ${({ $isRecording }) => $isRecording ? '#ef4444' : 'var(--text)'};
+  background-color: ${({ $isRecording }) => $isRecording ? '#ef4444' : 'var(--bg-surface)'};
+  color: ${({ $isRecording }) => $isRecording ? 'white' : 'var(--text)'};
   font-size: 2rem;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   transition: all 0.3s ease;
@@ -142,8 +142,8 @@ export const PlayButton = styled.button`
 
 export const RerecordButton = styled.button`
   background-color: transparent;
-  color: #6b7280;
-  border: 1px solid #d1d5db;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   padding: 8px 16px;
   border-radius: 16px;
   font-size: 12px;
@@ -153,8 +153,8 @@ export const RerecordButton = styled.button`
   opacity: ${({ disabled }) => disabled ? 0.5 : 1};
 
   &:hover {
-    background-color: ${({ disabled }) => disabled ? 'transparent' : '#f9fafb'};
-    border-color: ${({ disabled }) => disabled ? '#d1d5db' : '#9ca3af'};
+    background-color: ${({ disabled }) => disabled ? 'transparent' : 'var(--bg-secondary)'};
+    border-color: ${({ disabled }) => disabled ? 'var(--border)' : 'var(--text-muted)'};
   }
 
   @media (max-width: 768px) {
@@ -172,7 +172,7 @@ export const RerecordButton = styled.button`
 
 export const RecordingStatus = styled.p`
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
   text-align: center;
   margin: 0;
   font-family: monospace;

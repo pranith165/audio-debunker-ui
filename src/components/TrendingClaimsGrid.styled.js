@@ -5,37 +5,37 @@ export const GridSideStripe = styled.div`
   height: 100%;
   background: repeating-linear-gradient(
     45deg,
-    #f8fafc,
-    #f8fafc 10px,
-    rgba(0, 0, 0, 0.05) 10px,
-    rgba(0, 0, 0, 0.05) 11px
+    var(--stripe-bg),
+    var(--stripe-bg) 10px,
+    var(--stripe-line) 10px,
+    var(--stripe-line) 11px
   );
 
   &.left {
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 1px solid var(--border-subtle);
   }
 
   &.right {
-    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 1px solid var(--border-subtle);
   }
 
   @media (max-width: 768px) {
     background: repeating-linear-gradient(
       45deg,
-      #f8fafc,
-      #f8fafc 8px,
-      rgba(0, 0, 0, 0.08) 8px,
-      rgba(0, 0, 0, 0.08) 9px
+      var(--stripe-bg),
+      var(--stripe-bg) 8px,
+      var(--stripe-line) 8px,
+      var(--stripe-line) 9px
     );
   }
 
   @media (max-width: 480px) {
     background: repeating-linear-gradient(
       45deg,
-      #f8fafc,
-      #f8fafc 6px,
-      rgba(0, 0, 0, 0.1) 6px,
-      rgba(0, 0, 0, 0.1) 7px
+      var(--stripe-bg),
+      var(--stripe-bg) 6px,
+      var(--stripe-line) 6px,
+      var(--stripe-line) 7px
     );
   }
 `;
@@ -55,7 +55,7 @@ export const GridContent = styled.div`
 `;
 
 export const GridWrapper = styled.div`
-  background-color: #f9f9f9;
+  background-color: var(--bg-page);
   padding: 0;
   margin: 0;
   width: 100%;
@@ -89,7 +89,7 @@ export const GridHeader = styled.div`
 export const GridTitle = styled.h1`
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
-  color: #111827;
+  color: var(--text-heading);
   margin: 0 0 1rem 0;
   font-family: sans-serif;
   letter-spacing: -0.02em;
@@ -106,7 +106,7 @@ export const GridTitle = styled.h1`
 
 export const GridSubtitle = styled.p`
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 0 auto 2rem auto;
   max-width: 600px;
   line-height: 1.6;
@@ -128,15 +128,15 @@ export const StatsBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
   font-family: monospace;
 
   span {
-    color: #6b7280;
+    color: var(--text-muted);
     font-size: 0.875rem;
     font-weight: 500;
   }
@@ -145,7 +145,7 @@ export const StatsBar = styled.div`
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    
+
     span {
       font-size: 0.8rem;
     }
@@ -154,7 +154,7 @@ export const StatsBar = styled.div`
   @media (max-width: 480px) {
     padding: 0.75rem;
     gap: 0.75rem;
-    
+
     span {
       font-size: 0.75rem;
     }
@@ -162,8 +162,8 @@ export const StatsBar = styled.div`
 `;
 
 export const AnalyzeOwnButton = styled(Link)`
-  background-color: #000;
-  color: white;
+  background-color: var(--text);
+  color: var(--bg);
   padding: 8px 16px;
   border-radius: 20px;
   text-decoration: none;
@@ -173,7 +173,7 @@ export const AnalyzeOwnButton = styled(Link)`
   font-family: monospace;
 
   &:hover {
-    background-color: #374151;
+    opacity: 0.8;
     transform: translateY(-1px);
   }
 
@@ -213,7 +213,7 @@ export const ClaimsContainer = styled.div`
 export const LoadingSpinner = styled.div`
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-family: monospace;
   font-size: 1rem;
 
@@ -232,8 +232,8 @@ export const ErrorMessage = styled.div`
   text-align: center;
   padding: 2rem;
   color: #ef4444;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 8px;
   margin: 2rem 0;
   font-family: monospace;
@@ -264,8 +264,8 @@ export const LoadMoreButton = styled.button`
   display: block;
   margin: 0 auto;
   background-color: transparent;
-  color: #111;
-  border: 1.5px solid #111;
+  color: var(--text);
+  border: 1.5px solid var(--text);
   padding: 12px 32px;
   border-radius: 8px;
   cursor: pointer;
@@ -275,8 +275,8 @@ export const LoadMoreButton = styled.button`
   font-family: monospace;
 
   &:hover {
-    background-color: #111;
-    color: #fff;
+    background-color: var(--text);
+    color: var(--bg);
   }
 
   @media (max-width: 768px) {
@@ -310,10 +310,10 @@ export const SkeletonGrid = styled.div`
 `;
 
 export const SkeletonCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
-  background: white;
+  background: var(--bg-surface);
   min-height: 280px;
   display: flex;
   flex-direction: column;
@@ -324,7 +324,7 @@ export const SkeletonLine = styled.div`
   height: ${p => p.$h || '14px'};
   width: ${p => p.$w || '100%'};
   border-radius: 6px;
-  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border) 50%, var(--bg-secondary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
   @keyframes shimmer {
@@ -333,6 +333,6 @@ export const SkeletonLine = styled.div`
   }
   @media (prefers-reduced-motion: reduce) {
     animation: none;
-    background: #f3f4f6;
+    background: var(--bg-secondary);
   }
 `;

@@ -25,10 +25,10 @@ export const SortButton = styled.button`
   flex-direction: column;
   align-items: center;
   padding: 0.75rem 1rem;
-  border: 2px solid ${({ $active }) => $active ? '#000' : '#d1d5db'};
+  border: 2px solid ${({ $active }) => $active ? 'var(--text)' : 'var(--border)'};
   border-radius: 12px;
-  background-color: ${({ $active }) => $active ? '#000' : 'white'};
-  color: ${({ $active }) => $active ? 'white' : '#374151'};
+  background-color: ${({ $active }) => $active ? 'var(--text)' : 'var(--bg-surface)'};
+  color: ${({ $active }) => $active ? 'var(--bg)' : 'var(--text-secondary)'};
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: monospace;
@@ -49,10 +49,10 @@ export const SortButton = styled.button`
   }
 
   &:hover {
-    border-color: #000;
-    background-color: ${({ $active }) => $active ? '#000' : '#f9fafb'};
+    border-color: var(--text);
+    background-color: ${({ $active }) => $active ? 'var(--text)' : 'var(--bg-secondary)'};
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px var(--shadow-sm);
   }
 
   &:active {
@@ -62,11 +62,11 @@ export const SortButton = styled.button`
   @media (max-width: 768px) {
     min-width: 100px;
     padding: 0.6rem 0.8rem;
-    
+
     .sort-label {
       font-size: 0.8rem;
     }
-    
+
     .sort-desc {
       font-size: 0.7rem;
     }
@@ -78,11 +78,11 @@ export const SortButton = styled.button`
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
-    
+
     .sort-label {
       font-size: 0.9rem;
     }
-    
+
     .sort-desc {
       font-size: 0.75rem;
       text-align: right;

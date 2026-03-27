@@ -5,7 +5,7 @@ import { GrResources } from "react-icons/gr";
 
 
 export const ResultsWrapper = styled.div`
-  background-color: #f9f9f9;
+  background-color: var(--bg-page);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -37,6 +37,7 @@ export const ResultHeadliner = styled.h1`
   overflow-wrap: break-word;
   box-sizing: border-box;
   padding: 0 1rem;
+  color: var(--text-heading);
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -52,24 +53,24 @@ export const ResultHeadliner = styled.h1`
 `;
 
 export const ResultsOverview = styled.div`
-  border: 1px solid gray;
+  border: 1px solid var(--border);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: stretch;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-  background: white;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
   width: 100%;
   overflow: hidden;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    
+
     & > div {
       border-right: none;
-      border-bottom: 1px solid #979292;
+      border-bottom: 1px solid var(--border);
     }
-    
+
     & > div:last-child {
       border-bottom: none;
     }
@@ -82,9 +83,9 @@ export const ResultsOverview = styled.div`
 
 export const OverviewCard = styled.div`
     padding: 2rem;
-    border-right: 1px solid #979292;
+    border-right: 1px solid var(--border);
     text-align: left;
-    background-color: white;
+    background-color: var(--bg-surface);
     transition: background 0.3s ease;
     display: grid;
     grid-template-columns: 20% 80%;
@@ -101,14 +102,14 @@ export const OverviewCard = styled.div`
   }
 
   &:hover {
-    background: ${({ hoverBg }) => hoverBg || "#fafafa"};
+    background: ${({ hoverBg }) => hoverBg || "var(--bg-secondary)"};
     cursor: pointer;
     svg {
-      color: ${({ hoverColor }) => hoverColor || "#000"};
+      color: ${({ hoverColor }) => hoverColor || "var(--text)"};
     }
 
     h4 {
-      color: ${({ hoverColor }) => hoverColor || "#000"};
+      color: ${({ hoverColor }) => hoverColor || "var(--text)"};
     }
   }
 
@@ -181,7 +182,7 @@ export const OverViewTitle = styled.h4`
   font-size: 14px;
   letter-spacing: 1px;
   font-weight: bold;
-  color: ${({ highlighted }) => (highlighted ? "#007bff" : "#000")};
+  color: ${({ highlighted }) => (highlighted ? "#007bff" : "var(--text-heading)")};
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
 
@@ -200,7 +201,7 @@ export const OverViewTitle = styled.h4`
 
 export const OverViewDescription = styled.p`
   font-size: 16px;
-  color: #a09b9b;
+  color: var(--text-muted);
   margin: 0;
   font-family: monospace;
   line-height: 1.4;
@@ -266,10 +267,10 @@ export const IconWrapper = styled.div`
 
 // Detailed Analysis Components
 export const DetailedAnalysisWrapper = styled.div`
-  background: white;
+  background: var(--bg-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+  border: 1px solid var(--border);
   margin: 2rem 0;
   overflow: hidden;
   width: 100%;
@@ -288,8 +289,8 @@ export const DetailedAnalysisWrapper = styled.div`
 
 export const TabNavigation = styled.div`
   display: flex;
-  border-bottom: 1px solid #e5e7eb;
-  background-color: #f9fafb;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-secondary);
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -338,7 +339,7 @@ export const TabButton = styled.button`
   background: none;
   border: none;
   font-weight: 500;
-  color: ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : '#6b7280'};
+  color: ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : 'var(--text-muted)'};
   cursor: pointer;
   transition: all 0.2s;
   border-bottom: 2px solid ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : 'transparent'};
@@ -405,12 +406,12 @@ export const TabButton = styled.button`
   }
 
   &:hover {
-    background-color: #f3f4f6;
-    color: ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : '#1f2937'};
+    background-color: var(--bg-secondary);
+    color: ${({ active }) => active ? 'oklch(0.685 0.169 237.323)' : 'var(--text-heading)'};
   }
 
   ${({ active }) => active && `
-    background-color: white;
+    background-color: var(--bg-surface);
   `}
 `;
 
@@ -432,7 +433,7 @@ export const TabContent = styled.div`
 export const OverviewSection = styled.div`
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
   max-width: 100%;
   box-sizing: border-box;
   overflow-wrap: break-word;
@@ -444,7 +445,7 @@ export const OverviewSection = styled.div`
   }
 
   h3 {
-    color: #1f2937;
+    color: var(--text-heading);
     font-weight: 600;
     margin-bottom: 1rem;
     font-size: 1.125rem;
@@ -454,7 +455,7 @@ export const OverviewSection = styled.div`
   }
 
   p {
-    color: #4b5563;
+    color: var(--text-secondary);
     line-height: 1.6;
     font-family: monospace;
     word-wrap: break-word;
@@ -494,11 +495,11 @@ export const OverviewSection = styled.div`
 `;
 
 export const TranscriptionBox = styled.div`
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid oklch(0.685 0.169 237.323);
-  color: #4b5563;
+  color: var(--text-secondary);
   line-height: 1.6;
   font-style: italic;
   font-family: monospace;
@@ -534,10 +535,10 @@ export const ClaimItem = styled.div`
   padding: 1rem;
   background-color: ${({ status }) => {
     switch(status) {
-      case 'false': return '#fef2f2';
-      case 'true': return '#f0fdf4';
-      case 'mixed': return '#fffbeb';
-      default: return '#f9fafb';
+      case 'false': return 'rgba(239, 68, 68, 0.08)';
+      case 'true': return 'rgba(16, 185, 129, 0.08)';
+      case 'mixed': return 'rgba(245, 158, 11, 0.08)';
+      default: return 'var(--bg-secondary)';
     }
   }};
   border-radius: 8px;
@@ -546,14 +547,14 @@ export const ClaimItem = styled.div`
       case 'false': return '#ef4444';
       case 'true': return '#10b981';
       case 'mixed': return '#f59e0b';
-      default: return '#6b7280';
+      default: return 'var(--border)';
     }
   }};
 
   p {
     margin: 0;
     font-family: monospace;
-    color: #1f2937;
+    color: var(--text-heading);
   }
 `;
 
@@ -567,18 +568,18 @@ export const ClaimStatus = styled.span`
   font-family: monospace;
   background-color: ${({ status }) => {
     switch(status) {
-      case 'false': return '#fee2e2';
-      case 'true': return '#dcfce7';
-      case 'mixed': return '#fef3c7';
-      default: return '#f3f4f6';
+      case 'false': return 'rgba(239, 68, 68, 0.15)';
+      case 'true': return 'rgba(16, 185, 129, 0.15)';
+      case 'mixed': return 'rgba(245, 158, 11, 0.15)';
+      default: return 'var(--bg-secondary)';
     }
   }};
   color: ${({ status }) => {
     switch(status) {
-      case 'false': return '#dc2626';
-      case 'true': return '#16a34a';
-      case 'mixed': return '#d97706';
-      default: return '#6b7280';
+      case 'false': return '#ef4444';
+      case 'true': return '#10b981';
+      case 'mixed': return '#f59e0b';
+      default: return 'var(--text-muted)';
     }
   }};
 `;
@@ -600,10 +601,10 @@ export const SourcesGrid = styled.div`
 `;
 
 export const SourceItem = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
-  background-color: #fafafa;
+  background-color: var(--bg-tertiary);
   min-height: 120px;
   display: flex;
   flex-direction: column;
@@ -613,7 +614,7 @@ export const SourceItem = styled.div`
     margin: 0;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-heading);
     line-height: 1.4;
     font-family: monospace;
     overflow: hidden;
@@ -693,23 +694,23 @@ export const MetricsGrid = styled.div`
 `;
 
 export const MetricGroup = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
 
   h3 {
-    color: #1f2937;
+    color: var(--text-heading);
     font-weight: 600;
     margin-bottom: 1.5rem;
     font-size: 1.125rem;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid var(--border-subtle);
     padding-bottom: 0.5rem;
     font-family: monospace;
   }
 
   span {
     font-family: monospace;
-    color: #4b5563;
+    color: var(--text-secondary);
     font-weight: 500;
   }
 
@@ -743,7 +744,7 @@ export const MetricGroup = styled.div`
 export const MetricBar = styled.div`
   width: 100%;
   height: 8px;
-  background-color: #e5e7eb;
+  background-color: var(--border);
   border-radius: 4px;
   position: relative;
   overflow: hidden;
@@ -763,7 +764,7 @@ export const ActionButtons = styled.div`
   gap: 1rem;
   margin: 2rem 0;
   padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
 
   /* MD: Medium screens (821px-1024px) */
   @media (max-width: 1024px) and (min-width: 821px) {
@@ -793,8 +794,8 @@ export const ActionButtons = styled.div`
 
 export const PrimaryButton = styled.button`
   padding: 0.75rem 2rem;
-  background-color: black;
-  color: white;
+  background-color: var(--text);
+  color: var(--bg);
   border: none;
   border-radius: 32px;
   font-weight: 600;
@@ -806,7 +807,7 @@ export const PrimaryButton = styled.button`
   min-width: 140px;
 
   &:hover {
-    background-color: #1f2937;
+    opacity: 0.8;
     transform: translateY(-1px);
   }
 
@@ -839,8 +840,8 @@ export const PrimaryButton = styled.button`
 export const SecondaryButton = styled.button`
   padding: 0.75rem 2rem;
   background-color: transparent;
-  color: #6b7280;
-  border: 2px solid #d1d5db;
+  color: var(--text-muted);
+  border: 2px solid var(--border);
   border-radius: 32px;
   font-weight: 600;
   font-size: 14px;
@@ -851,9 +852,9 @@ export const SecondaryButton = styled.button`
   min-width: 140px;
 
   &:hover {
-    background-color: #f9fafb;
-    border-color: #9ca3af;
-    color: #1f2937;
+    background-color: var(--bg-secondary);
+    border-color: var(--text-muted);
+    color: var(--text-heading);
   }
 
   /* MD: Medium screens (821px-1024px) */

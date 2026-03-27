@@ -174,7 +174,7 @@ function ResultsPage() {
     agree:   { label: '✓ All sources agree',          bg: '#dcfce7', color: '#15803d' },
     partial: { label: '~ Sources partially disagree', bg: '#fef9c3', color: '#a16207' },
     conflict:{ label: '⚠ Sources conflict',           bg: '#fee2e2', color: '#b91c1c' },
-    single:  { label: '— Single source',              bg: '#f3f4f6', color: '#6b7280' },
+    single:  { label: '— Single source',              bg: '#f3f4f6', color: 'var(--text-muted)' },
   };
   const agreement = analysisData?.source_agreement ?? 'single';
   const agreementCfg = agreementConfig[agreement] ?? agreementConfig.single;
@@ -186,17 +186,20 @@ function ResultsPage() {
       case 'true': return '#10b981';
       case 'false': return '#ef4444';
       case 'mixed': return '#f59e0b';
-      case 'uncertain': return '#6b7280';
-      case 'opinion': return '#6b21a8';
-      case 'not a claim': return '#374151';
-      default: return '#6b7280';
+      case 'misleading': return '#f97316';
+      case 'partially true': return '#84cc16';
+      case 'uncertain': return '#3b82f6';
+      case 'unverifiable': return '#a855f7';
+      case 'opinion': return '#8b5cf6';
+      case 'not a claim': return '#0ea5e9';
+      default: return '#f97316';
     }
   };
 
   const getVerdictPillStyle = (verdict) => {
     switch(verdict?.toLowerCase()) {
-      case 'opinion': return { backgroundColor: '#e9d5ff', color: '#6b21a8', padding: '1px 8px', borderRadius: '9999px' };
-      case 'not a claim': return { backgroundColor: '#f3f4f6', color: '#374151', padding: '1px 8px', borderRadius: '9999px' };
+      case 'opinion': return { backgroundColor: '#ede9fe', color: '#8b5cf6', padding: '1px 8px', borderRadius: '9999px' };
+      case 'not a claim': return { backgroundColor: '#e0f2fe', color: '#0ea5e9', padding: '1px 8px', borderRadius: '9999px' };
       default: return {};
     }
   };
@@ -289,7 +292,7 @@ function ResultsPage() {
                         {getVerdictLabel(analysisData.verdict)}
                       </span>{' '}
                       {isClassified
-                        ? <span style={{ color: '#6b7280' }}>(Confidence: N/A)</span>
+                        ? <span style={{ color: 'var(--text-muted)' }}>(Confidence: N/A)</span>
                         : `(Confidence: ${Math.round(analysisData.confidence * 100)}%). The claim is unsupported by scientific evidence.`
                       }
                     </OverViewDescription>
@@ -363,8 +366,8 @@ function ResultsPage() {
                 <div>
                   {analysisData?.source_agreement === 'conflict' && (
                     <div style={{
-                      backgroundColor: '#fff7ed',
-                      border: '1px solid #fed7aa',
+                      backgroundColor: 'rgba(251, 146, 60, 0.08)',
+                      border: '1px solid rgba(251, 146, 60, 0.25)',
                       borderRadius: '8px',
                       padding: '12px 16px',
                       marginBottom: '16px',
@@ -385,8 +388,14 @@ function ResultsPage() {
                     </div>
                   )}
                   <OverviewSection>
-                    <h3>{analysisData.isTextClaim ? 'Claim Text' : 'Transcription'}</h3>
-                    <TranscriptionBox>
+                    <h3>
+                      {analysisData.isTextClaim
+                        ? 'Claim Text'
+                        : analysisData.transcription?.includes('[Card')
+                          ? 'Extracted Content'
+                          : 'Transcription'}
+                    </h3>
+                    <TranscriptionBox style={{ whiteSpace: 'pre-wrap' }}>
                       {analysisData.transcription || analysisData.claim_text}
                     </TranscriptionBox>
                   </OverviewSection>
@@ -395,12 +404,12 @@ function ResultsPage() {
                     <h3>{isClassified ? 'Classification Result' : 'Fact-Check Analysis'}</h3>
                     {isClassified ? (
                       <div style={{
-                        backgroundColor: analysisData.verdict?.toLowerCase() === 'opinion' ? '#faf5ff' : '#f9fafb',
-                        border: `1px solid ${analysisData.verdict?.toLowerCase() === 'opinion' ? '#e9d5ff' : '#e5e7eb'}`,
+                        backgroundColor: analysisData.verdict?.toLowerCase() === 'opinion' ? 'rgba(139, 92, 246, 0.08)' : 'var(--bg-secondary)',
+                        border: `1px solid ${analysisData.verdict?.toLowerCase() === 'opinion' ? 'rgba(139, 92, 246, 0.25)' : 'var(--border)'}`,
                         borderRadius: '8px',
                         padding: '16px 20px',
                       }}>
-                        <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.6', color: '#374151' }}>
+                        <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
                           {analysisData.explanation}
                         </p>
                       </div>
@@ -425,7 +434,7 @@ function ResultsPage() {
                           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                             {analysisData.tags.map((tag, index) => (
                               <span key={index} style={{ 
-                                background: '#f3f4f6', 
+                                background: 'var(--bg-secondary)', 
                                 padding: '0.25rem 0.5rem', 
                                 borderRadius: '0.25rem',
                                 fontSize: '0.875rem'
@@ -499,30 +508,30 @@ function ResultsPage() {
                     <h3>Detailed Evaluations</h3>
                     {analysisData.isTextClaim ? (
                       // For trending claims, show the fact-check evaluation
-                      <div style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+                      <div style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                           <ClaimStatus status={analysisData.verdict?.toLowerCase()}>
                             {analysisData.verdict}
                           </ClaimStatus>
                           <h4>FACT-CHECK ANALYSIS</h4>
                           {analysisData.confidence && (
-                            <span style={{ background: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.875rem' }}>
+                            <span style={{ background: 'var(--bg-secondary)', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.875rem' }}>
                               {Math.round(analysisData.confidence * 100)}% Confidence
                             </span>
                           )}
                         </div>
-                        <p style={{ marginBottom: '1rem', color: '#4b5563' }}>
+                        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>
                           {analysisData.explanation}
                         </p>
                         {analysisData.evidence_summary && (
-                          <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#f9fafb', borderRadius: '6px' }}>
-                            <span style={{ fontWeight: '500', color: '#374151' }}>Evidence Summary:</span>
-                            <p style={{ margin: '0.5rem 0 0 0', color: '#6b7280' }}>{analysisData.evidence_summary}</p>
+                          <div style={{ marginBottom: '1rem', padding: '0.75rem', background: 'var(--bg-secondary)', borderRadius: '6px' }}>
+                            <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Evidence Summary:</span>
+                            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--text-muted)' }}>{analysisData.evidence_summary}</p>
                           </div>
                         )}
                         {safeUrl(analysisData.source_url) && (
                           <div>
-                            <span style={{ fontWeight: '500', color: '#6b7280' }}>Original Source:</span>
+                            <span style={{ fontWeight: '500', color: 'var(--text-muted)' }}>Original Source:</span>
                             <a href={safeUrl(analysisData.source_url)} target="_blank" rel="noopener noreferrer"
                                style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
                               {formatUrl(analysisData.source_url)}
@@ -531,7 +540,7 @@ function ResultsPage() {
                         )}
                         {analysisData.keywords && (
                           <div style={{ marginTop: '1rem' }}>
-                            <span style={{ fontWeight: '500', color: '#6b7280' }}>Keywords:</span>
+                            <span style={{ fontWeight: '500', color: 'var(--text-muted)' }}>Keywords:</span>
                             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
                               {analysisData.keywords.map((keyword, idx) => (
                                 <span key={idx} style={{ 
@@ -552,11 +561,11 @@ function ResultsPage() {
                       // For audio analysis, use original logic
                       analysisData.evidence?.claim_evaluations ? (
                         <>
-                          <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '12px' }}>
+                          <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginBottom: '12px' }}>
                             {Object.keys(analysisData.evidence.claim_evaluations).length} sub-claim{Object.keys(analysisData.evidence.claim_evaluations).length !== 1 ? 's' : ''} evaluated
                           </p>
                         {Object.entries(analysisData.evidence.claim_evaluations).map(([key, evaluation]) => (
-                          <div key={key} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+                          <div key={key} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                               <ClaimStatus status={evaluation.status?.toLowerCase()}>
                                 {evaluation.status}
@@ -565,10 +574,10 @@ function ResultsPage() {
                                 {key.length > 120 ? key.slice(0, 120) + '…' : key.replace('_', ' ').toUpperCase()}
                               </h4>
                             </div>
-                            <p style={{ marginBottom: '1rem', color: '#4b5563' }}>{evaluation.evidence}</p>
+                            <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>{evaluation.evidence}</p>
                             {evaluation.sources && (
                               <div>
-                                <span style={{ fontWeight: '500', color: '#6b7280' }}>Sources:</span>
+                                <span style={{ fontWeight: '500', color: 'var(--text-muted)' }}>Sources:</span>
                                 {evaluation.sources.map((source, idx) => safeUrl(source) ? (
                                   <a key={idx} href={safeUrl(source)} target="_blank" rel="noopener noreferrer"
                                      style={{ margin: '0 0.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>
@@ -602,7 +611,7 @@ function ResultsPage() {
                         {factCheckSources.length > 0 && (
                           <OverviewSection>
                             <h3>🔍 Verified By ({factCheckSources.length})</h3>
-                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
                               These sources were used to verify the claim's accuracy
                             </p>
                             <SourcesGrid>
@@ -610,8 +619,8 @@ function ResultsPage() {
                                 const fullUrl = getFullUrl(source);
                                 return (
                                   <SourceItem key={index} style={{ 
-                                    border: '2px solid #22c55e', 
-                                    background: '#f0fdf4',
+                                    border: '2px solid #22c55e',
+                                    background: 'rgba(16, 185, 129, 0.08)',
                                     fontWeight: '600'
                                   }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -658,14 +667,14 @@ function ResultsPage() {
                                         >
                                           {formatUrl(fullUrl)} →
                                         </a>
-                                        <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: 0, fontWeight: 'normal' }}>
+                                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, fontWeight: 'normal' }}>
                                           {source.verification_url ? 'Fact-check article' : 
                                            source.fact_check_url ? 'Verification source' : 
                                            'Source article'}
                                         </p>
                                       </div>
                                     ) : (
-                                      <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                      <span style={{ color: 'var(--text-faint)', fontSize: '0.75rem', fontStyle: 'italic' }}>
                                         Internal Analysis
                                       </span>
                                     )}
@@ -680,7 +689,7 @@ function ResultsPage() {
                         {originalSources.length > 0 && (
                           <OverviewSection>
                             <h3>📰 Original Article ({originalSources.length})</h3>
-                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
                               Where this claim was first reported
                             </p>
                             <SourcesGrid>
@@ -688,12 +697,12 @@ function ResultsPage() {
                                 const fullUrl = getFullUrl(source);
                                 return (
                                   <SourceItem key={index} style={{ 
-                                    border: '1px solid #6b7280', 
-                                    background: '#f9fafb',
+                                    border: '1px solid var(--border)', 
+                                    background: 'var(--bg-secondary)',
                                     fontStyle: 'italic'
                                   }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                      <h4 title={source.name} style={{ margin: 0, color: '#374151' }}>
+                                      <h4 title={source.name} style={{ margin: 0, color: 'var(--text-secondary)' }}>
                                         {source.name.length > 40 ? `${source.name.substring(0, 40)}...` : source.name}
                                       </h4>
                                       <span style={{ 
@@ -707,12 +716,12 @@ function ResultsPage() {
                                       </span>
                                     </div>
                                     {source.author && (
-                                      <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0' }}>
                                         By {source.author}
                                       </p>
                                     )}
                                     {source.published_at && (
-                                      <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
+                                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0' }}>
                                         Published {new Date(source.published_at).toLocaleDateString()}
                                       </p>
                                     )}
@@ -734,7 +743,7 @@ function ResultsPage() {
                                         </a>
                                       </div>
                                     ) : (
-                                      <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                                      <span style={{ color: 'var(--text-faint)', fontSize: '0.75rem', fontStyle: 'italic' }}>
                                         No URL available
                                       </span>
                                     )}
@@ -749,7 +758,7 @@ function ResultsPage() {
                         {factCheckSources.length === 0 && originalSources.length === 0 && (
                           <OverviewSection>
                             <h3>Sources</h3>
-                            <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No sources available for this claim.</p>
+                            <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No sources available for this claim.</p>
                           </OverviewSection>
                         )}
                       </>

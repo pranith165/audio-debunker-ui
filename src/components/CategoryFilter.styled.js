@@ -20,10 +20,10 @@ export const FilterWrapper = styled.div`
 
 export const FilterButton = styled.button`
   padding: 8px 16px;
-  border: 1px solid ${({ $active }) => $active ? '#000' : '#d1d5db'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--text)' : 'var(--border)'};
   border-radius: 20px;
-  background-color: ${({ $active }) => $active ? '#000' : 'white'};
-  color: ${({ $active }) => $active ? 'white' : '#374151'};
+  background-color: ${({ $active }) => $active ? 'var(--text)' : 'var(--bg-surface)'};
+  color: ${({ $active }) => $active ? 'var(--bg)' : 'var(--text-secondary)'};
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -33,8 +33,8 @@ export const FilterButton = styled.button`
   letter-spacing: 0.5px;
 
   &:hover {
-    border-color: #000;
-    background-color: ${({ $active }) => $active ? '#000' : '#f9fafb'};
+    border-color: var(--text);
+    background-color: ${({ $active }) => $active ? 'var(--text)' : 'var(--bg-secondary)'};
   }
 
   @media (max-width: 768px) {

@@ -16,14 +16,14 @@ export const ErrorWrapper = styled.div`
 `;
 
 export const ErrorContainer = styled.div`
-  background: white;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 2rem 1.5rem;
   max-width: 400px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 25px 50px -12px var(--shadow-md);
+  border: 1px solid var(--border);
   position: relative;
   animation: slideIn 0.3s ease-out;
 
@@ -73,7 +73,7 @@ export const ErrorImage = styled.img`
 export const ErrorTitle = styled.h1`
   font-size: 1.75rem;
   font-weight: 400;
-  color: #000;
+  color: var(--text-heading);
   margin-bottom: 0.25rem;
   font-family: sans-serif;
 
@@ -89,7 +89,7 @@ export const ErrorTitle = styled.h1`
 export const ErrorSubtitle = styled.h2`
   font-size: 1.75rem;
   font-weight: 400;
-  color: #000;
+  color: var(--text-heading);
   margin-bottom: 2rem;
   font-family: sans-serif;
 
@@ -105,8 +105,8 @@ export const ErrorSubtitle = styled.h2`
 `;
 
 export const ErrorButton = styled.button`
-  background-color: #000;
-  color: white;
+  background-color: var(--text);
+  color: var(--bg);
   border: none;
   border-radius: 6px;
   padding: 0.75rem 1.5rem;
@@ -119,13 +119,13 @@ export const ErrorButton = styled.button`
   margin-bottom: 1rem;
 
   &:hover {
-    background-color: #333;
+    opacity: 0.8;
     transform: translateY(-1px);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 3px var(--shadow-sm);
   }
 
   &:active {
@@ -141,7 +141,7 @@ export const ErrorButton = styled.button`
 
 export const SmallNote = styled.p`
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: var(--text-faint);
   margin: 0 0 1.5rem;
   font-family: sans-serif;
   font-weight: 400;
@@ -149,11 +149,11 @@ export const SmallNote = styled.p`
 
 export const CountdownText = styled.p`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 0;
   font-family: sans-serif;
   font-weight: 400;
-  
+
   @media (max-width: 480px) {
     font-size: 0.8rem;
   }
