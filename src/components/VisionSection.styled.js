@@ -261,6 +261,12 @@ export const ImageSlide = styled.div`
   opacity: ${p => p.$visible ? 1 : 0};
   transition: opacity 0.45s ease;
   pointer-events: none;
+  display: ${p => p.$portrait ? 'flex' : 'block'};
+  align-items: center;
+  justify-content: center;
+  padding: ${p => p.$portrait ? '1rem' : '0'};
+  background: ${p => p.$portrait ? '#111' : 'transparent'};
+  min-height: ${p => p.$portrait ? '380px' : 'auto'};
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -268,11 +274,20 @@ export const ImageSlide = styled.div`
 `;
 
 export const StepImg = styled.img`
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  object-position: ${p => p.$position || 'center'};
   display: block;
+
+  ${p => p.$portrait ? `
+    width: auto;
+    height: 340px;
+    max-height: 100%;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  ` : `
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: ${p.$position || 'center'};
+  `}
 `;
 
 // ── Closing CTA ───────────────────────────────────────────────────────────────

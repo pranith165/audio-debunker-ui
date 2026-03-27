@@ -54,7 +54,7 @@ const steps = [
       "No copy-pasting. No switching apps. Just hit the share button on any Instagram or TikTok reel and select debunker — right from your phone's share sheet.",
     image: step2,
     alt: 'iOS share sheet with debunker as an option',
-    imagePosition: 'center 70%',
+    portrait: true,
     shortcut: true,
   },
   {
@@ -144,8 +144,8 @@ function VisionSection() {
               </BrowserBar>
 
               {steps.map((step, index) => (
-                <ImageSlide key={step.number} $visible={activeStep === index}>
-                  <StepImg src={step.image} alt={step.alt} loading="lazy" $position={step.imagePosition} />
+                <ImageSlide key={step.number} $visible={activeStep === index} $portrait={step.portrait}>
+                  <StepImg src={step.image} alt={step.alt} loading="lazy" $portrait={step.portrait} $position={step.imagePosition} />
                 </ImageSlide>
               ))}
             </BrowserFrame>
