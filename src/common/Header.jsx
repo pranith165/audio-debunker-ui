@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { HeaderWrapper, HeaderLogo, NavItems, HeaderLogoLink, NavItem, NavItemLink, ThemeToggle } from "./Header.styled";
 import { analytics } from '../utils/analytics';
 import { AdminLogin } from './AdminLogin';
@@ -7,6 +8,8 @@ import { useTheme } from '../hooks/useTheme';
 function Header() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
+  const isHeroPage = pathname === '/';
   const clickCount = useRef(0);
   const clickTimer = useRef(null);
   const { theme, toggleTheme } = useTheme();
@@ -49,7 +52,7 @@ function Header() {
 
   return (
     <>
-      <HeaderWrapper className={scrolled ? 'scrolled' : ''}>
+      <HeaderWrapper className={!isHeroPage || scrolled ? 'scrolled' : ''}>
           <HeaderLogo>
               <HeaderLogoLink to='/' onClick={handleLogoClick}>debunker</HeaderLogoLink>
           </HeaderLogo>
