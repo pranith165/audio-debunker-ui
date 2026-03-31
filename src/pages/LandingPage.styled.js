@@ -1,237 +1,175 @@
-// LandingPage.styled.js
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-// LandingPage.styled.js
+const BC = 'cubic-bezier(0.32, 0.94, 0.6, 1)';
 
-export const LandingPageWrapper = styled.div`
-  background-color: var(--bg-page);
+// ─── Hero ────────────────────────────────────────────────────────────────────
+
+export const HeroSection = styled.section`
   position: relative;
+  height: 100svh;
+  min-height: 600px;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: 3% auto 3%;
-  margin-bottom: 0;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 2% auto 2%;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1% auto 1%;
-  }
+  display: flex;
+  align-items: flex-end;
+  background: #000;
 `;
 
-export const VerticalStripe = styled.div`
+export const HeroVideo = styled.video`
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    45deg,
-    var(--stripe-bg),
-    var(--stripe-bg) 10px,
-    var(--stripe-line) 10px,
-    var(--stripe-line) 11px
+  object-fit: cover;
+  opacity: 0.55;
+  pointer-events: none;
+
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
+`;
+
+export const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.35) 50%,
+    rgba(0,0,0,0.15) 100%
   );
-
-  &.left {
-    border-right: 1px solid var(--stripe-line); /* faint right edge */
-  }
-
-  &.right {
-    border-left: 1px solid var(--stripe-line); /* faint left edge */
-  }
-
-  @media (max-width: 768px) {
-    background: repeating-linear-gradient(
-      45deg,
-      var(--stripe-bg),
-      var(--stripe-bg) 8px,
-      var(--stripe-line) 8px,
-      var(--stripe-line) 9px
-    );
-  }
-
-  @media (max-width: 480px) {
-    background: repeating-linear-gradient(
-      45deg,
-      var(--stripe-bg),
-      var(--stripe-bg) 6px,
-      var(--stripe-line) 6px,
-      var(--stripe-line) 7px
-    );
-  }
+  z-index: 1;
 `;
 
-
-
-
-export const Wrapper = styled.div`
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 5rem 1rem;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 2rem 0.75rem;
-  }
-`;
-
-export const DecorativeLineWrapper = styled.div`
+export const HeroContent = styled.div`
   position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem 5rem;
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: rgba(30, 41, 59, 0.05); /* gray-950/5 */
-    transform: translateX(-50%);
-    left: 50%;
-  }
-
-  &::before {
-    top: 0;
-  }
-
-  &::after {
-    bottom: 0;
-  }
-
-  @media (max-width: 768px) {
-    &::before,
-    &::after {
-      width: 95%;
-    }
-  }
+  @media (max-width: 768px) { padding: 0 2rem 4rem; }
+  @media (max-width: 480px) { padding: 0 1.25rem 3rem; }
 `;
 
+export const HeroEyebrow = styled.span`
+  display: block;
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.6s ${BC}, transform 0.6s ${BC};
 
+  .loaded & {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.1s;
+  }
+`;
 
 export const Heading = styled.h1`
-  font-size: clamp(2.5rem, 6vw, 6rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  padding: 20px 0;
-  line-height: 1.05;
+  font-size: clamp(3.5rem, 9vw, 10rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
   font-family: sans-serif;
+  color: #fff;
+  margin: 0 0 2rem;
+  max-width: 900px;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.7s ${BC}, transform 0.7s ${BC};
 
-  @media (max-width: 768px) {
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    line-height: 1.1;
-    padding: 15px 0;
+  .loaded & {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.18s;
   }
 
-  @media (max-width: 480px) {
-    font-size: clamp(1.8rem, 9vw, 2.5rem);
-    line-height: 1.1;
-    padding: 10px 0;
-    text-align: center;
-  }
+  @media (max-width: 768px) { font-size: clamp(2.5rem, 10vw, 5rem); }
+  @media (max-width: 480px) { font-size: clamp(2rem, 11vw, 3.5rem); line-height: 0.92; }
 `;
 
-export const Subtext = styled.p`
-  max-width: 720px;
-  font-size: 1.125rem;
-  line-height: 1.75;
-  color: var(--text-secondary); /* text-gray-600 */
-  padding: 8px 0;
-  text-align: left;
-  font-family: sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.6;
-    max-width: 100%;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.95rem;
-    text-align: center;
-    padding: 6px 0;
-  }
-`;
-
-export const RichText = styled.span`
-  max-width: 720px;
-  font-size: 1.125rem;
-  line-height: 1.75;
-  color: oklch(0.685 0.169 237.323);
-  text-align: left;
-  font-family: sans-serif;
-`;
-
-export const PoorText = styled.span`
+export const HeroBottom = styled.div`
   display: flex;
-  max-width: 720px;
-  font-size: 12px;
-  line-height: 1.75;
-  color: gray;
-  text-align: left;
-  height: 35px;
   align-items: flex-end;
-  font-family: monospace;
+  justify-content: space-between;
+  gap: 2rem;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.6s ${BC}, transform 0.6s ${BC};
+
+  .loaded & {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+`;
+
+export const HeroSubtext = styled.p`
+  max-width: 360px;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.55);
+  font-family: sans-serif;
+  margin: 0;
+`;
+
+export const HeroCTA = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) { align-items: flex-start; }
 `;
 
 export const AnalyzeButton = styled(Link)`
-  background-color: var(--text);
-  color: var(--bg);
+  background-color: #fff;
+  color: #000;
   font-family: monospace;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 14px 32px;
-  height: 52px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 40px;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
-  box-sizing: border-box;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  text-align: center;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
 
-  &:hover {
-    background-color: #222;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  }
+  &:hover { opacity: 0.8; transform: translateY(-2px); }
+  &:active { transform: translateY(0); }
 
-  @media (max-width: 768px) {
-    font-size: 15px;
-    padding: 14px 28px;
-    height: 52px;
-    min-height: 44px;
-  }
-
-  @media (max-width: 480px) {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-  }
+  @media (max-width: 480px) { padding: 14px 28px; font-size: 11px; }
 `;
 
 export const TrustBar = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 12px 0;
   flex-wrap: wrap;
-
-  @media (max-width: 480px) {
-    justify-content: center;
-    gap: 1rem;
-  }
 `;
 
 export const TrustItem = styled.span`
   font-family: monospace;
-  font-size: 12px;
-  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.35);
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -239,18 +177,172 @@ export const TrustItem = styled.span`
   &::before {
     content: '';
     display: inline-block;
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
-    background-color: #22c55e;
+    background: rgba(255,255,255,0.35);
   }
 `;
 
-export const ButtonWrapper = styled.div`
-  padding: 12px 0;
+export const ScrollHint = styled.div`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.8s;
 
-  @media (max-width: 480px) {
-    text-align: center;
-    padding: 16px 0;
+  .loaded & { opacity: 1; }
+
+  span {
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
   }
 `;
+
+export const ScrollLine = styled.div`
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.6);
+    animation: scrollDrop 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollDrop {
+    0% { top: -100%; }
+    100% { top: 100%; }
+  }
+`;
+
+// ─── Full-bleed image break sections ────────────────────────────────────────
+
+export const ImageBreak = styled.section`
+  position: relative;
+  height: ${p => p.$height || '80vh'};
+  overflow: hidden;
+`;
+
+export const ImageBreakImg = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 115%;
+  object-fit: cover;
+  object-position: ${p => p.$position || 'center'};
+  will-change: transform;
+`;
+
+export const ImageBreakOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: ${p => p.$bg || 'rgba(0,0,0,0.45)'};
+  z-index: 1;
+`;
+
+export const ImageBreakContent = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: ${p => p.$align || 'center'};
+  align-items: ${p => p.$halign || 'flex-start'};
+  padding: 5rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+
+  @media (max-width: 768px) { padding: 3rem 2rem; }
+  @media (max-width: 480px) { padding: 2rem 1.25rem; }
+`;
+
+export const ImageBreakEyebrow = styled.span`
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+  display: block;
+`;
+
+export const ImageBreakHeading = styled.h2`
+  font-size: clamp(2.5rem, 6vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  font-family: sans-serif;
+  color: #fff;
+  margin: 0 0 1.5rem;
+  max-width: 700px;
+
+  @media (max-width: 480px) { font-size: clamp(2rem, 9vw, 3.5rem); }
+`;
+
+export const ImageBreakSub = styled.p`
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.6);
+  font-family: sans-serif;
+  max-width: 400px;
+  margin: 0;
+`;
+
+// ─── Reveal utility (used globally via .reveal / .reveal.visible) ─────────────
+
+export const revealCss = css`
+  .reveal {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    transition: opacity 0.65s ${BC}, transform 0.65s ${BC};
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.7s ${BC}, transform 0.7s ${BC};
+  }
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+// Kept for compatibility
+export const RichText = styled.span`
+  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+`;
+export const Eyebrow = styled.span``;
+export const Subtext = styled.p``;
+export const ButtonWrapper = styled.div``;
+export const HeroImage = styled.img``;
+export const HeroLeft = styled.div``;
+export const HeroRight = styled.div``;
+export const DecorativeLineWrapper = styled.div``;
+export const PoorText = styled.span`display:none`;
+export const LandingPageWrapper = styled.div``;
+export const VerticalStripe = styled.div``;
+export const Wrapper = styled.div``;

@@ -36,16 +36,16 @@ export const SectionOuter = styled.section`
 `;
 
 export const SectionWrapper = styled.div`
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 5rem 4rem;
+  padding: 6rem 4rem;
 
   @media (max-width: 768px) {
-    padding: 4rem 2rem;
+    padding: 4.5rem 2rem;
   }
 
   @media (max-width: 480px) {
-    padding: 3rem 1.25rem;
+    padding: 3.5rem 1.25rem;
   }
 `;
 
@@ -67,16 +67,17 @@ export const SectionEyebrow = styled.span`
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
   font-weight: 800;
   font-family: sans-serif;
   letter-spacing: -0.04em;
   color: var(--text-heading);
-  line-height: 1.05;
+  line-height: 0.95;
   margin: 0;
 
   @media (max-width: 480px) {
     font-size: clamp(1.75rem, 7vw, 2.5rem);
+    line-height: 1;
   }
 `;
 

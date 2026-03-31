@@ -28,9 +28,10 @@ import {
   ShortcutLink,
 } from './VisionSection.styled';
 
-import step1 from '../assets/images/vision-step1.jpg';
-import step2 from '../assets/images/vision-step2-share.png';
-import step3 from '../assets/images/vision-step3.jpg';
+import step1 from '../assets/images/phone-scrolling-problem.jpg';
+import step2a from '../assets/images/share-step1-instagram.png';
+import step2b from '../assets/images/share-step2-ios.png';
+import step3 from '../assets/images/vision-verdict-result.png';
 
 const IOS_SHORTCUT_URL = 'https://www.icloud.com/shortcuts/c4244ff555e34b07bbec25297e0c1f13';
 
@@ -49,16 +50,25 @@ const steps = [
   },
   {
     number: '02',
-    heading: 'Hit share. Pick debunker.',
+    heading: "Tap the share icon. Hit 'Share to\u2026'",
     description:
-      "No copy-pasting. No switching apps. Just hit the share button on any Instagram or TikTok reel and select debunker — right from your phone's share sheet.",
-    image: step2,
-    alt: 'iOS share sheet with debunker as an option',
-    imagePosition: 'center 93%',
-    shortcut: true,
+      "On any Instagram or TikTok reel, tap the share icon. You'll see your contacts and apps \u2014 scroll to the bottom and tap 'Share to\u2026' to open the full iOS share sheet.",
+    image: step2a,
+    alt: 'Instagram share sheet showing Share to option',
+    imagePosition: 'center bottom',
   },
   {
     number: '03',
+    heading: 'Select Debunker from the list.',
+    description:
+      "The iOS share sheet opens — Debunker appears right in the list. One tap and you're done. No copy-pasting, no switching apps.",
+    image: step2b,
+    alt: 'iOS share sheet with Debunker in the list',
+    imagePosition: 'center bottom',
+    shortcut: true,
+  },
+  {
+    number: '04',
     heading: 'An instant verdict. Evidence. Sources.',
     description:
       "Debunker analyzes the claim, cross-references it against credible sources, and delivers a verdict in seconds — so you always know what to believe.",

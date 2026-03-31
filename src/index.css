@@ -24,11 +24,40 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  display: block;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* ── Scroll reveal animations ────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(2.5rem);
+  transition: opacity 0.65s cubic-bezier(0.32, 0.94, 0.6, 1),
+              transform 0.65s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.93);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.94, 0.6, 1),
+              transform 0.7s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* Prevent horizontal scrolling */

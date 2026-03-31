@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   StatsOuter,
+  StatsBg,
   StatsWrapper,
   StatItem,
   StatNumber,
@@ -8,6 +9,7 @@ import {
   StatLabel,
   StatDivider,
 } from './StatsSection.styled';
+import newsroomBg from '../assets/images/newsroom-dark.png';
 
 const STATS = [
   { value: 5, suffix: 'K+', label: 'Claims analyzed' },
@@ -76,6 +78,7 @@ function StatsSection() {
 
   return (
     <StatsOuter ref={ref}>
+      <StatsBg src={newsroomBg} alt="" loading="lazy" />
       <StatsWrapper>
         {STATS.map((s, i) => (
           <div key={s.label} style={{ display: 'contents' }}>

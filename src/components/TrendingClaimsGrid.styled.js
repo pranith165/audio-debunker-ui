@@ -41,7 +41,7 @@ export const GridSideStripe = styled.div`
 `;
 
 export const GridContent = styled.div`
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 1rem;
 
@@ -87,12 +87,13 @@ export const GridHeader = styled.div`
 `;
 
 export const GridTitle = styled.h1`
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 800;
   color: var(--text-heading);
   margin: 0 0 1rem 0;
   font-family: sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
 
   @media (max-width: 768px) {
     font-size: clamp(1.8rem, 6vw, 2.5rem);

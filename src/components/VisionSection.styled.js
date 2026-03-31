@@ -9,7 +9,7 @@ export const VisionOuter = styled.section`
 `;
 
 export const VisionWrapper = styled.div`
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 4rem;
 
@@ -41,16 +41,17 @@ export const VisionEyebrow = styled.span`
 `;
 
 export const VisionTitle = styled.h2`
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: clamp(2.5rem, 5.5vw, 5.5rem);
   font-weight: 800;
   font-family: sans-serif;
   letter-spacing: -0.04em;
   color: var(--text-heading);
-  line-height: 0.95;
+  line-height: 0.9;
   margin: 0;
 
   @media (max-width: 480px) {
-    font-size: clamp(2rem, 8vw, 3rem);
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 0.95;
   }
 `;
 

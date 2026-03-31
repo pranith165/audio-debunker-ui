@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import Lottie from 'lottie-react';
+import soundwaveData from '../assets/lottie/soundwave.json';
 import {
   SectionOuter,
   SectionWrapper,
@@ -182,11 +184,14 @@ function FeatureDemoSection() {
                     </svg>
                     <AudioLabel>Analyzing audio...</AudioLabel>
                   </AudioHeader>
-                  <AudioWaveform>
-                    {WAVE_HEIGHTS.map((h, i) => (
-                      <AudioBar key={i} $height={h} $delay={i * 40} />
-                    ))}
-                  </AudioWaveform>
+                  <div style={{ height: 56, marginBottom: '1rem' }}>
+                    <Lottie
+                      animationData={soundwaveData}
+                      loop
+                      autoplay
+                      style={{ height: '100%', width: '100%' }}
+                    />
+                  </div>
                   <AudioProgress>
                     <AudioProgressFill />
                   </AudioProgress>

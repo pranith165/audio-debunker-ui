@@ -1,30 +1,42 @@
 import styled from 'styled-components';
 
 export const StatsOuter = styled.section`
-  background-color: #111;
-  border-top: 3px solid #111;
+  position: relative;
+  background-color: #0a0a0a;
+  overflow: hidden;
+`;
+
+export const StatsBg = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  pointer-events: none;
+  filter: grayscale(100%);
 `;
 
 export const StatsWrapper = styled.div`
-  max-width: 1280px;
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 3.5rem 4rem;
+  padding: 4.5rem 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
 
   @media (max-width: 768px) {
-    padding: 3rem 2rem;
+    padding: 3.5rem 2rem;
     flex-wrap: wrap;
-    gap: 0;
   }
 
   @media (max-width: 480px) {
-    padding: 2.5rem 1.25rem;
+    padding: 3rem 1.25rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
   }
 `;
 
@@ -33,7 +45,7 @@ export const StatItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
   padding: 0 2rem;
   text-align: center;
 
@@ -48,10 +60,10 @@ export const StatItem = styled.div`
 `;
 
 export const StatNumber = styled.div`
-  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 800;
   font-family: sans-serif;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   color: #fff;
   line-height: 1;
   display: flex;
@@ -60,24 +72,24 @@ export const StatNumber = styled.div`
 `;
 
 export const StatSuffix = styled.span`
-  font-size: 0.55em;
+  font-size: 0.5em;
   font-weight: 700;
-  color: #9ca3af;
+  color: #6b7280;
 `;
 
 export const StatLabel = styled.p`
   font-family: monospace;
   font-size: 11px;
-  color: #6b7280;
-  letter-spacing: 0.08em;
+  color: #4b5563;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0;
 `;
 
 export const StatDivider = styled.div`
   width: 1px;
-  height: 40px;
-  background: #2d2d2d;
+  height: 56px;
+  background: #1f1f1f;
   flex-shrink: 0;
 
   @media (max-width: 480px) {

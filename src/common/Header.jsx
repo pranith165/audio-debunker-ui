@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { HeaderWrapper, HeaderLogo, NavItems, HeaderLogoLink, NavItem, NavItemLink, ThemeToggle } from "./Header.styled";
 import { analytics } from '../utils/analytics';
 import { AdminLogin } from './AdminLogin';
@@ -6,9 +6,17 @@ import { useTheme } from '../hooks/useTheme';
 
 function Header() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const clickCount = useRef(0);
   const clickTimer = useRef(null);
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleLogoClick = () => {
     analytics.trackButtonClick('logo', 'header');
@@ -41,7 +49,7 @@ function Header() {
 
   return (
     <>
-      <HeaderWrapper>
+      <HeaderWrapper className={scrolled ? 'scrolled' : ''}>
           <HeaderLogo>
               <HeaderLogoLink to='/' onClick={handleLogoClick}>debunker</HeaderLogoLink>
           </HeaderLogo>
