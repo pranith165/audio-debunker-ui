@@ -9,7 +9,7 @@ import {
   StatLabel,
   StatDivider,
 } from './StatsSection.styled';
-import newsroomBg from '../assets/images/newsroom-dark.png';
+import newsroomBg from '../assets/images/newsroom-dark.jpg';
 
 const STATS = [
   { value: 5, suffix: 'K+', label: 'Claims analyzed' },

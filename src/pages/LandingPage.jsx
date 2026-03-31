@@ -13,8 +13,8 @@ import FeatureDemoSection from '../components/FeatureDemoSection';
 import StatsSection from '../components/StatsSection';
 
 import phoneScrolling from '../assets/images/phone-scrolling-problem.jpg';
-import splitImage from '../assets/images/split-chaos-verified.png';
-import deskFlatlay from '../assets/images/desk-flatlay.png';
+import splitImage from '../assets/images/split-chaos-verified.jpg';
+import deskFlatlay from '../assets/images/desk-flatlay.jpg';
 
 // ─── Parallax hook ───────────────────────────────────────────────────────────
 function useParallax(speed = 0.3) {
